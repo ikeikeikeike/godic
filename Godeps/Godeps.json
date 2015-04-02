@@ -1,0 +1,37 @@
+{
+	"ImportPath": "bitbucket.org/ikeikeikeike/godic",
+	"GoVersion": "go1.4.2",
+	"Deps": [
+		{
+			"ImportPath": "github.com/codegangsta/inject",
+			"Comment": "v1.0-rc1-10-g33e0aa1",
+			"Rev": "33e0aa1cb7c019ccc3fbe049a8262a6403d30504"
+		},
+		{
+			"ImportPath": "github.com/go-martini/martini",
+			"Comment": "v1.0-117-g2047b73",
+			"Rev": "2047b7394d319aa3feb49db1452202336fb66fb6"
+		},
+		{
+			"ImportPath": "github.com/k0kubun/pp",
+			"Comment": "v2.0.1-1-ge14f383",
+			"Rev": "e14f383ae6cec46144a99394c284d3edb0970e65"
+		},
+		{
+			"ImportPath": "github.com/libgit2/git2go",
+			"Rev": "a2878cf7b2fc94255c92253420f5df41a42b47db"
+		},
+		{
+			"ImportPath": "github.com/martini-contrib/render",
+			"Rev": "b65063311fac6cbf84d3538f5715f7847e648322"
+		},
+		{
+			"ImportPath": "github.com/mattn/go-colorable",
+			"Rev": "d67e0b7d1797975196499f79bcc322c08b9f218b"
+		},
+		{
+			"ImportPath": "github.com/oxtoacart/bpool",
+			"Rev": "754d38fccfc6e52083355014b6abc8d626445dfd"
+		}
+	]
+}
