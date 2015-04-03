@@ -25,7 +25,8 @@ _testmain.go
 
 
 ##### build files for developement
-Godeps/Readme
-Godeps/_workspace
+/Godeps/Readme
+/Godeps/_workspace
 /gin-bin
 /tmp/runner-build
+/repo
