@@ -1,21 +1,27 @@
 package models
 
-import git "github.com/libgit2/git2go"
+import (
+	"fmt"
+	"io/ioutil"
+	"time"
+
+	git "github.com/libgit2/git2go"
+)
 
 type Dict struct {
 	Path string
 	Repo *git.Repository
 
-	Ref            string
-	CommitterName  string
-	CommitterEmail string
+	Ref       string
+	Author    *git.Signature
+	Committer *git.Signature
 }
 
 func NewDict() *Dict {
 	return &Dict{
-		Ref:            "master",
-		CommitterName:  "Unk",
-		CommitterEmail: "unk@example.com",
+		Ref:       "HEAD",
+		Author:    &git.Signature{Name: "Author", Email: "author@example.com", When: time.Now()},
+		Committer: &git.Signature{Name: "Committer", Email: "committer@example.com", When: time.Now()},
 	}
 }
 
@@ -27,6 +33,67 @@ func (m *Dict) Init(path string) (err error) {
 	}
 	m.Path = path
 	return
+}
+
+func (m *Dict) Create(filename, content string) (*git.Oid, error) {
+	idx, err := m.Repo.Index()
+	if err != nil {
+		return nil, err
+	}
+	err = ioutil.WriteFile(m.Path+"/"+filename, []byte(content), 0644)
+	if err != nil {
+		return nil, err
+	}
+	if err = idx.AddByPath(filename); err != nil {
+		return nil, err
+	}
+
+	treeID, err := idx.WriteTree()
+	if err != nil {
+		return nil, err
+	}
+	tree, err := m.Repo.LookupTree(treeID)
+	if err != nil {
+		return nil, err
+	}
+
+	message := fmt.Sprintf("Create: %s", filename)
+	return m.Repo.CreateCommit(m.Ref, m.Author, m.Committer, message, tree)
+}
+
+func (m *Dict) Update(filename, content string) (*git.Oid, error) {
+	branch, err := m.Repo.Head()
+	if err != nil {
+		return nil, err
+	}
+	tip, err := m.Repo.LookupCommit(branch.Target())
+	if err != nil {
+		return nil, err
+	}
+
+	idx, err := m.Repo.Index()
+	if err != nil {
+		return nil, err
+	}
+	err = ioutil.WriteFile(m.Path+"/"+filename, []byte(content), 0644)
+	if err != nil {
+		return nil, err
+	}
+	if err = idx.AddByPath(filename); err != nil {
+		return nil, err
+	}
+
+	treeID, err := idx.WriteTree()
+	if err != nil {
+		return nil, err
+	}
+	tree, err := m.Repo.LookupTree(treeID)
+	if err != nil {
+		return nil, err
+	}
+
+	message := fmt.Sprintf("Update: %s", filename)
+	return m.Repo.CreateCommit(m.Ref, m.Author, m.Committer, message, tree, tip)
 }
 
 func (m *Dict) Stats(opts *git.StatusOptions) (entries []git.StatusEntry, err error) {
@@ -50,11 +117,11 @@ func (m *Dict) Stats(opts *git.StatusOptions) (entries []git.StatusEntry, err er
 	return
 }
 
-func (m *Dict) StatsModified() ([]git.StatusEntry, error) {
+func (m *Dict) ModifiedStats() ([]git.StatusEntry, error) {
 	return m.Stats(&git.StatusOptions{})
 }
 
-func (m *Dict) StatsUntracked() ([]git.StatusEntry, error) {
+func (m *Dict) UntrackedStats() ([]git.StatusEntry, error) {
 	opts := &git.StatusOptions{Flags: git.StatusOptIncludeUntracked}
 	return m.Stats(opts)
 }
