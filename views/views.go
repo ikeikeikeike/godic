@@ -14,13 +14,8 @@ func init() {
 		Extensions: []string{".html"},
 	}))
 
-	App.Get("/", Root)
+	App.Get("/", Home)
 
-	App.Get("/render", func(r render.Render) {
-		r.HTML(200, "hello", "jeremy")
-	})
-}
-
-func Root() string {
-	return "Hello world!"
+	App.Get("/index", Index)
+	App.Get("/create", Create)
 }

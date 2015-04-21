@@ -1,6 +1,6 @@
 package main
 
-import "bitbucket.org/ikeikeikeike/godic/views"
+import "github.com/ikeikeikeike/godic/views"
 
 func main() {
 	views.App.Run()
