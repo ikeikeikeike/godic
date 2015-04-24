@@ -1,11 +1,31 @@
 package views
 
-import "github.com/martini-contrib/render"
+import (
+	log "github.com/Sirupsen/logrus"
+	"github.com/go-martini/martini"
+	"github.com/ikeikeikeike/godic/middlewares/html"
+	"github.com/martini-contrib/render"
+)
 
-func Index(r render.Render) {
-	r.HTML(200, "dict/index", "")
+func IndexDict(r render.Render, html html.HTMLContext) {
+	log.Println("IndexDict action !!!!!")
+	r.HTML(200, "dict/index", html)
 }
 
-func Create(r render.Render) {
-	r.HTML(200, "dict/create", "")
+func NewDict(r render.Render, params martini.Params, html html.HTMLContext) {
+	log.Infoln("NewDict action !!!!!")
+
+	html["Name"] = params["name"]
+	html["Content"] = ""
+
+	r.HTML(200, "dict/edit", html)
+}
+
+func EditDict(r render.Render, params martini.Params, html html.HTMLContext) {
+	log.Println("EditDict action !!!!!")
+
+	html["Name"] = params["name"]
+	html["Content"] = ""
+
+	r.HTML(200, "dict/edit", html)
 }
