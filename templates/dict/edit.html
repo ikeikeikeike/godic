@@ -1,0 +1,126 @@
+{{define "meta"}}
+<meta name="" content="" />
+{{end}}
+
+{{define "css"}}{{end}}
+
+{{define "js"}}
+<script data-ace-base="src" charset="utf-8" src='/static/vendor/store-js/store.js'></script>
+<script data-ace-base="src" charset="utf-8" src='/static/vendor/bootbox/bootbox.js'></script>
+<script data-ace-base="src" charset="utf-8" src='/static/vendor/ace-builds/src/ace.js'></script>
+<script data-ace-base="src" charset="utf-8" src='/static/vendor/ace-builds/src/mode-markdown.js'></script>
+<script data-ace-base="src" charset="utf-8" src='/static/vendor/ace-builds/src/ext-keybinding_menu.js'></script>
+<script data-ace-base="src" charset="utf-8" src='/static/vendor/keymaster/keymaster.js'></script>
+<script data-ace-base="src" charset="utf-8" src='/static/js/aced.js'></script>
+<script>
+  var Commit = {};
+  Commit.info = {};
+</script>
+<script src='/static/js/editor.js'></script>
+<script src="https://togetherjs.com/togetherjs-min.js"></script>
+{{end}}
+
+
+<div id="app-wrap">
+  <div id="app-controls" class="row">
+    <div class="col-xs-4 col-md-3">
+      <input id="page-name" type="text" class="form-control input-sm" name="name" placeholder="Name" value="{{.Name}}" />
+    </div>
+    <div class="col-xs-4 col-md-3">
+      <input id="page-message" type="text" class="form-control input-sm" name="page-message"
+             placeholder="Comment" value="" />
+    </div>
+
+    <div class="col-md-6 col-xs-4 text-right">
+
+      <div class="dropdown btn-group">
+        <button class="btn btn-default btn-sm dropdown-toggle" type="button" id="editor-actions"
+                data-toggle="dropdown" title="Actions">
+          <i class="fa fa-cog"></i>
+          <span class="hidden-xs">Actions <i class="fa fa-caret-down"></i></span>
+        </button>
+
+        <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="editor-actions">
+          <li role="presentation">
+            <a role="menuitem" tabindex="-1" href="#" id="start-collaboration">Collaborate</a>
+          </li>
+          <li role="presentation" class="divider"></li>
+          <li role="presentation">
+            <a role="menuitem" tabindex="-1" href="#" id="discard-draft-btn">Delete Draft</a>
+          </li>
+          <li role="presentation">
+            <a role="menuitem" tabindex="-1" href="#" id="delete-page-btn">Delete Page</a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="dropdown btn-group">
+        <button id="theme-list-btn" type="button" class="dropdown-toggle btn btn-default btn-sm"
+                data-toggle="dropdown" title="Change Theme">
+          <i class="fa fa-paint-brush"></i>
+          <span class="hidden-xs">Theme <i class="fa fa-caret-down"></i></span>
+        </button>
+        <ul id="theme-list" class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="theme-list">
+          <li><a tabindex="-1" href="#" data-value="chrome" >Chrome</a></li>
+          <li><a tabindex="-1" href="#" data-value="clouds" >Clouds</a></li>
+          <li><a tabindex="-1" href="#" data-value="clouds_midnight" >Clouds Midnight</a></li>
+          <li><a tabindex="-1" href="#" data-value="cobalt" >Cobalt</a></li>
+          <li><a tabindex="-1" href="#" data-value="crimson_editor" >Crimson Editor</a></li>
+          <li><a tabindex="-1" href="#" data-value="dawn" class="selected">Dawn</a></li>
+          <li><a tabindex="-1" href="#" data-value="dreamweaver" >Dreamweaver</a></li>
+          <li><a tabindex="-1" href="#" data-value="eclipse" >Eclipse</a></li>
+          <li><a tabindex="-1" href="#" data-value="idle_fingers" >idleFingers</a></li>
+          <li><a tabindex="-1" href="#" data-value="kr_theme" >krTheme</a></li>
+          <li><a tabindex="-1" href="#" data-value="merbivore" >Merbivore</a></li>
+          <li><a tabindex="-1" href="#" data-value="merbivore_soft" >Merbivore Soft</a></li>
+          <li><a tabindex="-1" href="#" data-value="mono_industrial" >Mono Industrial</a></li>
+          <li><a tabindex="-1" href="#" data-value="monokai" >Monokai</a></li>
+          <li><a tabindex="-1" href="#" data-value="pastel_on_dark">Pastel on Dark</a></li>
+          <li><a tabindex="-1" href="#" data-value="solarized_dark" >Solarized Dark</a></li>
+          <li><a tabindex="-1" href="#" data-value="solarized_light" >Solarized Light</a></li>
+          <li><a tabindex="-1" href="#" data-value="textmate" >TextMate</a></li>
+          <li><a tabindex="-1" href="#" data-value="tomorrow" >Tomorrow</a></li>
+          <li><a tabindex="-1" href="#" data-value="tomorrow_night">Tomorrow Night</a></li>
+          <li><a tabindex="-1" href="#" data-value="tomorrow_night_blue" >Tomorrow Night Blue</a></li>
+          <li><a tabindex="-1" href="#" data-value="tomorrow_night_bright" >Tomorrow Night Bright</a></li>
+          <li><a tabindex="-1" href="#" data-value="tomorrow_night_eighties" >Tomorrow Night 80s</a></li>
+          <li><a tabindex="-1" href="#" data-value="twilight" >Twilight</a></li>
+          <li><a tabindex="-1" href="#" data-value="vibrant_ink" >Vibrant Ink</a></li>
+        </ul>
+      </div>
+
+      <div class="btn-group">
+          <a class="btn btn-danger btn-sm">
+            <i class="fa fa-lock"></i>
+            <span class="hidden-xs">Locked</span>
+          </a>
+          <a id="submit-btn" class="btn btn-primary btn-sm">
+            <i class="fa fa-save"></i>
+            <span class="hidden-xs">Publish</span>
+          </a>
+      </div>
+
+    </div>
+  </div>
+
+  <section class="entry-markdown active">
+    <header class="floatingheader" id="entry-markdown-header">
+      <small>Markdown</small>
+      <a class="markdown-help" href=""><span class="hidden">What is Markdown?</span></a>
+    </header>
+    <section id="entry-markdown-content" class="entry-markdown-content">
+      <div id="editor-{{.Name}}" data-submitbtn='submit-btn' data-themeselect="theme-list" data-mode="markdown"
+           data-preview="preview" class="editor">{{.Content}}</div>
+    </section>
+  </section>
+
+  <section class="entry-preview">
+    <header class="floatingheader" id="entry-preview-header">
+      <small>Preview</small>
+    </header>
+    <section class="entry-preview-content">
+      <div id="preview"></div>
+    </section>
+  </section>
+
+</div>
