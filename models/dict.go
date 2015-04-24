@@ -35,7 +35,14 @@ func (m *Dict) Init(path string) (err error) {
 	return
 }
 
-func (m *Dict) Create(filename, content string) (*git.Oid, error) {
+func (m *Dict) Save(name, content, message string, create bool) {
+	if create {
+		m.Create(name, content, message)
+	}
+	m.Update(name, content, message)
+}
+
+func (m *Dict) Create(filename, content, message string) (*git.Oid, error) {
 	idx, err := m.Repo.Index()
 	if err != nil {
 		return nil, err
@@ -57,11 +64,13 @@ func (m *Dict) Create(filename, content string) (*git.Oid, error) {
 		return nil, err
 	}
 
-	message := fmt.Sprintf("Create: %s", filename)
+	if message == "" {
+		message = fmt.Sprintf("Create: %s", filename)
+	}
 	return m.Repo.CreateCommit(m.Ref, m.Author, m.Committer, message, tree)
 }
 
-func (m *Dict) Update(filename, content string) (*git.Oid, error) {
+func (m *Dict) Update(filename, content, message string) (*git.Oid, error) {
 	branch, err := m.Repo.Head()
 	if err != nil {
 		return nil, err
@@ -92,7 +101,9 @@ func (m *Dict) Update(filename, content string) (*git.Oid, error) {
 		return nil, err
 	}
 
-	message := fmt.Sprintf("Update: %s", filename)
+	if message == "" {
+		message = fmt.Sprintf("Update: %s", filename)
+	}
 	return m.Repo.CreateCommit(m.Ref, m.Author, m.Committer, message, tree, tip)
 }
 
