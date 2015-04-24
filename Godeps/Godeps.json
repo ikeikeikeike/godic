@@ -13,16 +13,34 @@
 			"Rev": "2047b7394d319aa3feb49db1452202336fb66fb6"
 		},
 		{
+			"ImportPath": "github.com/k0kubun/pp",
+			"Comment": "v2.0.1-1-ge14f383",
+			"Rev": "e14f383ae6cec46144a99394c284d3edb0970e65"
+		},
+		{
 			"ImportPath": "github.com/libgit2/git2go",
 			"Rev": "a2878cf7b2fc94255c92253420f5df41a42b47db"
+		},
+		{
+			"ImportPath": "github.com/martini-contrib/binding",
+			"Rev": "1928ed2850e7d65507ea4198d935597e43612c7d"
 		},
 		{
 			"ImportPath": "github.com/martini-contrib/render",
 			"Rev": "b65063311fac6cbf84d3538f5715f7847e648322"
 		},
 		{
+			"ImportPath": "github.com/mattn/go-colorable",
+			"Rev": "d67e0b7d1797975196499f79bcc322c08b9f218b"
+		},
+		{
 			"ImportPath": "github.com/oxtoacart/bpool",
 			"Rev": "754d38fccfc6e52083355014b6abc8d626445dfd"
+		},
+		{
+			"ImportPath": "github.com/woothee/woothee-go",
+			"Comment": "1.0.0-14-gc030b6c",
+			"Rev": "c030b6cbd49d996911072ecf99cea7daaeaf02b7"
 		}
 	]
 }

@@ -28,5 +28,6 @@ _testmain.go
 /Godeps/Readme
 /Godeps/_workspace
 /gin-bin
+/logs
 /tmp/runner-build
 /repo

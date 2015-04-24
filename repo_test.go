@@ -28,7 +28,7 @@ func TestCreateFile(t *testing.T) {
 	dict.Init(createTmp(t))
 	defer os.RemoveAll(dict.Repo.Workdir())
 
-	_, err := dict.Create("fileone", "# aaaa\n- a\n- b\n")
+	_, err := dict.Create("fileone", "# aaaa\n- a\n- b\n", "first message")
 	if err != nil {
 		t.Fatalf("Add file error: %s", err)
 	}
@@ -49,9 +49,9 @@ func TestUpdateFile(t *testing.T) {
 
 	defer os.RemoveAll(dict.Repo.Workdir())
 
-	_, err := dict.Create("fileone", "# aaaa\n- a\n- b\n")
+	_, err := dict.Create("fileone", "# aaaa\n- a\n- b\n", "first message")
 	checkFatal(t, err)
-	_, err = dict.Update("fileone", "# bbbb\n- a\n- b\n")
+	_, err = dict.Update("fileone", "# bbbb\n- a\n- b\n", "second message")
 	checkFatal(t, err)
 
 	stats, err := dict.ModifiedStats()
@@ -90,6 +90,16 @@ func TestUntrackedStats(t *testing.T) {
 	for _, stat := range stats {
 		_ = stat
 	}
+}
+
+func TestSave(t *testing.T) {
+	dict := models.NewDict()
+	dict.Init(createTmp(t))
+
+	defer os.RemoveAll(dict.Repo.Workdir())
+
+	dict.Save("fileone", "# aaaa\n- a\n- b\n", "first message", true)
+	dict.Save("fileone", "# abcd\n- a\n- b\n- c\n", "second message", false)
 }
 
 func checkFatal(t *testing.T, err error) {
