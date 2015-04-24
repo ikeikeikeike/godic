@@ -3,6 +3,8 @@ package models
 import (
 	"fmt"
 	"io/ioutil"
+	"log"
+	"strings"
 	"time"
 
 	git "github.com/libgit2/git2go"
@@ -35,11 +37,8 @@ func (m *Dict) Init(path string) (err error) {
 	return
 }
 
-func (m *Dict) Save(name, content, message string, create bool) {
-	if create {
-		m.Create(name, content, message)
-	}
-	m.Update(name, content, message)
+func (m *Dict) Get(filename string) (err error) {
+	return
 }
 
 func (m *Dict) Create(filename, content, message string) (*git.Oid, error) {
@@ -107,6 +106,13 @@ func (m *Dict) Update(filename, content, message string) (*git.Oid, error) {
 	return m.Repo.CreateCommit(m.Ref, m.Author, m.Committer, message, tree, tip)
 }
 
+func (m *Dict) Save(filename, content, message string, create bool) (*git.Oid, error) {
+	if create {
+		m.Create(filename, content, message)
+	}
+	return m.Update(filename, content, message)
+}
+
 func (m *Dict) Stats(opts *git.StatusOptions) (entries []git.StatusEntry, err error) {
 	var stats *git.StatusList
 	if stats, err = m.Repo.StatusList(opts); err != nil {
@@ -135,4 +141,53 @@ func (m *Dict) ModifiedStats() ([]git.StatusEntry, error) {
 func (m *Dict) UntrackedStats() ([]git.StatusEntry, error) {
 	opts := &git.StatusOptions{Flags: git.StatusOptIncludeUntracked}
 	return m.Stats(opts)
+}
+
+func (m *Dict) DumpRepo() {
+
+	odb, err := m.Repo.Odb()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	err = odb.ForEach(func(oid *git.Oid) error {
+		obj, err := m.Repo.Lookup(oid)
+		if err != nil {
+			return err
+		}
+
+		switch obj := obj.(type) {
+		default:
+		case *git.Blob:
+			break
+			fmt.Printf("=================Blob=================\n")
+			fmt.Printf("obj:  %s\n", obj)
+			fmt.Printf("Type: %s\n", obj.Type())
+			fmt.Printf("Id:   %s\n", obj.Id())
+			fmt.Printf("Size: %s\n", obj.Size())
+		case *git.Commit:
+			fmt.Printf("=================Commit=================\n")
+			fmt.Printf("obj:  %s\n", obj)
+			fmt.Printf("Type: %s\n", obj.Type())
+			fmt.Printf("Id:   %s\n", obj.Id())
+			author := obj.Author()
+			fmt.Printf("    Author:\n        Name:  %s\n        Email: %s\n        Date:  %s\n", author.Name, author.Email, author.When)
+			committer := obj.Committer()
+			fmt.Printf("    Committer:\n        Name:  %s\n        Email: %s\n        Date:  %s\n", committer.Name, committer.Email, committer.When)
+			fmt.Printf("    ParentCount: %d\n", int(obj.ParentCount()))
+			fmt.Printf("    TreeId:      %s\n", obj.TreeId())
+			fmt.Printf("    Message:\n\n        %s\n\n", strings.Replace(obj.Message(), "\n", "\n        ", -1))
+			//fmt.Printf("obj.Parent: %s\n", obj.Parent())
+			//fmt.Printf("obj.ParentId: %s\n", obj.ParentId())
+			//fmt.Printf("obj.Tree: %s\n", obj.Tree())
+		case *git.Tree:
+			break
+			fmt.Printf("=================Tree=================\n")
+			fmt.Printf("obj:  %s\n", obj)
+			fmt.Printf("Type: %s\n", obj.Type())
+			fmt.Printf("Id:   %s\n", obj.Id())
+			fmt.Printf("    EntryCount: %d\n", obj.EntryCount())
+		}
+		return nil
+	})
 }

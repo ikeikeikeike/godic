@@ -98,8 +98,27 @@ func TestSave(t *testing.T) {
 
 	defer os.RemoveAll(dict.Repo.Workdir())
 
-	dict.Save("fileone", "# aaaa\n- a\n- b\n", "first message", true)
-	dict.Save("fileone", "# abcd\n- a\n- b\n- c\n", "second message", false)
+	_, err := dict.Save("fileone", "# aaaa\n- a\n- b\n", "first message", true)
+	checkFatal(t, err)
+	_, err = dict.Save("fileone", "# abcd\n- a\n- b\n- c\n", "second message", false)
+	checkFatal(t, err)
+}
+
+func TestTree(t *testing.T) {
+	dict := models.NewDict()
+	dict.Init(createTmp(t))
+	// dict.Init("./abc")
+
+	defer os.RemoveAll(dict.Repo.Workdir())
+
+	_, err := dict.Create("fileone", "# aaaa\n- a\n- b\n", "first message")
+	checkFatal(t, err)
+	// _, err = dict.Create("filetwo", "# bbbb\n- a\n- b\n", "second message")
+	// checkFatal(t, err)
+	// _, err = dict.Create("filethree", "# ccc\n- a\n- b\n", "third message")
+	// checkFatal(t, err)
+
+	dict.DumpRepo()
 }
 
 func checkFatal(t *testing.T, err error) {

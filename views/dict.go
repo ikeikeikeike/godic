@@ -24,6 +24,8 @@ func NewDict(r render.Render, params martini.Params, html html.HTMLContext) {
 func EditDict(r render.Render, params martini.Params, html html.HTMLContext) {
 	log.Println("EditDict action !!!!!")
 
+	// sha1, err := Dict.Get(params["name"])
+
 	html["Name"] = params["name"]
 	html["Content"] = ""
 
