@@ -8,19 +8,19 @@ import (
 	log "github.com/Sirupsen/logrus"
 	"github.com/go-martini/martini"
 	"github.com/ikeikeikeike/godic/middlewares/html"
-	"github.com/ikeikeikeike/godic/models"
+	"github.com/ikeikeikeike/godic/modules/git"
 	"github.com/k0kubun/pp"
 	"github.com/martini-contrib/binding"
 	"github.com/martini-contrib/render"
 )
 
-var Dict *models.Dict
+var Repo *git.Repo
 
 func init() {
 	p, _ := os.Getwd()
 
-	Dict = models.NewDict()
-	Dict.Init(path.Join(p, "repo"))
+	Repo = git.NewRepo()
+	Repo.Init(path.Join(p, "repo"))
 }
 
 type APIResponse struct {
@@ -52,7 +52,7 @@ func UpdateDict(params martini.Params, commit Commit, errs binding.Errors, r ren
 		return
 	}
 
-	sha1, err := Dict.SaveFile(params["name"], commit.Content, commit.Message)
+	sha1, err := Repo.SaveFile(params["name"], commit.Content, commit.Message)
 	if err != nil {
 		msg := fmt.Sprintf("Update file error: %s", err)
 		r.JSON(200, APIResponse{ok: false, msg: msg})
@@ -87,7 +87,7 @@ func CreateDict(params martini.Params, commit Commit, errs binding.Errors, r ren
 	// return dict(error=True, message="Page is locked"), 403
 
 	// Create
-	sha1, err := Dict.SaveFile(params["name"], commit.Content, commit.Message)
+	sha1, err := Repo.SaveFile(params["name"], commit.Content, commit.Message)
 	if err != nil {
 		msg := fmt.Sprintf("Create file error: %s", err)
 		r.JSON(200, APIResponse{ok: false, msg: msg})
