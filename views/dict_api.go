@@ -52,7 +52,7 @@ func UpdateDict(params martini.Params, commit Commit, errs binding.Errors, r ren
 		return
 	}
 
-	sha1, err := Dict.Update(params["name"], commit.Content, commit.Message)
+	sha1, err := Dict.SaveFile(params["name"], commit.Content, commit.Message)
 	if err != nil {
 		msg := fmt.Sprintf("Update file error: %s", err)
 		r.JSON(200, APIResponse{ok: false, msg: msg})
@@ -87,7 +87,7 @@ func CreateDict(params martini.Params, commit Commit, errs binding.Errors, r ren
 	// return dict(error=True, message="Page is locked"), 403
 
 	// Create
-	sha1, err := Dict.Create(params["name"], commit.Content, commit.Message)
+	sha1, err := Dict.SaveFile(params["name"], commit.Content, commit.Message)
 	if err != nil {
 		msg := fmt.Sprintf("Create file error: %s", err)
 		r.JSON(200, APIResponse{ok: false, msg: msg})

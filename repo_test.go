@@ -28,7 +28,7 @@ func TestCreateFile(t *testing.T) {
 	dict.Init(createTmp(t))
 	defer os.RemoveAll(dict.Repo.Workdir())
 
-	_, err := dict.Create("fileone", "# aaaa\n- a\n- b\n", "first message")
+	_, err := dict.SaveFile("fileone", "# aaaa\n- a\n- b\n", "first message")
 	if err != nil {
 		t.Fatalf("Add file error: %s", err)
 	}
@@ -49,9 +49,9 @@ func TestUpdateFile(t *testing.T) {
 
 	defer os.RemoveAll(dict.Repo.Workdir())
 
-	_, err := dict.Create("fileone", "# aaaa\n- a\n- b\n", "first message")
+	_, err := dict.SaveFile("fileone", "# aaaa\n- a\n- b\n", "first message")
 	checkFatal(t, err)
-	_, err = dict.Update("fileone", "# bbbb\n- a\n- b\n", "second message")
+	_, err = dict.SaveFile("fileone", "# bbbb\n- a\n- b\n", "second message")
 	checkFatal(t, err)
 
 	stats, err := dict.ModifiedStats()
@@ -92,33 +92,38 @@ func TestUntrackedStats(t *testing.T) {
 	}
 }
 
-func TestSave(t *testing.T) {
+func TestDumpTree(t *testing.T) {
 	dict := models.NewDict()
 	dict.Init(createTmp(t))
 
 	defer os.RemoveAll(dict.Repo.Workdir())
 
-	_, err := dict.Save("fileone", "# aaaa\n- a\n- b\n", "first message", true)
+	_, err := dict.SaveFile("fileone", "# aaaa\n- a\n- b\n", "first message")
 	checkFatal(t, err)
-	_, err = dict.Save("fileone", "# abcd\n- a\n- b\n- c\n", "second message", false)
+	_, err = dict.SaveFile("filetwo", "# bbbb\n- a\n- b\n", "second message")
 	checkFatal(t, err)
-}
-
-func TestTree(t *testing.T) {
-	dict := models.NewDict()
-	dict.Init(createTmp(t))
-	// dict.Init("./abc")
-
-	defer os.RemoveAll(dict.Repo.Workdir())
-
-	_, err := dict.Create("fileone", "# aaaa\n- a\n- b\n", "first message")
+	_, err = dict.SaveFile("fileone", "# cccc\n- a\n- b\n", "first message2")
 	checkFatal(t, err)
-	// _, err = dict.Create("filetwo", "# bbbb\n- a\n- b\n", "second message")
-	// checkFatal(t, err)
-	// _, err = dict.Create("filethree", "# ccc\n- a\n- b\n", "third message")
-	// checkFatal(t, err)
+	_, err = dict.SaveFile("filetwo", "# dddd\n- a\n- b\n", "second message2")
+	checkFatal(t, err)
 
 	dict.DumpRepo()
+}
+
+func TestGetTree(t *testing.T) {
+	dict := models.NewDict()
+	dict.Init(createTmp(t))
+
+	defer os.RemoveAll(dict.Repo.Workdir())
+
+	_, err := dict.SaveFile("fileone", "# aaaa\n- a\n- b\n", "first message")
+	checkFatal(t, err)
+	_, err = dict.SaveFile("filetwo", "# bbbb\n- a\n- b\n", "second message")
+	checkFatal(t, err)
+	_, err = dict.SaveFile("fileone", "# cccc\n- a\n- b\n", "first message2")
+	checkFatal(t, err)
+	_, err = dict.SaveFile("filetwo", "# dddd\n- a\n- b\n", "second message2")
+	checkFatal(t, err)
 }
 
 func checkFatal(t *testing.T, err error) {

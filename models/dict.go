@@ -10,8 +10,49 @@ import (
 	git "github.com/libgit2/git2go"
 )
 
+type Head struct {
+	repo *git.Repository
+}
+
+func (this *Head) CommitTree() (tree *git.Tree, err error, noHead bool) {
+	commit, err, noHead := this.Commit()
+	if err != nil {
+		return
+	}
+	tree, err = commit.Tree()
+	return
+}
+
+func (this *Head) Commit() (commit *git.Commit, err error, noHead bool) {
+	oid, err, noHead := this.CommitId()
+	if err != nil {
+		return
+	}
+	commit, err = this.repo.LookupCommit(oid)
+	return
+}
+
+func (this *Head) CommitId() (oid *git.Oid, err error, noHead bool) {
+	headRef, err := this.repo.LookupReference("HEAD")
+	if err != nil {
+		return
+	}
+	ref, err := headRef.Resolve()
+	if err != nil {
+		noHead = true
+		return
+	}
+	oid = ref.Target()
+	if oid == nil {
+		err = fmt.Errorf("Could not get Target for HEAD(%s)\n", oid.String())
+	}
+	return
+}
+
 type Dict struct {
 	Path string
+
+	Head *Head
 	Repo *git.Repository
 
 	Ref       string
@@ -34,19 +75,28 @@ func (m *Dict) Init(path string) (err error) {
 		}
 	}
 	m.Path = path
+	m.Head = &Head{m.Repo}
 	return
 }
 
-func (m *Dict) Get(filename string) (err error) {
+func (m *Dict) GetFile(filename string) (err error) {
 	return
 }
 
-func (m *Dict) Create(filename, content, message string) (*git.Oid, error) {
-	idx, err := m.Repo.Index()
+func (m *Dict) SaveFile(filename, content, message string) (*git.Oid, error) {
+	var tip *git.Commit
+
+	branch, err := m.Repo.Head()
+	if err == nil {
+		tip, _ = m.Repo.LookupCommit(branch.Target())
+	}
+
+	err = ioutil.WriteFile(m.Path+"/"+filename, []byte(content), 0644)
 	if err != nil {
 		return nil, err
 	}
-	err = ioutil.WriteFile(m.Path+"/"+filename, []byte(content), 0644)
+
+	idx, err := m.Repo.Index()
 	if err != nil {
 		return nil, err
 	}
@@ -65,52 +115,16 @@ func (m *Dict) Create(filename, content, message string) (*git.Oid, error) {
 
 	if message == "" {
 		message = fmt.Sprintf("Create: %s", filename)
-	}
-	return m.Repo.CreateCommit(m.Ref, m.Author, m.Committer, message, tree)
-}
-
-func (m *Dict) Update(filename, content, message string) (*git.Oid, error) {
-	branch, err := m.Repo.Head()
-	if err != nil {
-		return nil, err
-	}
-	tip, err := m.Repo.LookupCommit(branch.Target())
-	if err != nil {
-		return nil, err
+		if tip != nil {
+			message = fmt.Sprintf("Update: %s", filename)
+		}
 	}
 
-	idx, err := m.Repo.Index()
-	if err != nil {
-		return nil, err
+	if tip == nil {
+		return m.Repo.CreateCommit(m.Ref, m.Author, m.Committer, message, tree)
+	} else {
+		return m.Repo.CreateCommit(m.Ref, m.Author, m.Committer, message, tree, tip)
 	}
-	err = ioutil.WriteFile(m.Path+"/"+filename, []byte(content), 0644)
-	if err != nil {
-		return nil, err
-	}
-	if err = idx.AddByPath(filename); err != nil {
-		return nil, err
-	}
-
-	treeID, err := idx.WriteTree()
-	if err != nil {
-		return nil, err
-	}
-	tree, err := m.Repo.LookupTree(treeID)
-	if err != nil {
-		return nil, err
-	}
-
-	if message == "" {
-		message = fmt.Sprintf("Update: %s", filename)
-	}
-	return m.Repo.CreateCommit(m.Ref, m.Author, m.Committer, message, tree, tip)
-}
-
-func (m *Dict) Save(filename, content, message string, create bool) (*git.Oid, error) {
-	if create {
-		m.Create(filename, content, message)
-	}
-	return m.Update(filename, content, message)
 }
 
 func (m *Dict) Stats(opts *git.StatusOptions) (entries []git.StatusEntry, err error) {
