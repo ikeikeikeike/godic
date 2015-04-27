@@ -44,3 +44,13 @@ func (h *Head) CommitId() (oid *git.Oid, err error, noHead bool) {
 	}
 	return
 }
+
+func (h *Head) Repo() (*git.Repository) {
+	headRef, err := h.repo.LookupReference("HEAD")
+	if err != nil {
+		headRef, _ = h.repo.Head()
+	}
+
+	ref, _ := headRef.Resolve()
+	return ref.Owner()
+}

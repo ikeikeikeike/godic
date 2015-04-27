@@ -7,6 +7,7 @@ import (
 	"testing"
 
 	"github.com/ikeikeikeike/godic/modules/git"
+	"github.com/k0kubun/pp"
 )
 
 func TestDumpTree(t *testing.T) {
@@ -15,14 +16,7 @@ func TestDumpTree(t *testing.T) {
 
 	defer os.RemoveAll(repo.Repo.Workdir())
 
-	_, err := repo.SaveFile("fileone", "# aaaa\n- a\n- b\n", "first message")
-	checkFatal(t, err)
-	_, err = repo.SaveFile("filetwo", "# bbbb\n- a\n- b\n", "second message")
-	checkFatal(t, err)
-	_, err = repo.SaveFile("fileone", "# cccc\n- a\n- b\n", "first message2")
-	checkFatal(t, err)
-	_, err = repo.SaveFile("filetwo", "# dddd\n- a\n- b\n", "second message2")
-	checkFatal(t, err)
+	saveSomeFiles(t, repo)
 
 	repo.DumpRepo()
 }
@@ -101,6 +95,21 @@ func TestGetFileBlob(t *testing.T) {
 	}
 }
 
+func TestFileHistory(t *testing.T) {
+	repo := git.NewRepo()
+	repo.Init(createTmp(t))
+	// repo.Init("./lkdajf")
+
+	defer os.RemoveAll(repo.Repo.Workdir())
+
+	saveSomeFiles(t, repo)
+
+	err, hists := repo.GetFileHistory("fileone")
+	checkFatal(t, err)
+
+	pp.Println(hists)
+}
+
 func TestGetCommitInfo(t *testing.T) {
 	repo := git.NewRepo()
 	repo.Init(createTmp(t))
@@ -157,20 +166,13 @@ func TestUntrackedStats(t *testing.T) {
 	}
 }
 
-func TestGetTree(t *testing.T) {
+func TestFolderFileNames(t *testing.T) {
 	repo := git.NewRepo()
 	repo.Init(createTmp(t))
 
 	defer os.RemoveAll(repo.Repo.Workdir())
 
-	_, err := repo.SaveFile("fileone", "# aaaa\n- a\n- b\n", "first message")
-	checkFatal(t, err)
-	_, err = repo.SaveFile("filetwo", "# bbbb\n- a\n- b\n", "second message")
-	checkFatal(t, err)
-	_, err = repo.SaveFile("fileone", "# cccc\n- a\n- b\n", "first message2")
-	checkFatal(t, err)
-	_, err = repo.SaveFile("filetwo", "# dddd\n- a\n- b\n", "second message2")
-	checkFatal(t, err)
+	saveSomeFiles(t, repo)
 
 	names, err := repo.FolderFileNames(repo.Repo.Workdir())
 	checkFatal(t, err)
@@ -199,4 +201,23 @@ func checkFatal(t *testing.T, err error) {
 	}
 
 	t.Fatalf("Fail at %v:%v; %v", file, line, err)
+}
+
+func saveSomeFiles(t *testing.T, repo *git.Repo) {
+	_, err := repo.SaveFile("fileone", "# aaaa\n- a\n- b\n", "first one")
+	checkFatal(t, err)
+	_, err = repo.SaveFile("filetwo", "# bbbb\n- a\n- b\n", "first two")
+	checkFatal(t, err)
+	_, err = repo.SaveFile("fileone", "# cccc\n- a\n- b\n", "second one")
+	checkFatal(t, err)
+	_, err = repo.SaveFile("filetwo", "# dddd\n- a\n- b\n", "second two")
+	checkFatal(t, err)
+	_, err = repo.SaveFile("fileone", "# AAAAA\n- K\n- b\n", "third one")
+	checkFatal(t, err)
+	_, err = repo.SaveFile("filetwo", "# ZZZZZ\n- a\n- b\n", "third two")
+	checkFatal(t, err)
+	_, err = repo.SaveFile("fileone", "# BBBBB\n- A\n- b\n", "firth one")
+	checkFatal(t, err)
+	_, err = repo.SaveFile("filetwo", "# XXXXX\n- B\n- b\n", "firth two")
+	checkFatal(t, err)
 }

@@ -7,6 +7,7 @@ import (
 	"time"
 
 	log "github.com/Sirupsen/logrus"
+	"github.com/k0kubun/pp"
 
 	git "github.com/libgit2/git2go"
 )
@@ -90,6 +91,76 @@ func (r *Repo) GetCommit(filename string) (*git.Commit, error) {
 	return commit, nil
 }
 
+type FileHistory struct {
+	Commit *git.Commit
+}
+
+func NewFileHistory(commit *git.Commit) *FileHistory {
+	return &FileHistory{Commit: commit}
+}
+
+func (r *Repo) GetFileHistory(filename string) (err error, histories []*FileHistory) {
+	walker, err := r.Repo.Walk()
+	if err != nil {
+		log.Error(err)
+		return
+	}
+
+	walker.PushHead()
+	walker.HideGlob("tags/*")
+	// walker.Sorting(git.SortTime)
+
+	var i int
+	var newTree *git.Tree
+
+	err = walker.Iterate(func(commit *git.Commit) bool {
+		i++
+		pp.Println(commit.Message())
+
+		// if newTree != nil {
+		// oldTree = newTree
+		// }
+
+		newTree, _ = commit.Tree()
+		// if i <= 1 {
+		// return true
+		// }
+
+		diffOpt, _ := git.DefaultDiffOptions()
+		diff, _ := r.Repo.DiffTreeToWorkdir(newTree, &diffOpt)
+
+		stats, _ := diff.Stats()
+		pp.Println(stats.FilesChanged(), stats.Insertions(), stats.Deletions())
+
+		deltas, _ := diff.NumDeltas()
+		for i := 0; i < deltas; i++ {
+			d, _ := diff.GetDelta(i)
+
+			pp.Println(
+				d.Status,
+				d.Flags,
+
+				d.NewFile.Path,
+				d.NewFile.Flags,
+				d.NewFile.Mode,
+
+				d.OldFile.Path,
+				d.OldFile.Flags,
+				d.OldFile.Mode,
+			)
+		}
+
+		return true
+	})
+
+	if err != nil {
+		log.Error(err)
+		return
+	}
+
+	return
+}
+
 func (r *Repo) SaveFile(filename, content, message string) (*git.Oid, error) {
 	var tip *git.Commit
 
@@ -129,11 +200,28 @@ func (r *Repo) SaveFile(filename, content, message string) (*git.Oid, error) {
 		}
 	}
 
+	var oid *git.Oid
 	if tip == nil {
-		return r.Repo.CreateCommit("HEAD", r.Author, r.Committer, message, tree)
+		oid, _ = r.Repo.CreateCommit("HEAD", r.Author, r.Committer, message, tree)
 	} else {
-		return r.Repo.CreateCommit("HEAD", r.Author, r.Committer, message, tree, tip)
+		oid, _ = r.Repo.CreateCommit("HEAD", r.Author, r.Committer, message, tree, tip)
 	}
+
+	idx, err = r.Repo.Index()
+	if err != nil {
+		log.Error(err)
+		return nil, err
+	}
+	if err = idx.AddByPath(filename); err != nil {
+		return nil, err
+	}
+
+	_, err = idx.WriteTree()
+	if err != nil {
+		return nil, err
+	}
+
+	return oid, nil
 }
 
 func (r *Repo) Stats(opts *git.StatusOptions) (entries []git.StatusEntry, err error) {
@@ -167,7 +255,6 @@ func (r *Repo) UntrackedStats() ([]git.StatusEntry, error) {
 }
 
 func (r *Repo) DumpRepo() error {
-
 	odb, err := r.Repo.Odb()
 	if err != nil {
 		log.Error(err)

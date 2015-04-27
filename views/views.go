@@ -6,6 +6,7 @@ import (
 	"github.com/martini-contrib/render"
 
 	"github.com/ikeikeikeike/godic/middlewares/html"
+	"github.com/ikeikeikeike/godic/modules/funcmaps"
 )
 
 var App *martini.ClassicMartini
@@ -16,12 +17,7 @@ func init() {
 	App.Use(render.Renderer(render.Options{
 		Layout:     "layout",
 		Extensions: []string{".html"},
-		// Funcs: []template.FuncMap{
-		// {
-		// "append":    funcmaps.Append,
-		// "appendmap": funcmaps.AppendMap,
-		// },
-		// },
+		Funcs:      funcmaps.HelperFuncs,
 	}))
 
 	App.Use(html.GenHTMLContext())
@@ -30,7 +26,9 @@ func init() {
 
 	App.Get("/", Home)
 
-	App.Get("/d/index", IndexDict)
+	App.Get("/d/index", DictIndex)
+	App.Get("/d/history/:name", DictHistory)
+
 	App.Get("/d/new/:name", NewDict)
 	App.Get("/d/edit/:name", EditDict)
 

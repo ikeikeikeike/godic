@@ -2,26 +2,14 @@ package views
 
 import (
 	"fmt"
-	"os"
-	"path"
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/go-martini/martini"
 	"github.com/ikeikeikeike/godic/middlewares/html"
-	"github.com/ikeikeikeike/godic/modules/git"
 	"github.com/k0kubun/pp"
 	"github.com/martini-contrib/binding"
 	"github.com/martini-contrib/render"
 )
-
-var Repo *git.Repo
-
-func init() {
-	p, _ := os.Getwd()
-
-	Repo = git.NewRepo()
-	Repo.Init(path.Join(p, "repo"))
-}
 
 type APIResponse struct {
 	ok  bool

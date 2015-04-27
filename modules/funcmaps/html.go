@@ -31,12 +31,3 @@ func EscapeHTML(in string) string {
 func Nl2br(in string) string {
 	return strings.Replace(in, "\n", "<br>", -1)
 }
-
-var HelperFuncs = []template.FuncMap{
-	{
-		"toAge":    ToAge,
-		"safeHTML": SafeHTML,
-		"escapeHTML":   EscapeHTML,
-		"nl2br":    Nl2br,
-	},
-}
