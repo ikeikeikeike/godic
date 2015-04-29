@@ -11,6 +11,8 @@ func init() {
 			"safeHTML":   SafeHTML,
 			"escapeHTML": EscapeHTML,
 			"nl2br":      Nl2br,
+			"toList":     List,
+			"timeSince":  TimeSince,
 		},
 	}
 }
