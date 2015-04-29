@@ -1,32 +1,51 @@
-<h2>History for <strong>{{ .Name }}</strong></h2>
-<p>
-  <a class="btn btn-default btn-sm compare-revisions">Compare Revisions</a>
-</p>
+{{template "header" .}}
 
-<table class="table table-bordered revision-tbl">
-  <thead>
-  <tr>
-    <th></th>
-    <th>Name</th>
-    <th>Revision Message</th>
-    <th>Date</th>
-  </tr>
-  </thead>
-  {{range $i, $h := .History}}
-    {{/*
-      <tr>
-        <td class="checkbox-cell text-center">
-          {{if ne h.Type 'delete'}}
-            <input type="checkbox" name="versions[]" value="{{ h.Sha }}" />
-          {{end}}
-        </td>
-        <td>{{ h.author }}</td>
-        <td><a href="{{ url_for('wiki.commit', name=name, sha=h.Sha) }}" class='label label-primary'>View</a> {{ h.message }} </td>
-        <td>{{ h.time|datetime }}</td>
-      </tr>
-    */}}
-  {{end}}
-</table>
-<p>
-  <a class="btn btn-default btn-sm compare-revisions">Compare Revisions</a>
-</p>
+
+<!-- Page Menu -->
+<div class="container">
+  <div id="main-body">
+      <div class='alert alert-primary'>
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+      </div>
+
+      <h2><strong>{{ .Name }}</strong>の編集履歴</h2>
+      <p>
+        <a class="btn btn-default btn-sm compare-revisions">Compare Revisions</a>
+      </p>
+
+      <table class="table table-bordered revision-tbl">
+        <thead>
+        <tr>
+          <th></th>
+          <th>Name</th>
+          <th>Revision Message</th>
+          <th>Date</th>
+        </tr>
+        </thead>
+        {{$list := toList .History}}
+        {{range $list}}
+          <tr>
+            <td class="checkbox-cell text-center">
+              {{/*
+              {{if ne h.Type 'delete'}}
+                <input type="checkbox" name="versions" value="{{.Id}}" />
+              {{end}}
+              */}}
+            </td>
+            <td>{{.Author.Name}}</td>
+            <td><a href="{{.Id.String}}" class='label label-primary'>View</a> {{.Message}} </td>
+            <td>
+              {{timeSince .Author.When}}
+            </td>
+          </tr>
+        {{end}}
+      </table>
+      <p>
+        <a class="btn btn-default btn-sm compare-revisions">Compare Revisions</a>
+      </p>
+
+  </div>
+</div>
+
+{{template "footer" .}}
+{{template "script" .}}

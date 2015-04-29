@@ -1,22 +1,38 @@
+{{template "header" .}}
+
+<!-- Page Menu -->
+<div class="container">
+  <div id="main-body">
+      <div class='alert alert-primary'>
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+      </div>
+
+      <table class="table table-bordered data-table">
+        <thead>
+        <tr>
+          <th>Name</th>
+          <th class="hidden-xs">Bytes</th>
+          <th>Modified</th>
+          <th class="hidden-xs hidden-sm">Created</th>
+        </tr>
+        </thead>
+        {{range $i, $name := .Names}}
+          <tr>
+            <td><a href="{{$name}}">{{$i}}</a></td>
+            <td class="hidden-xs">{{$name}}</td>
+            <td>{{$name}}</td>
+            <td class="hidden-xs hidden-sm">{{$name}}</td>
+          </tr>
+        {{end}}
+      </table>
+
+  </div>
+</div>
+
+{{template "footer" .}}
+{{template "script" .}}
 <script>
 $(document).ready(function() {
     $('.data-table').dataTable();
 });
 </script>
-
-  <table class="table table-bordered data-table">
-    <thead>
-    <tr>
-      <th>Name</th>
-      <th class="hidden-xs">Bytes</th>
-      <th>Modified</th>
-      <th class="hidden-xs hidden-sm">Created</th>
-    </tr>
-    </thead>
-      <tr>
-        <td><a href=""></a></td>
-        <td class="hidden-xs"></td>
-        <td></td>
-        <td class="hidden-xs hidden-sm"></td>
-      </tr>
-  </table>
