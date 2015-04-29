@@ -1,14 +1,15 @@
 package git
 
 import (
+	"container/list"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"strings"
 	"time"
 
 	log "github.com/Sirupsen/logrus"
-	"github.com/k0kubun/pp"
-
+	"github.com/Unknwon/com"
 	git "github.com/libgit2/git2go"
 )
 
@@ -91,74 +92,21 @@ func (r *Repo) GetCommit(filename string) (*git.Commit, error) {
 	return commit, nil
 }
 
-type FileHistory struct {
-	Commit *git.Commit
+func (r *Repo) GetCommitByHash(hash string) (*git.Commit, error) {
+	commit, err, _ := r.Head.GetCommitByHash(hash)
+	if err != nil {
+		return nil, err
+	}
+	return commit, nil
 }
 
-func NewFileHistory(commit *git.Commit) *FileHistory {
-	return &FileHistory{Commit: commit}
-}
-
-func (r *Repo) GetFileHistory(filename string) (err error, histories []*FileHistory) {
-	walker, err := r.Repo.Walk()
+func (r *Repo) GetFileHistory(filename string, page int) (*list.List, error) {
+	stdout, stderr, err := com.ExecCmdDirBytes(r.Repo.Workdir(), "git", "log",
+		"--skip="+com.ToStr((page-1)*50), "--max-count=50", prettyLogFormat, "--", filename)
 	if err != nil {
-		log.Error(err)
-		return
+		return nil, errors.New(string(stderr))
 	}
-
-	walker.PushHead()
-	walker.HideGlob("tags/*")
-	// walker.Sorting(git.SortTime)
-
-	var i int
-	var newTree *git.Tree
-
-	err = walker.Iterate(func(commit *git.Commit) bool {
-		i++
-		pp.Println(commit.Message())
-
-		// if newTree != nil {
-		// oldTree = newTree
-		// }
-
-		newTree, _ = commit.Tree()
-		// if i <= 1 {
-		// return true
-		// }
-
-		diffOpt, _ := git.DefaultDiffOptions()
-		diff, _ := r.Repo.DiffTreeToWorkdir(newTree, &diffOpt)
-
-		stats, _ := diff.Stats()
-		pp.Println(stats.FilesChanged(), stats.Insertions(), stats.Deletions())
-
-		deltas, _ := diff.NumDeltas()
-		for i := 0; i < deltas; i++ {
-			d, _ := diff.GetDelta(i)
-
-			pp.Println(
-				d.Status,
-				d.Flags,
-
-				d.NewFile.Path,
-				d.NewFile.Flags,
-				d.NewFile.Mode,
-
-				d.OldFile.Path,
-				d.OldFile.Flags,
-				d.OldFile.Mode,
-			)
-		}
-
-		return true
-	})
-
-	if err != nil {
-		log.Error(err)
-		return
-	}
-
-	return
+	return parsePrettyFormatLog(r, stdout)
 }
 
 func (r *Repo) SaveFile(filename, content, message string) (*git.Oid, error) {
@@ -184,6 +132,7 @@ func (r *Repo) SaveFile(filename, content, message string) (*git.Oid, error) {
 		return nil, err
 	}
 
+	idx.Write()
 	treeID, err := idx.WriteTree()
 	if err != nil {
 		return nil, err

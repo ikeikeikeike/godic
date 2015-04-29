@@ -28,6 +28,15 @@ func (h *Head) Commit() (commit *git.Commit, err error, noHead bool) {
 	return
 }
 
+func (h *Head) GetCommitByHash(hash string) (commit *git.Commit, err error, noHead bool) {
+	oid, err := git.NewOid(hash)
+	if err != nil {
+		return
+	}
+	commit, err = h.repo.LookupCommit(oid)
+	return
+}
+
 func (h *Head) CommitId() (oid *git.Oid, err error, noHead bool) {
 	headRef, err := h.repo.LookupReference("HEAD")
 	if err != nil {

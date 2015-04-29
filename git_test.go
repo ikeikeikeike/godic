@@ -4,10 +4,11 @@ import (
 	"io/ioutil"
 	"os"
 	"runtime"
+	"strings"
 	"testing"
 
 	"github.com/ikeikeikeike/godic/modules/git"
-	"github.com/k0kubun/pp"
+	git2go "github.com/libgit2/git2go"
 )
 
 func TestDumpTree(t *testing.T) {
@@ -95,19 +96,23 @@ func TestGetFileBlob(t *testing.T) {
 	}
 }
 
-func TestFileHistory(t *testing.T) {
+func TestGetFileHistory(t *testing.T) {
 	repo := git.NewRepo()
 	repo.Init(createTmp(t))
-	// repo.Init("./lkdajf")
 
 	defer os.RemoveAll(repo.Repo.Workdir())
 
 	saveSomeFiles(t, repo)
 
-	err, hists := repo.GetFileHistory("fileone")
+	l, err := repo.GetFileHistory("fileone", 1)
 	checkFatal(t, err)
 
-	pp.Println(hists)
+	for e := l.Front(); e != nil; e = e.Next() {
+		c := e.Value.(*git2go.Commit)
+		if !strings.HasSuffix(c.Message(), "one") {
+			t.Fatalf("not matched suffix string: %s", c.Message())
+		}
+	}
 }
 
 func TestGetCommitInfo(t *testing.T) {
