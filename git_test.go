@@ -179,7 +179,7 @@ func TestFolderFileNames(t *testing.T) {
 
 	saveSomeFiles(t, repo)
 
-	names, err := repo.FolderFileNames(repo.Repo.Workdir())
+	names, err := repo.FolderFileNames()
 	checkFatal(t, err)
 	if len(names) != 2 {
 		t.Fatalf("fail names length: %v", names)

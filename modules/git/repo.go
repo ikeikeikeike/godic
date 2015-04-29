@@ -41,7 +41,7 @@ func (r *Repo) Init(path string) (err error) {
 	return
 }
 
-func (r *Repo) FolderInfo(path string) (entries []*git.TreeEntry, err error) {
+func (r *Repo) FolderInfo() (entries []*git.TreeEntry, err error) {
 	tree, err, noHead := r.Head.CommitTree()
 	if err != nil {
 		if noHead {
@@ -57,8 +57,8 @@ func (r *Repo) FolderInfo(path string) (entries []*git.TreeEntry, err error) {
 	return
 }
 
-func (r *Repo) FolderFileNames(path string) (names []string, err error) {
-	info, err := r.FolderInfo(path)
+func (r *Repo) FolderFileNames() (names []string, err error) {
+	info, err := r.FolderInfo()
 	if err != nil {
 		return
 	}

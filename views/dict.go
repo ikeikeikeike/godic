@@ -22,6 +22,15 @@ func init() {
 
 func DictIndex(r render.Render, html html.HTMLContext) {
 	log.Println("IndexDict action !!!!!")
+
+	names, err := Repo.FolderFileNames()
+	if err != nil {
+		r.HTML(404, "404 not found", html)
+		return
+	}
+
+	html["Names"] = names
+
 	r.HTML(200, "dict/index", html)
 }
 
@@ -32,9 +41,14 @@ func DictHistory(r render.Render, params martini.Params, html html.HTMLContext) 
 		r.HTML(404, "404 not found", html)
 		return
 	}
+	history, err := Repo.GetFileHistory(params["name"], 1)
+	if err != nil {
+		r.HTML(404, "404 not found", html)
+		return
+	}
 
 	html["Name"] = params["name"]
-	html["History"] = []string{}
+	html["History"] = history
 
 	r.HTML(200, "dict/history", html)
 }
