@@ -13,8 +13,12 @@
       <ul class="nav navbar-nav">
           <li><a href='{{urlFor "index"}}'><i class="fa fa-list"></i> Index</a></li>
           <li><a href='{{urlFor "new"}}'><i class="fa fa-plus"></i> New</a></li>
-          <li><a href='{{urlFor "edit"}}'><i class="fa fa-pencil"></i> Edit</a></li>
-          <li><a href='{{urlFor "history"}}'><i class="fa fa-clock-o"></i> History</a></li>
+          {{range $k, $v := .Params}}
+            {{if eq $k "name"}}
+              <li><a href='{{urlFor "edit" $v}}'><i class="fa fa-pencil"></i> Edit</a></li>
+              <li><a href='{{urlFor "history" $v}}'><i class="fa fa-clock-o"></i> History</a></li>
+            {{end}}
+          {{end}}
       </ul>
 
       <ul class="nav navbar-nav navbar-right">

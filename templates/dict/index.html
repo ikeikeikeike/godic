@@ -18,7 +18,7 @@
         </thead>
         {{range $i, $name := .Names}}
           <tr>
-            <td><a href="{{$name}}">{{$i}}</a></td>
+            <td><a href='{{urlFor "show" $name}}'>{{$i}}</a></td>
             <td class="hidden-xs">{{$name}}</td>
             <td>{{$name}}</td>
             <td class="hidden-xs hidden-sm">{{$name}}</td>
