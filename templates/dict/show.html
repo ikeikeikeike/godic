@@ -1,0 +1,20 @@
+{{template "header" .}}
+
+<!-- Page Menu -->
+<div class="container">
+  <div id="main-body">
+      <div class='alert alert-primary'>
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+      </div>
+
+      <div id="page-content"></div>
+  </div>
+</div>
+
+{{template "footer" .}}
+{{template "script" .}}
+<script>
+  $(function(){
+    $("#page-content").html(MDR.convert({{.Content|safeHTML}})).show();
+  });
+</script>
