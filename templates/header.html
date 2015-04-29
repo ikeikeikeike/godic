@@ -1,0 +1,45 @@
+<!-- Fixed navbar -->
+<div class="navbar navbar-inverse">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">site title</a>
+    </div>
+    <div class="navbar-collapse collapse navbar-inverse-collapse">
+      <ul class="nav navbar-nav">
+          <li><a href='{{urlFor "index"}}'><i class="fa fa-list"></i> Index</a></li>
+          <li><a href='{{urlFor "new"}}'><i class="fa fa-plus"></i> New</a></li>
+          <li><a href='{{urlFor "edit"}}'><i class="fa fa-pencil"></i> Edit</a></li>
+          <li><a href='{{urlFor "history"}}'><i class="fa fa-clock-o"></i> History</a></li>
+      </ul>
+
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+        <form class="navbar-form" role="search" action="#">
+          <div class="form-group">
+            <input name="q" type="text" class="form-control" placeholder="Search">
+          </div>
+        </form>
+        </li>
+          <li class="dropdown user-avatar">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <span>
+                <img src="#" class="menu-avatar">
+                <span>current_user <i class="icon-caret-down"></i></span>
+            </span>
+            </a>
+            <ul class="dropdown-menu">
+                <li><a href="#"><i class="fa fa-gear"></i> Settings</a></li>
+                <li><a href="#"><i class="fa fa-power-off"></i> Logout</a></li>
+            </ul>
+            </li>
+          <li><a href="#"><i class="fa fa-user"></i> &nbsp;Login</a></li>
+            <li><a href="#"><i class="fa fa-users"></i> &nbsp;Register</a></li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div>
+</div>
