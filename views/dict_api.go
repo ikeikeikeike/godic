@@ -26,7 +26,7 @@ type Commit struct {
 // func (p Post) Validate(errors binding.Errors, req *http.Request) binding.Errors { return errros }
 
 func UpdateDict(params martini.Params, commit Commit, errs binding.Errors, r render.Render) {
-	log.Println("UpdateDict action !!!!!")
+	log.Debugln("UpdateDict action !!!!!")
 
 	if params["name"] == "" {
 		r.JSON(404, APIResponse{ok: false, msg: "Invalid name"})
@@ -52,7 +52,7 @@ func UpdateDict(params martini.Params, commit Commit, errs binding.Errors, r ren
 }
 
 func CreateDict(params martini.Params, commit Commit, errs binding.Errors, r render.Render) {
-	log.Println("CreateDict action !!!!!")
+	log.Debugln("CreateDict action !!!!!")
 
 	if params["name"] == "" {
 		pp.Println("not found")
@@ -87,7 +87,7 @@ func CreateDict(params martini.Params, commit Commit, errs binding.Errors, r ren
 }
 
 func DeleteDict(params martini.Params, html html.HTMLContext, r render.Render) {
-	log.Println("DeleteDict action !!!!!")
+	log.Debugln("DeleteDict action !!!!!")
 
 	html["Name"] = params["name"]
 	html["Content"] = ""

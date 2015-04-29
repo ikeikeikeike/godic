@@ -21,11 +21,11 @@ func init() {
 }
 
 func DictIndex(r render.Render, html html.HTMLContext) {
-	log.Println("IndexDict action !!!!!")
+	log.Debugln("IndexDict action !!!!!")
 
 	names, err := Repo.FolderFileNames()
 	if err != nil {
-		r.HTML(404, "404 not found", html)
+		r.HTML(404, "errors/404", html)
 		return
 	}
 
@@ -35,15 +35,15 @@ func DictIndex(r render.Render, html html.HTMLContext) {
 }
 
 func DictHistory(r render.Render, params martini.Params, html html.HTMLContext) {
-	log.Println("IndexDict action !!!!!")
+	log.Debugln("IndexDict action !!!!!")
 
 	if params["name"] == "" {
-		r.HTML(404, "404 not found", html)
+		r.HTML(404, "errors/404", html)
 		return
 	}
 	history, err := Repo.GetFileHistory(params["name"], 1)
 	if err != nil {
-		r.HTML(404, "404 not found", html)
+		r.HTML(404, "errors/404", html)
 		return
 	}
 
@@ -54,7 +54,7 @@ func DictHistory(r render.Render, params martini.Params, html html.HTMLContext) 
 }
 
 func NewDict(r render.Render, params martini.Params, html html.HTMLContext) {
-	log.Infoln("NewDict action !!!!!")
+	log.Debugln("NewDict action !!!!!")
 
 	html["Name"] = params["name"]
 	html["Content"] = ""
@@ -62,16 +62,35 @@ func NewDict(r render.Render, params martini.Params, html html.HTMLContext) {
 	r.HTML(200, "dict/edit", html)
 }
 
-func EditDict(r render.Render, params martini.Params, html html.HTMLContext) {
-	log.Println("EditDict action !!!!!")
+func ShowDict(r render.Render, params martini.Params, html html.HTMLContext) {
+	log.Debugln("ShowDict action !!!!!")
 
 	if params["name"] == "" {
-		r.HTML(404, "404 not found", html)
+		r.HTML(404, "errors/404", html)
 		return
 	}
 	blob, err := Repo.GetFileBlob(params["name"])
 	if err != nil {
-		r.HTML(404, "404 not found", html)
+		r.HTML(404, "errors/404", html)
+		return
+	}
+
+	html["Name"] = params["name"]
+	html["Content"] = string(blob.Contents())
+
+	r.HTML(200, "dict/show", html)
+}
+
+func EditDict(r render.Render, params martini.Params, html html.HTMLContext) {
+	log.Debugln("EditDict action !!!!!")
+
+	if params["name"] == "" {
+		r.HTML(404, "errors/404", html)
+		return
+	}
+	blob, err := Repo.GetFileBlob(params["name"])
+	if err != nil {
+		r.HTML(404, "errors/404", html)
 		return
 	}
 

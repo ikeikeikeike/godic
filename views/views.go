@@ -20,25 +20,34 @@ func init() {
 	App.Use(render.Renderer(render.Options{
 		Layout:     "layout",
 		Extensions: []string{".html"},
-		Funcs: funcs,
+		Funcs:      funcs,
 	}))
 
 	App.Use(html.GenHTMLContext())
 	App.Use(html.ProvideHTMLHeader)
 	App.Use(html.ProvideHTMLMeta)
+	// App.Use(html.ProvideMartiniParams)
 
 	App.Get("/", Home).Name("root")
 
-	App.Get("/d/index", DictIndex).Name("index")
-	App.Get("/d/history/:name", DictHistory).Name("history")
+	App.Get("/d/index", html.SetParams, DictIndex).Name("index")
+	App.Get("/d/history/:name", html.SetParams, DictHistory).Name("history")
 
+	App.Get("/d/new/", NewDict).Name("new")
 	App.Get("/d/new/:name", NewDict).Name("new")
-	App.Get("/d/edit/:name", EditDict).Name("edit")
+	App.Get("/d/:name", html.SetParams, ShowDict).Name("show")
+	App.Get("/d/edit/:name", html.SetParams, EditDict).Name("edit")
 
 	App.Group("/_d", func(r martini.Router) {
-		r.Get("/:name", NewDict)
+		r.Get("/:name", func(r render.Render, p martini.Params) {
+			r.Redirect("/d/" + p["name"])
+		})
 		r.Put("/:name", binding.Bind(Commit{}), UpdateDict).Name("api_put")
 		r.Post("/:name", binding.Bind(Commit{}), CreateDict).Name("api_post")
 		r.Delete("/:name", DeleteDict).Name("api_delete")
+	})
+
+	App.NotFound(func() (int, string) {
+		return 404, "not found"
 	})
 }
