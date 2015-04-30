@@ -29,5 +29,5 @@ _testmain.go
 /Godeps/_workspace
 /gin-bin
 /logs
-/tmp/runner-build
+/tmp/runner-build*
 /repo
