@@ -1,0 +1,96 @@
+<link href="/static/css/compare.css" rel="stylesheet" />
+
+{{template "header" .}}
+
+<!-- Page Menu -->
+<div class="container">
+  <div id="main-body">
+      <div class='alert alert-primary'>
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+      </div>
+
+      <div class="diff-detail-box diff-box">
+          <p class="showing">
+              <i class="fa fa-retweet"></i>
+              {{.Diff.NumFiles}} changed files with {{.Diff.TotalAddition}} additions and {{.Diff.TotalDeletion}} deletions
+          </p>
+          <ol class="detail-files collapse in" id="diff-files">
+              {{range .Diff.Files}}
+              <li>
+                  <div class="diff-counter count pull-right">
+                      {{if not .IsBin}}
+                        <span class="add" data-line="{{.Addition}}">{{.Addition}}</span>
+                        <span class="bar">
+                            <span class="pull-left add"></span>
+                            <span class="pull-left del"></span>
+                        </span>
+                        <span class="del" data-line="{{.Deletion}}">{{.Deletion}}</span>
+                      {{else}}
+                        <span>バイナリを表示する</span>
+                      {{end}}
+                  </div>
+                  <!-- todo finish all file status, now modify, add, delete and rename -->
+                  <span class="status {{diffTypeToStr .Type}}" data-toggle="tooltip" data-placement="right" title="{{diffTypeToStr .Type}}">&nbsp;</span>
+                  <a class="file" href="#diff-{{.Index}}">{{.Name}}</a>
+              </li>
+              {{end}}
+          </ol>
+      </div>
+
+      {{range $i, $file := .Diff.Files}}
+      <div class="panel panel-radius diff-file-box diff-box file-content" id="diff-{{.Index}}">
+          <div class="panel-header">
+              <div class="diff-counter count pull-left">
+                  {{if not $file.IsBin}}
+                  <span class="add" data-line="{{.Addition}}">+ {{.Addition}}</span>
+                  <span class="bar">
+                      <span class="pull-left add"></span>
+                      <span class="pull-left del"></span>
+                  </span>
+                  <span class="del" data-line="{{.Deletion}}">- {{.Deletion}}</span>
+                  {{else}}
+                    バイナリを表示する
+                  {{end}}
+              </div>
+              {{if $file.IsDeleted}}
+                <a class="pull-right" rel="nofollow" href="{{$.BeforeSourcePath}}/{{.Name}}">古いHTMLを表示する</a>
+                <a class="pull-right" rel="nofollow" href="{{$.BeforeSourcePath}}/{{.Name}}">新しいHTMLを表示する</a>
+              {{else}}
+                <a class="pull-right" rel="nofollow" href="{{$.SourcePath}}/{{.Name}}">古いHTMLを表示する</a>
+                <a class="pull-right" rel="nofollow" href="{{$.SourcePath}}/{{.Name}}">新しいHTMLを表示する</a>
+              {{end}}
+              <span class="file">{{$file.Name}}</span>
+          </div>
+          <div class="panel-body file-body file-code code-view code-diff">
+              <table>
+                  <tbody>
+                      {{range .Sections}}
+                      {{range $k, $line := .Lines}}
+                      <tr class="{{diffLineTypeToStr .Type}}-code nl-{{$k}} ol-{{$k}}">
+                          <td class="lines-num lines-num-old">
+                            <span rel="{{if $line.LeftIdx}}diff-{{sha1 $file.Name}}L{{$line.LeftIdx}}{{end}}">
+                              {{if $line.LeftIdx}}{{$line.LeftIdx}}{{end}}
+                            </span>
+                          </td>
+                          <td class="lines-num lines-num-new">
+                            <span rel="{{if $line.RightIdx}}diff-{{sha1 $file.Name}}R{{$line.RightIdx}}{{end}}">
+                              {{if $line.RightIdx}}{{$line.RightIdx}}{{end}}
+                            </span>
+                          </td>
+                          <td class="lines-code">
+                              <pre>{{$line.Content}}</pre>
+                          </td>
+                      </tr>
+                      {{end}}
+                      {{end}}
+                  </tbody>
+              </table>
+          </div>
+      </div>
+      <br> 
+      {{end}}
+
+  </div>
+</div>
+
+{{template "footer" .}}
