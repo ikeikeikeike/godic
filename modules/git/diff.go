@@ -15,10 +15,9 @@ import (
 
 	"github.com/Unknwon/com"
 
-	"github.com/gogits/gogs/modules/base"
-	"github.com/gogits/gogs/modules/git"
-	"github.com/gogits/gogs/modules/log"
-	"github.com/gogits/gogs/modules/process"
+	log "github.com/Sirupsen/logrus"
+	"github.com/gogits/chardet"
+	"github.com/ikeikeikeike/godic/modules/git/process"
 )
 
 // Diff line types.
@@ -197,10 +196,10 @@ func ParsePatch(pid int64, maxlines int, cmd *exec.Cmd, reader io.Reader) (*Diff
 		}
 	}
 
-	// FIXME: use first 30 lines to detect file encoding.
-	charsetLabel, err := base.DetectEncoding(buf.Bytes())
-	if charsetLabel != "utf8" && err == nil {
-		encoding, _ := charset.Lookup(charsetLabel)
+	char, err := chardet.NewTextDetector().DetectBest(buf.Bytes())
+
+	if char.Charset != "utf8" && err == nil {
+		encoding, _ := charset.Lookup(char.Charset)
 
 		if encoding != nil {
 			d := encoding.NewDecoder()
@@ -219,13 +218,12 @@ func ParsePatch(pid int64, maxlines int, cmd *exec.Cmd, reader io.Reader) (*Diff
 	return diff, nil
 }
 
-func GetDiffRange(repoPath, beforeCommitId string, afterCommitId string, maxlines int) (*Diff, error) {
-	repo, err := git.OpenRepository(repoPath)
-	if err != nil {
-		return nil, err
-	}
+func (r *Repo) GetDiffCommit(commitId string, maxlines int) (*Diff, error) {
+	return r.GetDiffRange("", commitId, maxlines)
+}
 
-	commit, err := repo.GetCommit(afterCommitId)
+func (r *Repo) GetDiffRange(beforeCommitId string, afterCommitId string, maxlines int) (*Diff, error) {
+	commit, err := r.GetCommitByHash(afterCommitId)
 	if err != nil {
 		return nil, err
 	}
@@ -238,13 +236,13 @@ func GetDiffRange(repoPath, beforeCommitId string, afterCommitId string, maxline
 		if commit.ParentCount() == 0 {
 			cmd = exec.Command("git", "show", afterCommitId)
 		} else {
-			c, _ := commit.Parent(0)
-			cmd = exec.Command("git", "diff", c.Id.String(), afterCommitId)
+			c := commit.Parent(0)
+			cmd = exec.Command("git", "diff", c.Id().String(), afterCommitId)
 		}
 	} else {
 		cmd = exec.Command("git", "diff", beforeCommitId, afterCommitId)
 	}
-	cmd.Dir = repoPath
+	cmd.Dir = r.Repo.Workdir()
 	cmd.Stdout = wr
 	cmd.Stdin = os.Stdin
 	cmd.Stderr = os.Stderr
@@ -257,7 +255,7 @@ func GetDiffRange(repoPath, beforeCommitId string, afterCommitId string, maxline
 	}()
 	defer rd.Close()
 
-	desc := fmt.Sprintf("GetDiffRange(%s)", repoPath)
+	desc := fmt.Sprintf("GetDiffRange(%s)", r.Repo.Workdir())
 	pid := process.Add(desc, cmd)
 	go func() {
 		// In case process became zombie.
@@ -274,8 +272,4 @@ func GetDiffRange(repoPath, beforeCommitId string, afterCommitId string, maxline
 	}()
 
 	return ParsePatch(pid, maxlines, cmd, rd)
-}
-
-func GetDiffCommit(repoPath, commitId string, maxlines int) (*Diff, error) {
-	return GetDiffRange(repoPath, "", commitId, maxlines)
 }

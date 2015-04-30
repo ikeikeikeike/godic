@@ -60,9 +60,7 @@ func CompareDict(r render.Render, params martini.Params, html html.HTMLContext) 
 		r.HTML(404, "errors/404", html)
 		return
 	}
-	diff, err := git.GetDiffRange(
-		Repo.Repo.Workdir(), params["fromsha1"], params["tosha1"], 0,
-	)
+	diff, err := Repo.GetDiffRange(params["fromsha1"], params["tosha1"], 0)
 	if err != nil {
 		r.HTML(404, "errors/404", html)
 		return

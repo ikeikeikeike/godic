@@ -211,7 +211,7 @@ func TestGetDiffCommit(t *testing.T) {
 
 	_, _ = oid2, oid3
 
-	diff, err := git.GetDiffCommit(repo.Repo.Workdir(), oid1.String(), 0)
+	diff, err := repo.GetDiffCommit(oid1.String(), 0)
 	checkFatal(t, err)
 
 	if diff.TotalAddition != 3 {
