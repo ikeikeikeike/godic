@@ -8,7 +8,6 @@ import (
 	"testing"
 
 	"github.com/ikeikeikeike/godic/modules/git"
-	"github.com/k0kubun/pp"
 	git2go "github.com/libgit2/git2go"
 )
 
@@ -215,7 +214,47 @@ func TestGetDiffCommit(t *testing.T) {
 	diff, err := git.GetDiffCommit(repo.Repo.Workdir(), oid1.String(), 0)
 	checkFatal(t, err)
 
-	pp.Println(diff)
+	if diff.TotalAddition != 3 {
+		t.Fatalf("Fail at TotalAddition: %d", diff.TotalAddition)
+	}
+	if diff.TotalDeletion != 3 {
+		t.Fatalf("Fail at TotalDeletion: %d", diff.TotalDeletion)
+	}
+	for _, f := range diff.Files {
+		if f.Name != "fileone" {
+			t.Fatalf("Fail at diff.Name: %s", f.Name)
+		}
+		if f.Name != "fileone" {
+			t.Fatalf("Fail :%s", f.Name)
+		}
+		if f.Index != 1 {
+			t.Fatalf("Fail :%s", f.Index)
+		}
+		if f.Addition != 3 {
+			t.Fatalf("Fail :%s", f.Addition)
+		}
+		if f.Deletion != 3 {
+			t.Fatalf("Fail :%s", f.Deletion)
+		}
+		if f.Type != 2 {
+			t.Fatalf("Fail :%s", f.Type)
+		}
+		if f.IsCreated != false {
+			t.Fatalf("Fail :%s", f.IsCreated)
+		}
+		if f.IsDeleted != false {
+			t.Fatalf("Fail :%s", f.IsDeleted)
+		}
+		if f.IsBin != false {
+			t.Fatalf("Fail :%s", f.IsBin)
+		}
+		for _, s := range f.Sections {
+			if len(s.Lines) != 7 {
+				t.Fatalf("Fail section line length: %d", len(s.Lines))
+			}
+
+		}
+	}
 }
 
 func checkFatal(t *testing.T, err error) {
