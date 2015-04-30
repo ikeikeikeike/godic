@@ -53,6 +53,27 @@ func DictHistory(r render.Render, params martini.Params, html html.HTMLContext) 
 	r.HTML(200, "dict/history", html)
 }
 
+func CompareDict(r render.Render, params martini.Params, html html.HTMLContext) {
+	log.Debugln("CompareDict action !!!!!")
+
+	if params["name"] == "" || params["fromsha1"] == "" || params["tosha1"] == "" {
+		r.HTML(404, "errors/404", html)
+		return
+	}
+	diff, err := git.GetDiffRange(
+		Repo.Repo.Workdir(), params["fromsha1"], params["tosha1"], 0,
+	)
+	if err != nil {
+		r.HTML(404, "errors/404", html)
+		return
+	}
+
+	html["Name"] = params["name"]
+	html["Diff"] = diff
+
+	r.HTML(200, "dict/compare", html)
+}
+
 func NewDict(r render.Render, params martini.Params, html html.HTMLContext) {
 	log.Debugln("NewDict action !!!!!")
 

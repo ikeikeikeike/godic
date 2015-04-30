@@ -6,7 +6,6 @@ import (
 	log "github.com/Sirupsen/logrus"
 	"github.com/go-martini/martini"
 	"github.com/ikeikeikeike/godic/middlewares/html"
-	"github.com/k0kubun/pp"
 	"github.com/martini-contrib/binding"
 	"github.com/martini-contrib/render"
 )
@@ -55,13 +54,11 @@ func CreateDict(params martini.Params, commit Commit, errs binding.Errors, r ren
 	log.Debugln("CreateDict action !!!!!")
 
 	if params["name"] == "" {
-		pp.Println("not found")
 		r.JSON(404, APIResponse{ok: false, msg: "Not Found"})
 		return
 	}
 
 	if len(errs) > 0 {
-		pp.Println("errors")
 		msg := fmt.Sprintf("valid error (%d):\n%+v", len(errs), errs)
 		r.JSON(404, APIResponse{ok: false, msg: msg})
 		log.Fatal(msg)
