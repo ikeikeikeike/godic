@@ -12,9 +12,22 @@
 			"Rev": "188d690b1aea28bf00ba76983aa285b1d322e3dd"
 		},
 		{
+			"ImportPath": "github.com/boj/redistore",
+			"Comment": "v1-2-g0cd5558",
+			"Rev": "0cd55584b172cefd31c4cb84e2904585d898c7b2"
+		},
+		{
 			"ImportPath": "github.com/codegangsta/inject",
 			"Comment": "v1.0-rc1-10-g33e0aa1",
 			"Rev": "33e0aa1cb7c019ccc3fbe049a8262a6403d30504"
+		},
+		{
+			"ImportPath": "github.com/garyburd/redigo/internal",
+			"Rev": "535138d7bcd717d6531c701ef5933d98b1866257"
+		},
+		{
+			"ImportPath": "github.com/garyburd/redigo/redis",
+			"Rev": "535138d7bcd717d6531c701ef5933d98b1866257"
 		},
 		{
 			"ImportPath": "github.com/go-martini/martini",
@@ -26,6 +39,18 @@
 			"Rev": "2404f777256163ea3eadb273dada5dcb037993c0"
 		},
 		{
+			"ImportPath": "github.com/gorilla/context",
+			"Rev": "215affda49addc4c8ef7e2534915df2c8c35c6cd"
+		},
+		{
+			"ImportPath": "github.com/gorilla/securecookie",
+			"Rev": "8e98dd730fc43f1383f19615db6f2e702c9738e8"
+		},
+		{
+			"ImportPath": "github.com/gorilla/sessions",
+			"Rev": "f61c3ec2cf65d69e7efedfd4d060fe128882c951"
+		},
+		{
 			"ImportPath": "github.com/libgit2/git2go",
 			"Rev": "a2878cf7b2fc94255c92253420f5df41a42b47db"
 		},
@@ -34,8 +59,16 @@
 			"Rev": "1928ed2850e7d65507ea4198d935597e43612c7d"
 		},
 		{
+			"ImportPath": "github.com/martini-contrib/oauth2",
+			"Rev": "383220cdf3349109f5ced723c921d4d76478176c"
+		},
+		{
 			"ImportPath": "github.com/martini-contrib/render",
 			"Rev": "b65063311fac6cbf84d3538f5715f7847e648322"
+		},
+		{
+			"ImportPath": "github.com/martini-contrib/sessions",
+			"Rev": "fa13114fbcf036dff8185d728651d85fcef772db"
 		},
 		{
 			"ImportPath": "github.com/oxtoacart/bpool",
@@ -47,8 +80,16 @@
 			"Rev": "c030b6cbd49d996911072ecf99cea7daaeaf02b7"
 		},
 		{
+			"ImportPath": "golang.org/x/net/context",
+			"Rev": "7dbad50ab5b31073856416cdcfeb2796d682f844"
+		},
+		{
 			"ImportPath": "golang.org/x/net/html",
 			"Rev": "7dbad50ab5b31073856416cdcfeb2796d682f844"
+		},
+		{
+			"ImportPath": "golang.org/x/oauth2",
+			"Rev": "ec6d5d770f531108a6464462b2201b74fcd09314"
 		},
 		{
 			"ImportPath": "golang.org/x/text/encoding",
@@ -57,6 +98,14 @@
 		{
 			"ImportPath": "golang.org/x/text/transform",
 			"Rev": "af4c2d73d0954e6f7ed1bd89afe33c9d347d9be5"
+		},
+		{
+			"ImportPath": "google.golang.org/cloud/compute/metadata",
+			"Rev": "8feee7e7483fecf1f6c3e600ee386772e88e2c3a"
+		},
+		{
+			"ImportPath": "google.golang.org/cloud/internal",
+			"Rev": "8feee7e7483fecf1f6c3e600ee386772e88e2c3a"
 		}
 	]
 }

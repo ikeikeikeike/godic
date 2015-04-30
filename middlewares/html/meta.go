@@ -52,7 +52,7 @@ func NewMeta() *Meta {
 	}
 }
 
-func ProvideHTMLMeta(html HTMLContext) {
+func HTMLMeta(html HTMLContext) {
 	m := NewMeta()
 	// m.Url = c.BuildRequestUrl("")
 	// m.Host = c.Ctx.Input.Site()
