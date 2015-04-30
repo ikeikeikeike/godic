@@ -7,12 +7,15 @@ var HelperFuncs []template.FuncMap
 func init() {
 	HelperFuncs = []template.FuncMap{
 		{
-			"toAge":      ToAge,
-			"safeHTML":   SafeHTML,
-			"escapeHTML": EscapeHTML,
-			"nl2br":      Nl2br,
-			"toList":     List,
-			"timeSince":  TimeSince,
+			"toAge":             ToAge,
+			"safeHTML":          SafeHTML,
+			"escapeHTML":        EscapeHTML,
+			"nl2br":             Nl2br,
+			"toList":            List,
+			"timeSince":         TimeSince,
+			"diffLineTypeToStr": DiffLineTypeToStr,
+			"diffTypeToStr":     DiffTypeToStr,
+			"sha1":              EncodeSha1,
 		},
 	}
 }

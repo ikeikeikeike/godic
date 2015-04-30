@@ -8,6 +8,7 @@ import (
 	"testing"
 
 	"github.com/ikeikeikeike/godic/modules/git"
+	"github.com/k0kubun/pp"
 	git2go "github.com/libgit2/git2go"
 )
 
@@ -192,6 +193,29 @@ func TestFolderFileNames(t *testing.T) {
 		}
 		t.Fatalf("Fail names at: %v", names)
 	}
+}
+
+func TestGetDiffCommit(t *testing.T) {
+	repo := git.NewRepo()
+	repo.Init(createTmp(t))
+
+	defer os.RemoveAll(repo.Repo.Workdir())
+
+	saveSomeFiles(t, repo)
+
+	oid1, err := repo.SaveFile("fileone", "# aaa\n- a\n- a\n", "first one")
+	checkFatal(t, err)
+	oid2, err := repo.SaveFile("fileone", "# bbbb\n- a\n- b\n", "second one")
+	checkFatal(t, err)
+	oid3, err := repo.SaveFile("fileone", "# cccc\n- a\n- c\n", "third one")
+	checkFatal(t, err)
+
+	_, _ = oid2, oid3
+
+	diff, err := git.GetDiffCommit(repo.Repo.Workdir(), oid1.String(), 0)
+	checkFatal(t, err)
+
+	pp.Println(diff)
 }
 
 func checkFatal(t *testing.T, err error) {

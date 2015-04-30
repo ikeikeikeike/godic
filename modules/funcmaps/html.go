@@ -31,3 +31,22 @@ func EscapeHTML(in string) string {
 func Nl2br(in string) string {
 	return strings.Replace(in, "\n", "<br>", -1)
 }
+
+func DiffLineTypeToStr(diffType int) string {
+	switch diffType {
+	case 2:
+		return "add"
+	case 3:
+		return "del"
+	case 4:
+		return "tag"
+	}
+	return "same"
+}
+
+func DiffTypeToStr(diffType int) string {
+	diffTypes := map[int]string{
+		1: "add", 2: "modify", 3: "del",
+	}
+	return diffTypes[diffType]
+}
