@@ -26,11 +26,7 @@
         {{range $list}}
           <tr>
             <td class="checkbox-cell text-center">
-              {{/*
-              {{if ne h.Type 'delete'}}
-                <input type="checkbox" name="versions" value="{{.Id}}" />
-              {{end}}
-              */}}
+              <input type="checkbox" name="versions" value="{{.Id}}" />
             </td>
             <td>{{.Author.Name}}</td>
             <td><a href="{{.Id.String}}" class='label label-primary'>View</a> {{.Message}} </td>
@@ -49,3 +45,26 @@
 
 {{template "footer" .}}
 {{template "script" .}}
+
+<script>
+  $(function(){
+    $('.revision-tbl :checkbox').change(function () {
+      var $cs=$(this).closest('.revision-tbl').find(':checkbox:checked');
+      if ($cs.length > 2) {
+        this.checked=false;
+      }
+    });
+
+    $(".compare-revisions").click(function(){
+      var $cs = $('.revision-tbl').find(':checkbox:checked');
+      if ($cs.length != 2) return;
+      var revs = [];
+      $.each($cs, function(i, v){
+        revs.push(v.value);
+      });
+      revs.reverse();
+      revs = revs.join("..");
+      location.href = "/d/compare/{{.Name}}/" + revs;
+    });
+  });
+</script>
