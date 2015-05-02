@@ -1,0 +1,29 @@
+{
+  "name": "components-bootstrap",
+  "description": "Sleek, intuitive, and powerful front-end framework for faster and easier web development.",
+  "homepage": "http://getbootstrap.com",
+  "version": "3.2.0",
+  "keywords": [
+    "bootstrap",
+    "css"
+  ],
+  "license": "Apache-2.0",
+  "dependencies": {
+    "jquery": ">=1.9.0"
+  },
+  "main": "js/bootstrap.js",
+  "ignore": [
+    "component.json",
+    "package.json",
+    "composer.json"
+  ],
+  "_release": "3.2.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "3.2.0",
+    "commit": "09948b04f780173eb0b9ec522d53554f3f408055"
+  },
+  "_source": "git://github.com/components/bootstrap.git",
+  "_target": "~3.2.0",
+  "_originalSource": "components-bootstrap"
+}
