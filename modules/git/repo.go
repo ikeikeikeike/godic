@@ -25,8 +25,8 @@ type Repo struct {
 
 func NewRepo() *Repo {
 	return &Repo{
-		Author:    &git.Signature{Name: "Author", Email: "author@example.com", When: time.Now()},
-		Committer: &git.Signature{Name: "Committer", Email: "committer@example.com", When: time.Now()},
+		Author:    &git.Signature{Name: "Author", Email: "author@example.com"},
+		Committer: &git.Signature{Name: "Committer", Email: "committer@example.com"},
 	}
 }
 
@@ -148,6 +148,9 @@ func (r *Repo) SaveFile(filename, content, message string) (*git.Oid, error) {
 			message = fmt.Sprintf("Update: %s", filename)
 		}
 	}
+
+	r.Author.When = time.Now()
+	r.Committer.When = time.Now()
 
 	var oid *git.Oid
 	if tip == nil {
