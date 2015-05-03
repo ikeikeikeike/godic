@@ -17,7 +17,7 @@ function Aced(settings) {
     sanitize: true,
     preview: null,
     editor: null,
-    theme: 'idle_fingers',
+    theme: 'tomorrow_night_eighties',
     themePath: '/static/vendor/ace-builds/src',
     mode: 'markdown',
     autoSave: true,
@@ -195,7 +195,7 @@ function Aced(settings) {
     }
     preview.html(render(val()));
     $('pre code', preview).each(function(i, e) {
-      hljs.highlightBlock(e)
+      hljs.highlightBlock(e);
     });
   }
 
@@ -243,8 +243,8 @@ function Aced(settings) {
   function asyncLoad(filename, cb) {
     (function (d, t) {
 
-      var leScript = d.createElement(t)
-        , scripts = d.getElementsByTagName(t)[0];
+      var leScript = d.createElement(t),
+          scripts = d.getElementsByTagName(t)[0];
 
       leScript.async = 1;
       leScript.src = filename;
@@ -252,7 +252,7 @@ function Aced(settings) {
 
       leScript.onload = function () {
         cb && cb();
-      }
+      };
 
     }(document, 'script'));
   }
@@ -352,11 +352,11 @@ function Aced(settings) {
     editor.getSession().setTabSize(2);
     editor.getSession().setUseSoftTabs(true);
     editor.setShowPrintMargin(false);
-    editor.renderer.setShowInvisibles(true);
+    editor.renderer.setShowInvisibles(false);
     editor.renderer.setShowGutter(false);
 
     if (options.showButtonBar) {
-      var $btnBar = $('<div class="aced-button-bar aced-button-bar-top">' + buildThemeSelect().html() + ' <button type="button" class="btn btn-primary btn-xs aced-save">Save</button></div>')
+      var $btnBar = $('<div class="aced-button-bar aced-button-bar-top">' + buildThemeSelect().html() + ' <button type="button" class="btn btn-primary btn-xs aced-save">Save</button></div>');
       element.find('.ace_content').before($btnBar);
 
       $(".aced-save", $btnBar).click(function(){

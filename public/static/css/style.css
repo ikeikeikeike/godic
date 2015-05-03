@@ -288,3 +288,33 @@ a.label {
 
 }
 
+
+@media screen and (min-width:0px) {
+    .hide-mobile { display: none; }
+}
+
+@media screen and (min-width:460px) {
+}
+
+@media screen and (min-width:660px) {
+}
+
+@media screen and (min-width:770px) {
+    .hide-mobile { display: block; }
+}
+
+@media screen and (min-width:870px) {
+}
+
+@media screen and (min-width:1000px) {
+}
+
+@media screen and (min-width:1280px) {
+}
+
+@media screen and (min-width:1700px) {
+}
+
+.pointer {
+    cursor: pointer;
+}

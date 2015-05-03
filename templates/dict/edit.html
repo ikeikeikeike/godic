@@ -1,47 +1,38 @@
 {{template "header" .}}
 
+
 <!-- Page Menu -->
 <div class="container">
   <div id="main-body">
-      <div class='alert alert-primary'>
-        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-      </div>
+
+      {{if .Errors}}
+        <div class='alert alert-primary'>
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        </div>
+      {{end}}
 
       <div id="app-wrap">
         <div id="app-controls" class="row">
-          <div class="col-xs-4 col-md-3">
-            <input id="page-name" type="text" class="form-control input-sm" name="name" placeholder="Name" value="{{.Name}}" />
-          </div>
-          <div class="col-xs-4 col-md-3">
-            <input id="page-message" type="text" class="form-control input-sm" name="page-message"
-                   placeholder="Comment" value="" />
+
+          <div class="col-xs-4 col-sm-3 col-md-3">
+            <input id="page-name" type="text" class="form-control input-sm" name="name" placeholder="記事のタイトルを入力" value="{{.Name}}" />
           </div>
 
-          <div class="col-md-6 col-xs-4 text-right">
+          <div class="col-xs-4 col-sm-3 col-md-3">
+            <input id="page-kana" type="text" class="form-control input-sm" name="kana" placeholder="{{.Name}}のよみがなを入力" value="{{.Kana}}" />
+          </div>
 
-            <div class="dropdown btn-group">
-              <button class="btn btn-default btn-sm dropdown-toggle" type="button" id="editor-actions"
-                      data-toggle="dropdown" title="Actions">
-                <i class="fa fa-cog"></i>
-                <span class="hidden-xs">Actions <i class="fa fa-caret-down"></i></span>
-              </button>
+          <div class="col-xs-4 col-sm-3 col-md-3 hide-mobile">
+            <input id="page-message" type="text" class="form-control input-sm" name="page-message" placeholder="編集内容を入力" value="" />
+          </div>
 
-              <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="editor-actions">
-                <li role="presentation" class="divider"></li>
-                <li role="presentation">
-                  <a role="menuitem" tabindex="-1" href="#" id="discard-draft-btn">Delete Draft</a>
-                </li>
-                <li role="presentation">
-                  <a role="menuitem" tabindex="-1" href="#" id="delete-page-btn">Delete Page</a>
-                </li>
-              </ul>
-            </div>
+          <div class="col-xs-4 col-sm-3 col-md-3 text-right">
 
-            <div class="dropdown btn-group">
+           <div class="dropdown btn-group">
               <button id="theme-list-btn" type="button" class="dropdown-toggle btn btn-default btn-sm"
                       data-toggle="dropdown" title="Change Theme">
                 <i class="fa fa-paint-brush"></i>
-                <span class="hidden-xs">Theme <i class="fa fa-caret-down"></i></span>
+                <span class="hidden-xs">テーマ <i class="fa fa-caret-down"></i></span>
               </button>
               <ul id="theme-list" class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="theme-list">
                 <li><a tabindex="-1" href="#" data-value="chrome" >Chrome</a></li>
@@ -75,21 +66,43 @@
             <div class="btn-group">
                 <a id="submit-btn" class="btn btn-primary btn-sm">
                   <i class="fa fa-save"></i>
-                  <span class="hidden-xs">Publish</span>
+                  <span class="hidden-xs">公開する</span>
                 </a>
             </div>
+
+            {{if false}}
+            <div class="dropdown btn-group">
+              <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="editor-actions"
+                      data-toggle="dropdown" title="Actions">
+                <i class="fa fa-save"></i>
+                <span class="hidden-xs">公開する <i class="fa fa-caret-down"></i></span>
+              </button>
+
+              <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="editor-actions">
+                <li role="presentation">
+                  <a role="menuitem" tabindex="-1" href="#" id="discard-draft-btn">下書きを保存</a>
+                </li>
+                <li role="presentation">
+                  <a role="menuitem" tabindex="-1" href="#" id="delete-page-btn">ページを削除</a>
+                </li>
+                <li role="presentation">
+                  <a role="menuitem" tabindex="-1" href="#" id="submit-btn">公開する</a>
+                </li>
+              </ul>
+            </div>
+            {{end}}
 
           </div>
         </div>
 
         <section class="entry-markdown active">
           <header class="floatingheader" id="entry-markdown-header">
-            <small>Markdown</small>
+            <small>Markdown <i data-toggle="modal" data-target=".markdown-help-modal-lg" class="fa fa-question-circle pointer"></i></small>
             <a class="markdown-help" href=""><span class="hidden">What is Markdown?</span></a>
           </header>
           <section id="entry-markdown-content" class="entry-markdown-content">
             <div id="editor-{{.Name}}" data-submitbtn='submit-btn' data-themeselect="theme-list" data-mode="markdown"
-                 data-preview="preview" class="editor">{{.Content}}</div>
+              data-preview="preview" class="editor">{{.Content}}</div>
           </section>
         </section>
 
@@ -103,6 +116,87 @@
         </section>
 
       </div>
+  </div>
+</div>
+
+<div class="modal fade markdown-help-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        記法一覧
+      </div>
+      <div class="modal-body">
+        <section class="markdown-help-container">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>プレビュー</th>
+                    <th>記法</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td><strong>大文字</strong></td>
+                    <td>**大文字**</td>
+                </tr>
+                <tr>
+                    <td><em>斜体文字</em></td>
+                    <td>*斜体文字*</td>
+                </tr>
+                <tr>
+                    <td><del>打ち消し線</del></td>
+                    <td>~~打ち消し線~~</td>
+                </tr>
+                <tr>
+                    <td><a href="#">リンク</a></td>
+                    <td>[title](http://)</td>
+                </tr>
+                <tr>
+                    <td>画像</td>
+                    <td>![alt](http://)</td>
+                </tr>
+                <tr>
+                    <td>リスト１</td>
+                    <td>* item</td>
+                </tr>
+                <tr>
+                    <td>リスト２</td>
+                    <td>- item</td>
+                </tr>
+                <tr>
+                    <td>引用</td>
+                    <td>> quote</td>
+                </tr>
+                <tr>
+                    <td>大見出し</td>
+                    <td># Heading</td>
+                </tr>
+                <tr>
+                    <td>中見出し</td>
+                    <td>## Heading</td>
+                </tr>
+                <tr>
+                    <td>小見出し</td>
+                    <td>### Heading</td>
+                </tr>
+                <tr>
+                    <td><mark>ハイライト</mark></td>
+                    <td>==ハイライト==</td>
+                </tr>
+                <tr>
+                    <td><code>インラインコード</code></td>
+                    <td>`インラインコード`</td>
+                </tr>
+                <tr>
+                    <td><pre>コード</pre></td>
+                    <td>```<br/>コード<br/>```</td>
+                </tr>
+                </tbody>
+            </table>
+            For further Markdown syntax reference: <a href="http://support.ghost.org/markdown-guide/" target="_blank">Markdown Documentation</a>
+        </section>
+      </div>
+    </div>
   </div>
 </div>
 

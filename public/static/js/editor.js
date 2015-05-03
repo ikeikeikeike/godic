@@ -3,6 +3,7 @@ var $entry_preview_header = $("#entry-preview-header");
 var $entry_markdown = $(".entry-markdown");
 var $entry_preview = $(".entry-preview");
 var $page_name = $("#page-name");
+var $page_kana = $("#page-kana");
 var $page_message = $("#page-message");
 
 // Tabs
@@ -26,7 +27,7 @@ $(document).on('shaMismatch', function() {
         className: "btn-default",
         callback: function() {
           var info = aced.info();
-          info['ignore'] = true;
+          info.ignore = true;
           aced.info(info);
         }
       },
@@ -45,7 +46,7 @@ $(document).on('shaMismatch', function() {
         }
       }
     }
-  })
+  });
 });
 
 $(function(){
@@ -64,17 +65,18 @@ $(function(){
 
 var aced = new Aced({
   editor: $('#entry-markdown-content').find('.editor').attr('id'),
-  renderer: function(md) { return MDR.convert(md) },
+  renderer: function(md) { return MDR.convert(md); },
   info: Commit.info,
   submit: function(content) {
     var data = {
       name: $page_name.val(),
+      kana: $page_kana.val(),
       message: $page_message.val(),
-      content: content
+      content: content,
     };
 
-    var path = Config['RELATIVE_PATH'] + '/' + data['name'];
-    var type = (Commit.info['sha']) ? "PUT" : "POST";
+    var path = Config.RELATIVE_PATH + '/' + data.name;
+    var type = (Commit.info.sha) ? "PUT" : "POST";
 
     $.ajax({
       type: type,
@@ -82,13 +84,40 @@ var aced = new Aced({
       data: data,
       dataType: 'json'
     }).always(function(data, status, error) {
-      var res = data['responseJSON'];
-      if (res && res['error']) {
-        $page_name.addClass('parsley-error');
-        bootbox.alert("<h3>" + res['message'] + "</h3>");
-      } else {
+      if (status !== 'error') {
         location.href = path;
+        return;
       }
+      var res = data.responseJSON, r, i;
+
+      if (data.status === 403) {
+        bootbox.alert("<h3>" + "投稿が許可されていません。<br/>ログイン後再度お試し下さい。" + "</h3>");
+        return;
+      } else if (data.status >= 500) {
+        bootbox.alert(
+          "<h3>" + "投稿内容が保存できませんでした。<br/>しばらくたってから再度お試し下さい。" + "</h3>");
+        return;
+      }
+
+      if (!res) {
+        $page_name.addClass('parsley-error');
+        bootbox.alert("<h3>" + "必須項目が入力されていません" + "</h3>");
+        return;
+      }
+
+      for (i = 0; i < res.length; i++) {
+        r = res[i];
+        if (r.fieldNames[0] === 'kana') $page_kana.addClass('parsley-error');
+
+        switch(r.message) {
+        case 'Required':
+          bootbox.alert("<h3>" + "必須項目が入力されていません" + "</h3>");
+          break;
+        default:
+          bootbox.alert("<h3>" + r.message + "</h3>");
+        }
+      }
+
     });
   }
 });
