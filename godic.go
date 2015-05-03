@@ -7,6 +7,7 @@ import (
 	log "github.com/Sirupsen/logrus"
 	"github.com/go-martini/martini"
 	"github.com/ikeikeikeike/godic/views"
+	_ "github.com/ikeikeikeike/godic/models"
 )
 
 func init() {
