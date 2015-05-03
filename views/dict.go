@@ -1,23 +1,28 @@
 package views
 
 import (
+	"fmt"
 	"os"
 	"path"
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/go-martini/martini"
 	"github.com/ikeikeikeike/godic/middlewares/html"
+	"github.com/ikeikeikeike/godic/models"
 	"github.com/ikeikeikeike/godic/modules/git"
+	git2go "github.com/libgit2/git2go"
 	"github.com/martini-contrib/render"
 )
 
 var Repo *git.Repo
+var RepoPath string
 
 func init() {
 	p, _ := os.Getwd()
+	RepoPath = path.Join(p, "repo")
 
 	Repo = git.NewRepo()
-	Repo.Init(path.Join(p, "repo"))
+	Repo.Init(RepoPath)
 }
 
 func DictIndex(r render.Render, html html.HTMLContext) {
@@ -75,8 +80,46 @@ func CompareDict(r render.Render, params martini.Params, html html.HTMLContext) 
 func NewDict(r render.Render, params martini.Params, html html.HTMLContext) {
 	log.Debugln("NewDict action !!!!!")
 
-	html["Name"] = params["name"]
-	html["Content"] = ""
+	name := params["name"]
+	if name == "" {
+		name = "no_title"
+	}
+
+	content := fmt.Sprintf(`
+# %[1]s
+
+[![`+"`%[1]s`"+` Image](http://r-18.org/static/img/book/siteicon/apple-touch-icon-precomposed.png)](http://book.r-18.org/)
+
+`+"`%[1]s`"+`とは、～である。
+
+## 概要
+
+`+"`%[1]s`"+`の**概要**を書いてください。
+
+## 関連記事
+
+`+"`%[1]s`"+`に関する**R-18.orgの記事**を紹介してください。
+
+## 関連エロ本
+
+`+"`%[1]s`"+`に関する**R-18.orgのエロ本**を紹介してください。
+
+## 関連エロ動画
+
+`+"`%[1]s`"+`に関する**R-18.orgのエロ動画**を紹介してください。
+
+## 関連項目
+
+`+"`%[1]s`"+`に関する**項目**を紹介してください。
+
+- 項目１
+- 項目２
+- 項目３
+
+`, name)
+
+	html["Name"] = name
+	html["Content"] = content
 
 	r.HTML(200, "dict/edit", html)
 }
@@ -102,19 +145,38 @@ func ShowDict(r render.Render, params martini.Params, html html.HTMLContext) {
 
 func EditDict(r render.Render, params martini.Params, html html.HTMLContext) {
 	log.Debugln("EditDict action !!!!!")
+	name := params["name"]
 
-	if params["name"] == "" {
+	if name == "" {
 		r.HTML(404, "errors/404", html)
 		return
 	}
-	blob, err := Repo.GetFileBlob(params["name"])
+	blob, err := Repo.GetFileBlob(name)
 	if err != nil {
 		r.HTML(404, "errors/404", html)
 		return
 	}
+	m := &models.Dict{}
+	if err := models.DB.Where("name = ?", name).Preload("Image").Preload("Category").First(m).Error; err != nil {
+		r.HTML(404, "errors/404", html)
+		return
+	}
+	l, err := Repo.GetFileHistory(name, 1)
+	if err != nil {
+		log.Warn(err)
+	}
+
+	var c *git2go.Commit
+	for e := l.Front(); e != nil; e = e.Next() {
+		c = e.Value.(*git2go.Commit)
+	}
 
 	html["Name"] = params["name"]
+	html["Kana"] = m.Kana
 	html["Content"] = string(blob.Contents())
+
+	html["Dict"] = m
+	html["Commit"] = c
 
 	r.HTML(200, "dict/edit", html)
 }
