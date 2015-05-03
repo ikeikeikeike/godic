@@ -43,5 +43,5 @@ func init() {
 		DB.LogMode(true)
 	}
 
-	DB.AutoMigrate(&Dict{}, &Category{}, &Image{})
+	DB.AutoMigrate(&Dict{}, &Tag{}, &Category{}, &Image{})
 }

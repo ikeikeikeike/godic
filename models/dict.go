@@ -5,8 +5,10 @@ import "database/sql"
 type Dict struct {
 	Model
 
-	Name string `sql:"type:varchar(255);unique;not null"` // gin index
-	Kana string `sql:"type:varchar(255);"`                // gin index
+	Name   string `sql:"type:varchar(255);unique;not null"` // gin index
+	Yomi   string `sql:"type:varchar(255);"`                // gin index
+	Romaji string `sql:"type:varchar(128)"`
+	Gyou   string `sql:"type:varchar(6);index"`
 
 	Outline string `sql:"type:text"` // gin index
 
@@ -15,6 +17,8 @@ type Dict struct {
 
 	Category   *Category
 	CategoryID sql.NullInt64
+
+	Tags []*Tag `gorm:"many2many:dict_tags;"` // Many-To-Many relationship, 'user_languages' is join table
 }
 
 func (m *Dict) GetPrefix() string {
