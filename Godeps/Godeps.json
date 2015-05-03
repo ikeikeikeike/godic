@@ -51,6 +51,15 @@
 			"Rev": "f61c3ec2cf65d69e7efedfd4d060fe128882c951"
 		},
 		{
+			"ImportPath": "github.com/jinzhu/gorm",
+			"Rev": "1eb1ed091f2b725699a930e03a05890c861d2c50"
+		},
+		{
+			"ImportPath": "github.com/lib/pq",
+			"Comment": "go1.0-cutoff-29-g30ed220",
+			"Rev": "30ed2200d7ec99cf17272292f1d4b7b0bd7165db"
+		},
+		{
 			"ImportPath": "github.com/libgit2/git2go",
 			"Rev": "a2878cf7b2fc94255c92253420f5df41a42b47db"
 		},
@@ -71,8 +80,25 @@
 			"Rev": "fa13114fbcf036dff8185d728651d85fcef772db"
 		},
 		{
+			"ImportPath": "github.com/mattn/go-sqlite3",
+			"Rev": "e28cd440fabdd39b9520344bc26829f61db40ece"
+		},
+		{
+			"ImportPath": "github.com/microcosm-cc/bluemonday",
+			"Rev": "fcd0f5074e55df204568c7419509fb59ddcad228"
+		},
+		{
 			"ImportPath": "github.com/oxtoacart/bpool",
 			"Rev": "754d38fccfc6e52083355014b6abc8d626445dfd"
+		},
+		{
+			"ImportPath": "github.com/russross/blackfriday",
+			"Comment": "v1.2-60-gd3270c4",
+			"Rev": "d3270c47aca4443007405354152a2a1c478ac6b9"
+		},
+		{
+			"ImportPath": "github.com/shurcooL/sanitized_anchor_name",
+			"Rev": "8e87604bec3c645a4eeaee97dfec9f25811ff20d"
 		},
 		{
 			"ImportPath": "github.com/woothee/woothee-go",
