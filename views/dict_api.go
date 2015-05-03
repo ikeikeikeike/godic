@@ -30,7 +30,12 @@ func UpdateDict(params martini.Params, commit forms.Commit, errs binding.Errors,
 		return
 	}
 
-	sha1, err := Repo.SaveFile(params["name"], commit.Content, commit.Message)
+	m := dict.UpdateByCommit(commit)
+
+	repo := git.NewRepo()
+	repo.Init(path.Join(RepoPath, m.GetPrefix()))
+
+	sha1, err := repo.SaveFile(m.Name, commit.Content, commit.Message)
 	if err != nil {
 		msg := fmt.Sprintf("Update file error: %s", err)
 		r.JSON(200, APIResponse{ok: false, msg: msg})
@@ -57,7 +62,7 @@ func CreateDict(params martini.Params, commit forms.Commit, errs binding.Errors,
 	repo.Init(path.Join(RepoPath, m.GetPrefix()))
 
 	// Create
-	sha1, err := Repo.SaveFile(m.Name, commit.Content, commit.Message)
+	sha1, err := repo.SaveFile(m.Name, commit.Content, commit.Message)
 	if err != nil {
 		msg := fmt.Sprintf("Create file error: %s", err)
 		r.JSON(200, APIResponse{ok: false, msg: msg})

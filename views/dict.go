@@ -2,6 +2,7 @@ package views
 
 import (
 	"fmt"
+	"io/ioutil"
 	"os"
 	"path"
 
@@ -12,14 +13,16 @@ import (
 	"github.com/ikeikeikeike/godic/modules/git"
 	git2go "github.com/libgit2/git2go"
 	"github.com/martini-contrib/render"
+	"github.com/microcosm-cc/bluemonday"
+	"github.com/russross/blackfriday"
 )
 
 var Repo *git.Repo
-var RepoPath string
+var BasePath, RepoPath string
 
 func init() {
-	p, _ := os.Getwd()
-	RepoPath = path.Join(p, "repo")
+	BasePath, _ = os.Getwd()
+	RepoPath = path.Join(BasePath, "repo")
 
 	Repo = git.NewRepo()
 	Repo.Init(RepoPath)
@@ -85,41 +88,13 @@ func NewDict(r render.Render, params martini.Params, html html.HTMLContext) {
 		name = "no_title"
 	}
 
-	content := fmt.Sprintf(`
-# %[1]s
-
-[![`+"`%[1]s`"+` Image](http://r-18.org/static/img/book/siteicon/apple-touch-icon-precomposed.png)](http://book.r-18.org/)
-
-`+"`%[1]s`"+`とは、～である。
-
-## 概要
-
-`+"`%[1]s`"+`の**概要**を書いてください。
-
-## 関連記事
-
-`+"`%[1]s`"+`に関する**R-18.orgの記事**を紹介してください。
-
-## 関連エロ本
-
-`+"`%[1]s`"+`に関する**R-18.orgのエロ本**を紹介してください。
-
-## 関連エロ動画
-
-`+"`%[1]s`"+`に関する**R-18.orgのエロ動画**を紹介してください。
-
-## 関連項目
-
-`+"`%[1]s`"+`に関する**項目**を紹介してください。
-
-- 項目１
-- 項目２
-- 項目３
-
-`, name)
-
 	html["Name"] = name
-	html["Content"] = content
+	html["Content"] = ""
+
+	bytes, err := ioutil.ReadFile(path.Join(BasePath, "template.txt"))
+	if err == nil {
+		html["Content"] = fmt.Sprintf(string(bytes), name)
+	}
 
 	r.HTML(200, "dict/edit", html)
 }
@@ -137,8 +112,13 @@ func ShowDict(r render.Render, params martini.Params, html html.HTMLContext) {
 		return
 	}
 
+	markdown := blob.Contents()
+	unsafe := blackfriday.MarkdownCommon(markdown)
+	contentHtml := bluemonday.UGCPolicy().SanitizeBytes(unsafe)
+
 	html["Name"] = params["name"]
-	html["Content"] = string(blob.Contents())
+	html["Content"] = string(markdown)
+	html["ContentHTML"] = string(contentHtml)
 
 	r.HTML(200, "dict/show", html)
 }
@@ -172,7 +152,7 @@ func EditDict(r render.Render, params martini.Params, html html.HTMLContext) {
 	}
 
 	html["Name"] = params["name"]
-	html["Kana"] = m.Kana
+	html["Yomi"] = m.Yomi
 	html["Content"] = string(blob.Contents())
 
 	html["Dict"] = m
