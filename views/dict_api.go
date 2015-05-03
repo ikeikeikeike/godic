@@ -2,10 +2,14 @@ package views
 
 import (
 	"fmt"
+	"path"
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/go-martini/martini"
 	"github.com/ikeikeikeike/godic/middlewares/html"
+	"github.com/ikeikeikeike/godic/models/dict"
+	"github.com/ikeikeikeike/godic/modules/git"
+	"github.com/ikeikeikeike/godic/views/forms"
 	"github.com/martini-contrib/binding"
 	"github.com/martini-contrib/render"
 )
@@ -16,21 +20,8 @@ type APIResponse struct {
 	msg string
 }
 
-type Commit struct {
-	Name    string `form:"name" binding:"required"`
-	Content string `form:"content" binding:"required"`
-	Message string `form:"message"`
-}
-
-// func (p Post) Validate(errors binding.Errors, req *http.Request) binding.Errors { return errros }
-
-func UpdateDict(params martini.Params, commit Commit, errs binding.Errors, r render.Render) {
+func UpdateDict(params martini.Params, commit forms.Commit, errs binding.Errors, r render.Render) {
 	log.Debugln("UpdateDict action !!!!!")
-
-	if params["name"] == "" {
-		r.JSON(404, APIResponse{ok: false, msg: "Invalid name"})
-		return
-	}
 
 	if len(errs) > 0 {
 		msg := fmt.Sprintf("valid error (%d):\n%+v", len(errs), errs)
@@ -50,13 +41,8 @@ func UpdateDict(params martini.Params, commit Commit, errs binding.Errors, r ren
 	r.JSON(200, APIResponse{ok: true, sha: sha1.String()})
 }
 
-func CreateDict(params martini.Params, commit Commit, errs binding.Errors, r render.Render) {
+func CreateDict(params martini.Params, commit forms.Commit, errs binding.Errors, r render.Render) {
 	log.Debugln("CreateDict action !!!!!")
-
-	if params["name"] == "" {
-		r.JSON(404, APIResponse{ok: false, msg: "Not Found"})
-		return
-	}
 
 	if len(errs) > 0 {
 		msg := fmt.Sprintf("valid error (%d):\n%+v", len(errs), errs)
@@ -65,14 +51,13 @@ func CreateDict(params martini.Params, commit Commit, errs binding.Errors, r ren
 		return
 	}
 
-	// if current_app.config.get('ALLOW_ANON') and current_user.is_anonymous():
-	// return dict(error=True, message="Anonymous posting not allowed"), 403
+	m, _ := dict.FirstOrCreateByCommit(commit)
 
-	// if cname in current_app.config.get('WIKI_LOCKED_PAGES'):
-	// return dict(error=True, message="Page is locked"), 403
+	repo := git.NewRepo()
+	repo.Init(path.Join(RepoPath, m.GetPrefix()))
 
 	// Create
-	sha1, err := Repo.SaveFile(params["name"], commit.Content, commit.Message)
+	sha1, err := Repo.SaveFile(m.Name, commit.Content, commit.Message)
 	if err != nil {
 		msg := fmt.Sprintf("Create file error: %s", err)
 		r.JSON(200, APIResponse{ok: false, msg: msg})
@@ -85,6 +70,11 @@ func CreateDict(params martini.Params, commit Commit, errs binding.Errors, r ren
 
 func DeleteDict(params martini.Params, html html.HTMLContext, r render.Render) {
 	log.Debugln("DeleteDict action !!!!!")
+
+	if params["name"] == "" {
+		r.JSON(404, APIResponse{ok: false, msg: "Invalid name"})
+		return
+	}
 
 	html["Name"] = params["name"]
 	html["Content"] = ""
