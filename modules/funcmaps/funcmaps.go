@@ -16,6 +16,7 @@ func init() {
 			"diffLineTypeToStr": DiffLineTypeToStr,
 			"diffTypeToStr":     DiffTypeToStr,
 			"sha1":              EncodeSha1,
+			"toUnix":            ToUnix,
 		},
 	}
 }

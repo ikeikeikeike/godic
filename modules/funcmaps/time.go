@@ -67,3 +67,7 @@ func TimeSince(t time.Time) template.HTML {
 		),
 	)
 }
+
+func ToUnix(t time.Time) int64 {
+	return t.Unix()
+}

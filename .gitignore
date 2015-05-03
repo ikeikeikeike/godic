@@ -31,3 +31,5 @@ _testmain.go
 /logs
 /tmp/runner-build*
 /repo
+/abc.db
+/template.txt

@@ -1,3 +1,7 @@
+function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
 function Aced(settings) {
   var id,
     options,
@@ -17,7 +21,6 @@ function Aced(settings) {
     sanitize: true,
     preview: null,
     editor: null,
-    theme: 'tomorrow_night_eighties',
     themePath: '/static/vendor/ace-builds/src',
     mode: 'markdown',
     autoSave: true,
@@ -31,6 +34,11 @@ function Aced(settings) {
     renderer: null,
     info: null
   };
+  if (getRandomInt(0, 10) % 6 === 0) {
+    options.theme = 'tomorrow_night_eighties';
+  } else {
+    options.theme = 'tomorrow_night';
+  }
 
   themes = {
     chrome: "Chrome",
@@ -398,11 +406,11 @@ function Aced(settings) {
       } else {
         // Check info in storage against one passed in
         // for possible changes in data that may have occurred
-        var info = store.get(infoKey());
-        if (info['sha'] != options.info['sha'] && !info['ignore']) {
+        // var info = store.get(infoKey());
+        // if (info['sha'] != options.info['sha'] && !info['ignore']) {
           // Data has changed since start of draft
-          $(document).trigger('shaMismatch');
-        }
+          // $(document).trigger('shaMismatch');
+        // }
       }
     }
 
