@@ -3,13 +3,23 @@ package dict
 import (
 	m "github.com/ikeikeikeike/godic/models"
 	"github.com/ikeikeikeike/godic/views/forms"
+	"github.com/jinzhu/gorm"
 )
+
+func Dicts() *gorm.DB {
+	return m.DB.Table("dicts").Preload("Image").Preload("Category").Select("dicts.*")
+}
+
+func FirstByName(name string, out interface{}) *gorm.DB {
+	return m.DB.Where("name = ?", name).Preload("Image").Preload("Category").First(out)
+}
 
 func UpdateByCommit(c forms.Commit) *m.Dict {
 	var d m.Dict
-	m.DB.Where(m.Dict{Name: c.Name}).First(&d)
+	FirstByName(c.Name, &d)
 
 	do := false
+
 	if d.Yomi != c.Yomi {
 		d.Yomi = c.Yomi
 		do = true
@@ -17,6 +27,19 @@ func UpdateByCommit(c forms.Commit) *m.Dict {
 	if d.Outline != c.Outline {
 		d.Outline = c.Outline
 		do = true
+	}
+
+	cate := &m.Category{}
+	m.DB.First(cate, c.Category)
+	if cate.ID > 0 {
+		if d.Category == nil {
+			d.Category = cate
+			do = true
+		}
+		if d.Category.ID != c.Category {
+			d.Category = cate
+			do = true
+		}
 	}
 
 	if do {
@@ -42,10 +65,10 @@ func FirstOrCreateByCommit(c forms.Commit) (*m.Dict, bool) {
 		// _ = v
 		// }
 
-		// if v, ok := p["category"]; ok {
-		// d.Category = &m.Category{}
-		// _ = v
-		// }
+		if c.Category > 0 {
+			cate := &m.Category{}
+			m.DB.First(cate, c.Category)
+		}
 
 		m.DB.Save(&d)
 	}
