@@ -11,6 +11,7 @@ import (
 	"github.com/go-martini/martini"
 	"github.com/ikeikeikeike/godic/middlewares/html"
 	"github.com/ikeikeikeike/godic/models"
+	"github.com/ikeikeikeike/godic/models/category"
 	"github.com/ikeikeikeike/godic/models/dict"
 	"github.com/ikeikeikeike/godic/modules/git"
 	git2go "github.com/libgit2/git2go"
@@ -33,6 +34,10 @@ func DictIndex(r render.Render, html html.HTMLContext) {
 	dict.Dicts().Find(&dicts)
 
 	html["Dicts"] = dicts
+
+	html["Diva"] = category.Diva()
+	html["Anime"] = category.Anime()
+	html["Character"] = category.Character()
 
 	r.HTML(200, "dict/index", html)
 }
