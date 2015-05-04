@@ -3,8 +3,6 @@ package models
 import (
 	"crypto/rand"
 	"database/sql"
-	"encoding/binary"
-	"strconv"
 )
 
 type Dict struct {
@@ -28,21 +26,25 @@ type Dict struct {
 	Tags []*Tag `gorm:"many2many:dict_tags;"` // Many-To-Many relationship, 'user_languages' is join table
 }
 
-func randomString() string {
-	var n uint64
-	binary.Read(rand.Reader, binary.LittleEndian, &n)
-	return strconv.FormatUint(n, 36)
-}
-
 func (m *Dict) BeforeCreate() error {
-	m.Prefix = randomString()
+	m.Prefix = randPrefix(7)
 	return nil
 }
 
 func (m *Dict) GetPrefix() string {
 	if m.Category != nil {
-		return "./" + m.Category.Prefix + m.Prefix
+		return "./" + m.Category.Prefix + "/" + m.Prefix
 	} else {
 		return "./" + m.Prefix
 	}
+}
+
+func randPrefix(n int) string {
+	const letters = "abcdefg" // 7P7=7*6*5*4*3*2*1=5040
+	var bytes = make([]byte, n)
+	rand.Read(bytes)
+	for i, b := range bytes {
+		bytes[i] = letters[b%byte(len(letters))]
+	}
+	return string(bytes)
 }
