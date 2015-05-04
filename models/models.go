@@ -44,4 +44,21 @@ func init() {
 	}
 
 	DB.AutoMigrate(&Dict{}, &Tag{}, &Category{}, &Image{})
+
+	InitSeed()
+}
+
+func InitSeed() {
+	cate := new(Category)
+	DB.Where(Category{Name: "アイドル・女優"}).
+		Attrs(Category{Yomi: "あいどるじょゆう", Romaji: "aidorujoyu", Gyou: "a", Prefix: "diva"}).
+		FirstOrCreate(&cate)
+	cate = new(Category)
+	DB.Where(Category{Name: "漫画・アニメ"}).
+		Attrs(Category{Yomi: "まんがあにめ", Romaji: "mangaanime", Gyou: "ma", Prefix: "anime"}).
+		FirstOrCreate(&cate)
+	cate = new(Category)
+	DB.Where(Category{Name: "漫画・アニメキャラ"}).
+		Attrs(Category{Yomi: "まんがあにめきゃら", Romaji: "mangaanimekyara", Gyou: "ma", Prefix: "character"}).
+		FirstOrCreate(&cate)
 }
