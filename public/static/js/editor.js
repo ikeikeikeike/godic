@@ -5,6 +5,7 @@ var $entry_preview = $(".entry-preview");
 var $page_name = $("#page-name");
 var $page_yomi = $("#page-yomi");
 var $page_message = $("#page-message");
+var $page_category = $('#page-category');
 
 // Tabs
 $entry_markdown_header.click(function(){
@@ -63,14 +64,19 @@ $(function(){
   });
 
   $('#dict-category ul li').on('click', function() {
-    var innerText = $(this).text().trim();
+    var $self = $(this),
+        $button = $('#dict-category button'),
+        innerText = $self.text().trim();
+
     if (innerText === 'カテゴリー解除') {
-      $('#dict-category button span').html('<span class="hidden-xs">カテゴリー <i class="fa fa-caret-down"></i></span>');
-      $('#dict-category button').removeClass('btn-info').addClass('btn-default');
+      $button.find('span').html('<span class="hidden-xs">カテゴリー <i class="fa fa-caret-down"></i></span>');
+      $button.removeClass('btn-info').addClass('btn-default');
     } else {
-      $('#dict-category button span').text(innerText);
-      $('#dict-category button').removeClass('btn-default').addClass('btn-info');
+      $button.find('span').text(innerText);
+      $button.removeClass('btn-default').addClass('btn-info');
     }
+
+    $page_category.val($self.find('a').data("id"));
   });
 });
 
@@ -83,6 +89,7 @@ var aced = new Aced({
       name: $page_name.val(),
       yomi: $page_yomi.val(),
       message: $page_message.val(),
+      category: $page_category.val(),
       content: content,
     };
 
@@ -95,14 +102,20 @@ var aced = new Aced({
       data: data,
       dataType: 'json'
     }).always(function(data, status, error) {
+      console.log(data.responseJSON, status, error);
+
       if (status !== 'error') {
         location.href = path;
         return;
       }
+
       var res = data.responseJSON, r, i;
 
       if (data.status === 403) {
         bootbox.alert("<h3>" + "投稿が許可されていません。<br/>ログイン後再度お試し下さい。" + "</h3>");
+        return;
+      } else if (data.status === 400) {
+        bootbox.alert("<h3>" +  res.msg + "</h3>");
         return;
       } else if (data.status >= 500) {
         bootbox.alert(

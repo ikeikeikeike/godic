@@ -35,6 +35,11 @@ func (r *Repo) Init(path string) (err error) {
 		if r.Repo, err = git.InitRepository(path, false); err != nil {
 			return
 		}
+		_, stderr, err := com.ExecCmdDirBytes(path,
+			"git", "config", "--local", "core.quotepath", "false")
+		if err != nil {
+			return errors.New(string(stderr))
+		}
 	}
 	r.Path = path
 	r.Head = &Head{r.Repo}
