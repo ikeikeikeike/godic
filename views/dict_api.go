@@ -15,9 +15,9 @@ import (
 )
 
 type APIResponse struct {
-	ok  bool
-	sha string
-	msg string
+	Ok  bool   `json:"ok"`
+	Sha string `json:"sha"`
+	Msg string `json:"msg"`
 }
 
 func UpdateDict(params martini.Params, commit forms.Commit, errs binding.Errors, r render.Render) {
@@ -25,8 +25,8 @@ func UpdateDict(params martini.Params, commit forms.Commit, errs binding.Errors,
 
 	if len(errs) > 0 {
 		msg := fmt.Sprintf("valid error (%d):\n%+v", len(errs), errs)
-		r.JSON(404, APIResponse{ok: false, msg: msg})
-		log.Fatal(msg)
+		r.JSON(400, APIResponse{Ok: false, Msg: msg})
+		log.Warn(msg)
 		return
 	}
 
@@ -38,12 +38,12 @@ func UpdateDict(params martini.Params, commit forms.Commit, errs binding.Errors,
 	sha1, err := repo.SaveFile(m.Name, commit.Content, commit.Message)
 	if err != nil {
 		msg := fmt.Sprintf("Update file error: %s", err)
-		r.JSON(200, APIResponse{ok: false, msg: msg})
-		log.Fatal(msg)
+		r.JSON(400, APIResponse{Ok: false, Msg: msg})
+		log.Warn(msg)
 		return
 	}
 
-	r.JSON(200, APIResponse{ok: true, sha: sha1.String()})
+	r.JSON(200, APIResponse{Ok: true, Sha: sha1.String()})
 }
 
 func CreateDict(params martini.Params, commit forms.Commit, errs binding.Errors, r render.Render) {
@@ -51,12 +51,18 @@ func CreateDict(params martini.Params, commit forms.Commit, errs binding.Errors,
 
 	if len(errs) > 0 {
 		msg := fmt.Sprintf("valid error (%d):\n%+v", len(errs), errs)
-		r.JSON(404, APIResponse{ok: false, msg: msg})
-		log.Fatal(msg)
+		r.JSON(400, APIResponse{Ok: false, Msg: msg}) // # TODO: using error message in javascript alert, must change to japanease.
+		log.Warn(msg)
 		return
 	}
 
-	m, _ := dict.FirstOrCreateByCommit(commit)
+	m, created := dict.FirstOrCreateByCommit(commit)
+	if !created {
+		msg := fmt.Sprintf("%[1]sは既に存在します: > <a target='blank_' href='/d/%[1]s'>%[1]s</a>", m.Name)
+		r.JSON(400, APIResponse{Ok: false, Msg: msg})
+		log.Warn(msg)
+		return
+	}
 
 	repo := git.NewRepo()
 	repo.Init(path.Join(RepoPath, m.GetPrefix()))
@@ -65,19 +71,19 @@ func CreateDict(params martini.Params, commit forms.Commit, errs binding.Errors,
 	sha1, err := repo.SaveFile(m.Name, commit.Content, commit.Message)
 	if err != nil {
 		msg := fmt.Sprintf("Create file error: %s", err)
-		r.JSON(200, APIResponse{ok: false, msg: msg})
-		log.Fatal(msg)
+		r.JSON(400, APIResponse{Ok: false, Msg: msg})
+		log.Warn(msg)
 		return
 	}
 
-	r.JSON(200, APIResponse{ok: true, sha: sha1.String()})
+	r.JSON(200, APIResponse{Ok: true, Sha: sha1.String()})
 }
 
 func DeleteDict(params martini.Params, html html.HTMLContext, r render.Render) {
 	log.Debugln("DeleteDict action !!!!!")
 
 	if params["name"] == "" {
-		r.JSON(404, APIResponse{ok: false, msg: "Invalid name"})
+		r.JSON(404, APIResponse{Ok: false, Msg: "Invalid name"})
 		return
 	}
 
