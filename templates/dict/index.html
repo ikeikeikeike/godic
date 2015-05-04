@@ -16,12 +16,12 @@
           <th class="hidden-xs hidden-sm">Created</th>
         </tr>
         </thead>
-        {{range $i, $name := .Names}}
+        {{range $i, $d := .Dicts}}
           <tr>
-            <td><a href='{{urlFor "show" $name}}'>{{$i}}</a></td>
-            <td class="hidden-xs">{{$name}}</td>
-            <td>{{$name}}</td>
-            <td class="hidden-xs hidden-sm">{{$name}}</td>
+            <td><a href='{{urlFor "show" $d.Name}}'>{{$d.Name}}</a></td>
+            <td class="hidden-xs">{{$d.Prefix}}</td>
+            <td>{{timeSince $d.UpdatedAt}}</td>
+            <td class="hidden-xs hidden-sm">{{timeSince $d.CreatedAt}}</td>
           </tr>
         {{end}}
       </table>

@@ -5,17 +5,11 @@
 <div class="container">
   <div id="main-body">
 
-      {{if .Errors}}
-        <div class='alert alert-primary'>
-          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-        </div>
-      {{end}}
-
       <div id="app-wrap">
         <div id="app-controls" class="row">
 
           <div class="col-xs-4 col-sm-3 col-md-3">
-            <input id="page-name" type="text" class="form-control input-sm" name="name" placeholder="記事のタイトルを入力" value="{{.Name}}" />
+            <input {{if .Dict}}readonly{{end}} id="page-name" type="text" class="form-control input-sm" name="name" placeholder="記事のタイトルを入力" value="{{.Name}}" />
           </div>
 
           <div class="col-xs-4 col-sm-3 col-md-3">
@@ -67,27 +61,26 @@
             {{end}}
 
             <div id='dict-category' class="dropdown btn-group">
-              <input type='hidden' name='category' value='' />
+              <input id='page-category' type='hidden' name='category' 
+                     value='{{if .Category}}{{.Category.ID}}{{end}}'
+              />
 
-              <button class="btn btn-default btn-sm dropdown-toggle" type="button" id="editor-categories"
+              <button class="btn btn-{{if .Category}}info{{else}}default{{end}} btn-sm dropdown-toggle" 
+                      type="button" id="editor-categories"
                       data-toggle="dropdown" title="Category">
                 <i class="fa fa-archive"></i>
-                <span class="hidden-xs">カテゴリー <i class="fa fa-caret-down"></i></span>
+                <span class="hidden-xs">{{if .Category}}{{.Category.Name}}{{else}}カテゴリー{{end}} <i class="fa fa-caret-down"></i></span>
               </button>
 
               <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="editor-categories">
-                <li role="presentation">
-                  <a role="menuitem" tabindex="-1" href="#" id="choice-diva" data-value=''> アイドル・女優</a>
-                </li>
-                <li role="presentation">
-                  <a role="menuitem" tabindex="-1" href="#" id="choice-anime" data-value=''> アニメ作品</a>
-                </li>
-                <li role="presentation">
-                  <a role="menuitem" tabindex="-1" href="#" id="choice-character" data-value=''> アニメキャラクター</a>
-                </li>
+                {{range $i, $c := .Categories}}
+                  <li role="presentation">
+                    <a role="menuitem" tabindex="-1" href="#" id="choice-{{$c.Prefix}}" data-id='{{$c.ID}}'> {{$c.Name}}</a>
+                  </li>
+                {{end}}
                 <li class="divider"></li>
                 <li role="presentation">
-                  <a role="menuitem" tabindex="-1" href="#" id="choice-category"> カテゴリー解除</a>
+                  <a role="menuitem" tabindex="-1" href="#" id="remove-category" data-id=''> カテゴリー解除</a>
                 </li>
               </ul>
             </div>
