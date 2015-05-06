@@ -1,0 +1,23 @@
+{
+  "name": "godic",
+  "version": "0.0.1",
+  "homepage": "http://example.com",
+  "authors": [
+    "godic"
+  ],
+  "description": "for administrator",
+  "keywords": [
+    "godic"
+  ],
+  "license": "PRIVATE",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bookmarkhub": "~0.9.9"
+  },
+  "devDependencies": {}
+}
