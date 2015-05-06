@@ -1,0 +1,26 @@
+{
+  "name": "bookmarkhub.js",
+  "version": "0.9.9",
+  "main": "bookmarkhub.js",
+  "author": "Tatsuo Ikeda",
+  "ignore": [
+    ".gitignore",
+    "README.rst",
+    "README.md",
+    "LICENSE",
+    "index.html"
+  ],
+  "dependencies": {
+    "jquery": ">=1.5.1"
+  },
+  "homepage": "https://github.com/ikeikeikeike/bookmarkhub",
+  "_release": "0.9.9",
+  "_resolution": {
+    "type": "version",
+    "tag": "v0.9.9",
+    "commit": "ab159a14ef1496ea7a1daa6d945210afd8b17955"
+  },
+  "_source": "git://github.com/ikeikeikeike/bookmarkhub.git",
+  "_target": "~0.9.9",
+  "_originalSource": "bookmarkhub"
+}
