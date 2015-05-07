@@ -1,0 +1,32 @@
+<!-- Fixed navbar -->
+<div class="navbar navbar-inverse">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">記事を{{if .Dict}}編集{{else}}追加{{end}}する</a>
+    </div>
+    <div class="navbar-collapse collapse navbar-inverse-collapse">
+      <ul class="nav navbar-nav">
+          <li><a href='{{urlFor "index"}}'><i class="fa fa-list"></i> 一覧に戻る</a></li>
+          {{if .Dict}}
+            <li><a href='{{urlFor "show" .Dict.Name}}'><i class="fa fa-newspaper-o"></i> {{.Dict.Name}}に戻る</a></li>
+            {{range $k, $v := .Params}}
+              {{if eq $k "name"}}
+                <li class='{{if eq current "dict/edit"}}active{{end}}'><a href='{{urlFor "edit" $v}}'><i class="fa fa-pencil"></i> 記事の編集</a></li>
+                <li class='{{if eq current "dict/history"}}active{{end}}'><a href='{{urlFor "history" $v}}'><i class="fa fa-clock-o"></i> 記事の編集履歴</a></li>
+              {{end}}
+            {{end}}
+          {{end}}
+      </ul>
+
+      <ul class="nav navbar-nav navbar-right">
+          <li><a href='{{urlFor "new"}}'><i class="fa fa-plus"></i> 記事を追加</a></li>
+      </ul>
+
+    </div><!--/.nav-collapse -->
+  </div>
+</div>
