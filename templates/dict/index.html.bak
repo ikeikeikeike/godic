@@ -1,0 +1,107 @@
+{{template "header" .}}
+
+<!-- Page Menu -->
+<div class="container">
+  <div id="main-body">
+      <div class='alert alert-primary'>
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+      </div>
+
+      <div class="page-header">
+        <h1>新着タグ <small>すべて</small></h1>
+      </div>
+      <table class="table table-bordered data-table">
+        <thead>
+        <tr>
+          <th>Name</th>
+          <th class="hidden-xs">Bytes</th>
+          <th>Modified</th>
+          <th class="hidden-xs hidden-sm">Created</th>
+        </tr>
+        </thead>
+        {{range $i, $d := .Dicts}}
+          <tr>
+            <td><a href='{{urlFor "show" $d.Name}}'>{{$d.Name}}</a></td>
+            <td class="hidden-xs">{{$d.Prefix}}</td>
+            <td>{{timeSince $d.UpdatedAt}}</td>
+            <td class="hidden-xs hidden-sm">{{timeSince $d.CreatedAt}}</td>
+          </tr>
+        {{end}}
+      </table>
+
+      <div class="page-header">
+        <h1><small>{{.Diva.Name}}</small></h1>
+      </div>
+      <table class="table table-bordered">
+        <thead>
+        <tr>
+          <th>Name</th>
+          <th class="hidden-xs">Bytes</th>
+          <th>Modified</th>
+          <th class="hidden-xs hidden-sm">Created</th>
+        </tr>
+        </thead>
+        {{range $i, $d := .Diva.Dicts}}
+          <tr>
+            <td><a href='{{urlFor "show" $d.Name}}'>{{$d.Name}}</a></td>
+            <td class="hidden-xs">{{$d.Prefix}}</td>
+            <td>{{timeSince $d.UpdatedAt}}</td>
+            <td class="hidden-xs hidden-sm">{{timeSince $d.CreatedAt}}</td>
+          </tr>
+        {{end}}
+      </table>
+
+      <div class="page-header">
+        <h1><small>{{.Anime.Name}}</small></h1>
+      </div>
+      <table class="table table-bordered">
+        <thead>
+        <tr>
+          <th>Name</th>
+          <th class="hidden-xs">Bytes</th>
+          <th>Modified</th>
+          <th class="hidden-xs hidden-sm">Created</th>
+        </tr>
+        </thead>
+        {{range $i, $d := .Anime.Dicts}}
+          <tr>
+            <td><a href='{{urlFor "show" $d.Name}}'>{{$d.Name}}</a></td>
+            <td class="hidden-xs">{{$d.Prefix}}</td>
+            <td>{{timeSince $d.UpdatedAt}}</td>
+            <td class="hidden-xs hidden-sm">{{timeSince $d.CreatedAt}}</td>
+          </tr>
+        {{end}}
+      </table>
+
+      <div class="page-header">
+        <h1><small>{{.Character.Name}}</small></h1>
+      </div>
+      <table class="table table-bordered">
+        <thead>
+        <tr>
+          <th>Name</th>
+          <th class="hidden-xs">Bytes</th>
+          <th>Modified</th>
+          <th class="hidden-xs hidden-sm">Created</th>
+        </tr>
+        </thead>
+        {{range $i, $d := .Character.Dicts}}
+          <tr>
+            <td><a href='{{urlFor "show" $d.Name}}'>{{$d.Name}}</a></td>
+            <td class="hidden-xs">{{$d.Prefix}}</td>
+            <td>{{timeSince $d.UpdatedAt}}</td>
+            <td class="hidden-xs hidden-sm">{{timeSince $d.CreatedAt}}</td>
+          </tr>
+        {{end}}
+      </table>
+
+  </div>
+</div>
+
+{{template "footer" .}}
+{{template "script" .}}
+<script>
+$(document).ready(function() {
+    $('.data-table').dataTable();
+});
+</script>
