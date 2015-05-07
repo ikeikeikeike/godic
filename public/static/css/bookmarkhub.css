@@ -1,0 +1,16 @@
+.bookmarkhub {
+    min-height: 20px;
+}
+
+.bookmarkhub a img {
+   display: inline-block !important;
+}
+
+.addthis_inner_extra {
+    margin-top: -10px;
+}
+
+.addthis_inner_extra a.add-icon, .addthis_inner_extra a.edit-icon {
+    display: block; 
+    margin-bottom: 10px;
+}
