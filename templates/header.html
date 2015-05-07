@@ -1,26 +1,425 @@
-<!-- Fixed navbar -->
-<div class="navbar navbar-inverse">
-  <div class="container">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="/">site title</a>
-    </div>
-    <div class="navbar-collapse collapse navbar-inverse-collapse">
-      <ul class="nav navbar-nav">
-          <li><a href='{{urlFor "index"}}'><i class="fa fa-list"></i> Index</a></li>
-          <li><a href='{{urlFor "new"}}'><i class="fa fa-plus"></i> New</a></li>
-          {{range $k, $v := .Params}}
-            {{if eq $k "name"}}
-              <li><a href='{{urlFor "edit" $v}}'><i class="fa fa-pencil"></i> Edit</a></li>
-              <li><a href='{{urlFor "history" $v}}'><i class="fa fa-clock-o"></i> History</a></li>
-            {{end}}
-          {{end}}
-      </ul>
-
-    </div><!--/.nav-collapse -->
+<!-- =============== HEADER ==============================-->
+<header class="header">
+  <div class="header-inner">
+    <!-- :: info :: .header-inner acts like container -->
+    <!-- #### logo font  -->
+    <div class="logo-brand logo-font">
+      <a href='{{urlFor "index"}}'>
+      <span class="logo-brand-inner">
+        <strong class="">大百科</strong><small>β &lt;3 R-18.org</small>
+        <!-- This demo is using a logo turned into a font, in the examples, there is an img src= version you can use instead -->
+      </span>
+    </a>
   </div>
+  <!-- /.logo-brand-->
+
+    <div class="header-btn-bar">
+      <!-- .menu-toggle -->
+      {{if .Dict}}
+        <a href='{{urlFor "edit" .Dict.Name}}' class="menu-toggle" >
+          <!-- this above data-slide toggles the #navigation-panel .slide-panel -->
+          <div class="menu-toggle-inner">
+            <span class="glyphicon glyphicon-edit glyphicon-2x header-icon">
+            </span>
+            <span class="menu-toggle-text">
+              記事を編集
+            </span>
+          </div>
+        </a>
+      {{else}}
+        <a href='{{urlFor "new"}}' class="menu-toggle" >
+          <!-- this above data-slide toggles the #navigation-panel .slide-panel -->
+          <div class="menu-toggle-inner">
+            <span class="glyphicon glyphicon-plus-sign glyphicon-2x header-icon">
+            </span>
+            <span class="menu-toggle-text">
+              記事を作成
+            </span>
+          </div>
+        </a>
+      {{end}}
+      <!-- /.menu-toggle-->
+      <div class="header-btn-wrapper clearfix">
+        <!-- .header-btn-row-->
+        <div class="header-btn-row half-row">
+          <!-- BEGIN 1st .header-btn .header-btn-xl in first row -->
+          <a href="#" class="login-toggle header-btn header-btn-xl" data-slide="slide" data-target="#login-panel"> <i class="fa fa-sign-in header-icon"></i>
+          <span class="header-btn-text">
+            ログイン
+          </span>
+          </a>
+          <!-- this above data-slide toggles the #login-panel .slide-panel example -->
+          <!-- /END 1st .header-btn .header-btn-xl in first row -->
+          <!-- BEGIN 2nd.header-btn .header-btn-xl in first row -->
+          <a href="#" class="signin-toggle header-btn header-btn-xl" data-slide="slide" data-target="#signup-panel"> <i class="fa fa-pencil header-icon"></i>
+          <span class="header-btn-text">
+            新規登録
+          </span>
+          </a>
+          <!-- this above data-slide toggles the #signup-panel .slide-panel example -->
+          <!-- /END 2nd .header-btn .header-btn-xl in first row -->
+        </div>
+        <!-- /.header-btn-row-->
+        <div class="header-btn-row half-row">
+          <!-- BEGIN 3rd .header-btn .header-btn-lg in second row -->
+          <a href="#" class="anchor header-btn header-btn-lg" data-slide="slide" data-target="#contact-panel"> <i class="fa fa-at header-icon"></i>
+          <span class="header-btn-text">
+            Contact
+          </span>
+          </a>
+          <!-- this above data-slide toggles the #contact-panel .slide-panel example -->
+          <!-- /END 3rd .header-btn .header-btn-lg in second row -->
+          <!-- BEGIN 4th .header-btn .header-btn-sm in second row-->
+          <a href="#" class="header-btn header-btn-sm search-toggle" data-slide="slide" data-target="#search-panel"  data-hover="tooltip" data-placement="left" title="search"> <i class="fa fa-search header-icon"></i> </a>
+          <!-- this above data-slide toggles the #search-panel .slide-panel example -->
+          <!-- /END 4th .header-btn .header-btn-sm in second row -->
+          <!-- BEGIN 5th .header-btn .header-btn-sm in second row-->
+          <a href="#" class="header-btn header-btn-sm" data-hover="tooltip" data-placement="left" title="follow us on twitter"> <i class="fa fa-twitter header-icon"></i> </a>
+          <!-- this link above links to your twitter page -->
+          <!-- /END 5th .header-btn .header-btn-sm in second row -->
+          <!-- BEGIN 6th .header-btn .header-btn-sm in second row-->
+          <a href="#" class="header-btn header-btn-sm" data-hover="tooltip" data-placement="left" title="like us on facebook"> <i class="fa fa-facebook header-icon"></i> </a>
+          <!-- this link above links to your facebook page -->
+          <!-- /END 6th .header-btn .header-btn-sm in second row -->
+          <!-- BEGIN 7th .header-btn .header-btn-sm in second row -->
+          <a href="#" class="header-btn header-btn-sm" data-hover="tooltip" data-placement="left" title="subscribe to our RSS"> <i class="fa fa-rss header-icon"></i> </a>
+          <!-- this link above links to your google+ page -->
+          <!-- /END 7th .header-btn .header-btn-sm in second row -->
+        </div>
+        <!-- /END .header-btn-row-->
+      </div>
+      <!-- /END .header-btn-wrapper-->
+    </div>
+    <!-- /END .header-btn-bar -->
+
+  </div>
+  <!-- /END .header-inner -->
+</header>
+<!-- =============== END HEADER ==============================-->
+
+<!-- ================== BEGIN SLIDE OUT PANELS  ================= -->
+<div class="slide-panel-parent">
+  <!-- .slide-panel-parent goes around all the panels -->
+  <!-- _____________ NAVIGATION PANEL _______ -->
+  <div class="slide-panel" id="navigation-panel">
+    <a href="#" class="close ti ti-close">
+    <!--themify icon font-->
+    </a>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6 col-lg-8">
+          <!-- _________ BEGIN NAVIGATION ___________ -->
+          <nav id="nav" role="navigation">
+            <ul>
+              <li><a class='current' href='{{urlFor "index"}}'><i class="fa fa-list"></i> Home</a></li>
+              <li><a href='{{urlFor "new"}}'><i class="fa fa-plus"></i> News</a></li>
+              {{range $k, $v := .Params}}
+                {{if eq $k "name"}}
+                  <li><a href='{{urlFor "edit" $v}}'><i class="fa fa-pencil"></i> Edit</a></li>
+                  <li><a href='{{urlFor "history" $v}}'><i class="fa fa-clock-o"></i> History</a></li>
+                {{end}}
+              {{end}}
+              {{if false}}
+              <li><a href="multi-col-menu.html">Multiple Column Menu on Larger Viewports</a></li>
+              <li class="has-children"> <a href="#">Header Options</a>
+                <ul>
+                  <li><a href="tall-button-header.html">Tall Button Header</a></li>
+                  <li><a href="image-logo.html">Image Logo</a></li>
+                  <li><a href="tall-logo.html">Tall Logo Image</a></li>
+                </ul>
+              </li>
+              <li class="has-children"> <a href="#">Carousels</a>
+                <ul>
+                  <li><a href="variable-width-slider.html">Variable Image Widths</a></li>
+                  <li><a href="testimonial-slider.html">Testimonial Slider</a></li>
+                  <li><a href="featured-work-slider.html">Featured Work Slider</a></li>
+                  <li><a href="equal-column-slider.html">Equal Column Slider</a></li>
+                  <li><a href="video-slider.html">Video Slider</a></li>
+                  <li><a href="mini-bootstrap-carousel.html">Mini Slider</a></li>
+                </ul>
+              </li>
+              <li class="has-children"> <a href="#">Components</a>
+                <ul>
+                  <li><a href="bootstrap-3-misc-sink.html">Misc. Bootstrap Components</a></li>
+                  <li><a href="modals.html">Magnific Popup Modals</a></li>
+                  <li class="has-children"> <a href="#">Icons</a>
+                    <ul>
+                      <li><a href="themify-icons.html">Themify Icons</a></li>
+                      <li><a href="font-awesome.html">Font Awesome</a></li>
+                      <li><a href="glyphicons.html">Glyphicons</a></li>
+                      <li><a href="icon-usage.html">Icon Usage</a></li>
+                    </ul>
+                  </li>
+                  <li class="has-children"> <a href="#">Collapse/Tabs</a>
+                    <ul>
+                      <li><a href="tabs.html">Tabs</a></li>
+                      <li><a href="left-tabs.html">Left Tabs</a></li>
+                      <li><a href="collapse.html">Collapse/Accordion</a></li>
+                    </ul>
+                  </li>
+                </ul>
+              </li>
+              <li class="has-children"> <a href="#">Pages & Misc</a>
+                <ul>
+                  <li><a href="about-us-option-1.html">About Us Option 1</a></li>
+                  <li><a href="about-us-option-2.html">About Us Option 2</a></li>
+                  <li><a href="testimonials.html">Testimonials</a></li>
+                  <li><a href="pricing-columns.html">Pricing Columns</a></li>
+                  <li><a href="faq.html">FAQ</a></li>
+                  <li><a href="scrollspy-left.html">Scrollspy Left Column</a></li>
+                  <li><a href="scrollspy-right.html">Scrollspy Right Column</a></li>
+                  <li><a href="simple-gallery.html">Simple Image Gallery</a></li>
+                  <li><a href="equal-height.html">Equal Height Columns</a></li>
+                  <li><a href="blank-template.html">Blank Template</a></li>
+                  <li><a href="page-not-found.html">404 Page Not Found</a></li>
+                  <li><a href="typography-example.html">Typography Example</a></li>
+                </ul>
+              </li>
+              <li class="has-children"> <a href="#" class="current">Blog</a>
+                <ul>
+                  <li class="active"><a href="blog-summary-masonry-layout.html">Blog Summary Isotope</a></li>
+                  <li><a href="blog-summary-left.html">Blog Summary L</a></li>
+                  <li><a href="blog-summary-right.html">Blog Summary R</a></li>
+                  <li><a href="blog-single.html">Single Blog Post</a></li>
+                </ul>
+              </li>
+              <li class="has-children"> <a href="#">Portfolio</a>
+                <ul>
+                  <li><a href="portfolio-masonry.html">Portfolio Masonry</a></li>
+                  <li><a href="portfolio-single.html">Portfolio Single Item</a></li>
+                </ul>
+              </li>
+              <li><a href="contact.html">Contact</a></li>
+              <li><a href="login.html">Login</a></li>
+              <li><a href="sign-up.html">Sign Up</a></li>
+              {{end}}
+            </ul>
+          </nav>
+        </div>
+        <!--/.col-md-6 col-lg-8 -->
+        <div class="col-md-6 col-lg-4">
+          <h4 class="h2">Latest News</h4>
+          <ul>
+            <li><a href="your-link-goes-here.html">We will amplify our power to benchmark...</a></li>
+            <li><a href="your-link-goes-here.html">We have revolutionized the conceptualization...</a></li>
+            <li><a href="your-link-goes-here.html">Everything is relative; relatively speaking.</a></li>
+            <li><a href="your-link-goes-here.html">My other body is an immortal robot body.</a></li>
+            <li><a href="your-link-goes-here.html">I don't know who they are but they're...</a></li>
+            <li><a href="your-link-goes-here.html">For those about to rock, we salute you </a> </li>
+          </ul>
+          <h4 class="h2">Latest Work</h4>
+          <div class="img-widget fade-hover-img">
+            <a href="#"><img src="/assets/demo-images/img-widget/1.jpg" alt="" /></a> <a href="#"><img src="/assets/demo-images/img-widget/2.jpg" alt="" /></a> <a href="#"><img src="/assets/demo-images/img-widget/3.jpg" alt="" /></a> <a href="#"><img src="/assets/demo-images/img-widget/4.jpg" alt="" /></a> <a href="#"><img src="/assets/demo-images/img-widget/5.jpg" alt="" /></a> <a href="#"><img src="/assets/demo-images/img-widget/6.jpg" alt="" /></a> <a href="#"><img src="/assets/demo-images/img-widget/7.jpg" alt="" /></a> <a href="#"><img src="/assets/demo-images/img-widget/8.jpg" alt="" /></a> <a href="#"><img src="/assets/demo-images/img-widget/9.jpg" alt="" /></a> <a href="#"><img src="/assets/demo-images/img-widget/10.jpg" alt="" /></a>
+          </div>
+          <!--/.img-widget-->
+        </div>
+        <!--/.col-md-6 col-lg-4 -->
+      </div>
+      <!--/.row -->
+    </div>
+    <!--/.container inside #navigation-panel -->
+  </div>
+  <!--/.slide-panel #navigation-panel -->
+  <!-- _________ SEARCH PANEL #search-panel___________ -->
+  <div class="slide-panel search" id="search-panel">
+    <a href="#" class="close ti ti-close">
+    <!--themify icon font-->
+    </a>
+    <div class="container">
+      <h3 class="slide-panel-title">Search</h3>
+      <form role="form">
+        <div class="form-group">
+          <input type="search" placeholder="Enter search term and press enter" class="form-control">
+        </div>
+        <!--/.form-group -->
+      </form>
+    </div>
+    <!--/.container -->
+  </div>
+  <!--/.slide-panel #search-panel -->
+  <!-- _________ CONTACT PANEL ___________ -->
+  <div class="slide-panel" id="contact-panel">
+    <a href="#" class="close ti ti-close">
+    <!--themify icon font-->
+    </a>
+    <div class="container">
+      <h2 class="slide-panel-title text-center-md-view">Contact Us</h2>
+      <div class="row">
+        <div class="col-md-6 text-right-md-view text-right-lg-view">
+          <h3>Organized Organization</h3>
+          <p class="lead"> 1255 Nowhere Street<br>
+            Tampa, FL 33655<br>
+            <strong>phone:</strong> <a href="tel:8135551234">813.555.1234</a><br>
+            <strong>fax:</strong> 813.555.1235<br>
+            <span class="overflow">
+              <strong>email:</strong> <a class="link-underline" href="mailto:email@domain.com">email@companydomain.com</a>
+            </span>
+          </p>
+        </div>
+        <!-- /.col-md-6 -->
+
+        <div class="col-md-6">
+          <h3>Find Us On...</h3>
+          <ul class="social-icon-list">
+            <li><a href="#"><i class="fa fa-fw fa-2x fa-google-plus"></i></a></li>
+            <li><a href="#"><i class="fa fa-fw fa-2x fa-facebook"></i></a></li>
+            <li><a href="#"><i class="fa fa-fw fa-2x fa-twitter"></i></a></li>
+            <li><a href="#"><i class="fa fa-fw fa-2x fa-github"></i></a></li>
+            <li><a href="#"><i class="fa fa-fw fa-2x fa-linkedin"></i></a></li>
+            <li><a href="#"><i class="fa fa-fw fa-2x fa-pinterest"></i></a></li>
+            <li><a href="#"><i class="fa fa-fw fa-2x fa-instagram"></i></a></li>
+          </ul>
+        </div>
+        <!-- /.col-md-6 -->
+
+      </div>
+      <!--/.row -->
+    </div>
+    <!--/.container -->
+  </div>
+  <!--/.slide-panel #contact-panel -->
+  <!-- _________ LOGIN PANEL #login-panel ___________ -->
+  <div class="slide-panel" id="login-panel">
+    <a href="#" class="close ti ti-close">
+    <!--themify icon font-->
+    </a>
+    <div class="container">
+      <h2 class="slide-panel-title">Login</h2>
+      <div class="row">
+        <div class="col-md-6">
+          <h4 class="no-margin-top">Social Login</h4>
+          <ul class="list-unstyled social-user">
+            <li><a href="#" title="Login with Facebook" class="facebook"><i class="fa fa-facebook"></i>
+              <span>
+                Login with Facebook
+              </span>
+              </a></li>
+            <li><a href="#" title="Login with Google Plus" class="google"><i class="fa fa-google-plus"></i>
+              <span>
+                Login with Google
+              </span>
+              </a></li>
+            <li><a href="#" title="Login with Twitter" class="twitter"><i class="fa fa-twitter"></i>
+              <span>
+                Login with Twitter
+              </span>
+              </a></li>
+            <li><a href="#" title="Login with Wordpress" class="wordpress"><i class="fa fa-wordpress"></i>
+              <span>
+                Login with Wordpress
+              </span>
+              </a></li>
+          </ul>
+          <!-- /.social-user -->
+        </div>
+        <!-- /.col-*-6 -->
+        <div class="col-md-6">
+          <h4 class="no-margin-top">Sign In</h4>
+          <form role="form" action="your-script.php">
+            <div class="form-group">
+              <input type="email" class="form-control form-control-lg" placeholder="Enter email">
+            </div>
+            <div class="form-group">
+              <input type="password" class="form-control  form-control-lg" placeholder="Password">
+            </div>
+            <div class="form-group checkbox small">
+              <label>
+                <input type="checkbox">
+                Remember Me </label>
+            </div>
+            <p class="text-center">
+              <button class="btn btn-slide-panel btn-lg btn-block" type="submit"><i class="ti ti-lock"></i> Sign in</button>
+            </p>
+          </form>
+          <p class="text-center clear"><a href="#" data-slide="slide" data-target="#forgot-password-panel" class="link-underline">Forgot your password?</a> <br>
+            Don't have an account yet? <a class="link-underline signin-toggle" href="#" data-slide="slide" data-target="#signup-panel">Sign up</a> </p>
+        </div>
+        <!-- /.col-*-6 -->
+      </div>
+      <!-- /.row -->
+    </div>
+    <!-- /.container -->
+  </div>
+  <!--/.slide-panel #login-panel -->
+  <!-- _________ SIGNUP PANEL #signup-panel ___________ -->
+  <div class="slide-panel" id="signup-panel">
+    <a href="#" class="close ti ti-close">
+    <!--themify icon font-->
+    </a>
+    <div class="container">
+      <h2 class="slide-panel-title">Sign In</h2>
+      <div class="row">
+        <div class="col-md-6">
+          <h4 class="no-margin-top">Sign Up with...</h4>
+          <ul class="list-unstyled social-user">
+            <li><a href="#" title="Signup with Facebook" class="facebook"><i class="fa fa-facebook"></i>
+              <span>
+                Signup with Facebook
+              </span>
+              </a></li>
+            <li><a href="#" title="Signup with Google Plus" class="google"><i class="fa fa-google-plus"></i>
+              <span>
+                Signup with Google
+              </span>
+              </a></li>
+            <li><a href="#" title="Signup with Twitter" class="twitter"><i class="fa fa-twitter"></i>
+              <span>
+                Signup with Twitter
+              </span>
+              </a></li>
+            <li><a href="#" title="Signup with Wordpress" class="wordpress"><i class="fa fa-wordpress"></i>
+              <span>
+                Signup with Wordpress
+              </span>
+              </a></li>
+          </ul>
+          <!-- /.social-user -->
+        </div>
+        <!-- /.col-*-6 -->
+        <div class="col-md-6">
+          <h4 class="no-margin-top">Sign Up</h4>
+          <form role="form" action="your-script.php">
+            <div class="form-group">
+              <input type="email" class="form-control form-control-lg" placeholder="Enter email">
+            </div>
+            <div class="form-group">
+              <input type="password" class="form-control form-control-lg" placeholder="Password">
+            </div>
+            <p class="text-center">
+              <button class="btn btn-slide-panel btn-lg btn-block" type="submit"><i class="ti ti-lock"></i> Register</button>
+            </p>
+          </form>
+          <p class="text-center clear">Already have an account? <a class="link-underline login-toggle" href="#" data-slide="slide" data-target="#login-panel">Login</a></p>
+        </div>
+        <!-- /.col-*-6 -->
+      </div>
+      <!-- /.row -->
+    </div>
+    <!-- /.container -->
+  </div>
+  <!--/.slide-panel #signup-panel -->
+  <!-- _________ FORGOT PASSWORD #forgot-password-panel ___________ -->
+  <div class="slide-panel" id="forgot-password-panel">
+    <a href="#" class="close ti ti-close">
+    <!--themify icon font-->
+    </a>
+    <div class="container">
+      <h3 class="slide-panel-title">Forgot Password</h3>
+      <form role="form" action="your-script.php">
+        <div class="input-group input-group-lg input-group-slide-panel">
+          <input class="form-control" placeholder="Your@EmailAddress.com" type="email">
+          <span class="input-group-btn">
+            <button type="submit" class="btn btn-slide-panel btn-lg">Reset Password</button>
+          </span>
+          <!--/.input-group-btn-->
+        </div>
+      </form>
+      <hr class="vertical-spacer height-20px">
+      <p class="text-center"><a href="#" data-slide="slide" data-target="#login-panel" class="link-underline login-toggle">Remembered your Password?</a></p>
+    </div>
+    <!-- /.container -->
+  </div>
+  <!--/.slide-panel #forgot-password-panel -->
 </div>
+<!-- END .slide-down-parent -->
+<!-- ================== END SLIDE OUT PANELS  ================= -->

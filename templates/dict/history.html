@@ -1,5 +1,4 @@
-{{template "header" .}}
-
+{{template "header-editor" .}}
 
 <!-- Page Menu -->
 <div class="container">
@@ -10,16 +9,16 @@
 
       <h2><strong>{{ .Name }}</strong>の編集履歴</h2>
       <p>
-        <a class="btn btn-default btn-sm compare-revisions">Compare Revisions</a>
+        <a class="btn btn-default btn-sm compare-revisions">チェックした記事同士の比較</a>
       </p>
 
       <table class="table table-bordered revision-tbl">
         <thead>
         <tr>
           <th></th>
-          <th>Name</th>
-          <th>Revision Message</th>
-          <th>Date</th>
+          <th>編集者</th>
+          <th>編集コメント</th>
+          <th>日付</th>
         </tr>
         </thead>
         {{$list := toList .History}}
@@ -37,21 +36,29 @@
         {{end}}
       </table>
       <p>
-        <a class="btn btn-default btn-sm compare-revisions">Compare Revisions</a>
+        <a class="btn btn-default btn-sm compare-revisions">チェックした記事同士の比較</a>
       </p>
 
   </div>
 </div>
 
-{{template "footer" .}}
-{{template "script" .}}
+{{template "footer-editor" .}}
+{{template "script-editor" .}}
 
 <script>
   $(function(){
     $('.revision-tbl :checkbox').change(function () {
-      var $cs=$(this).closest('.revision-tbl').find(':checkbox:checked');
+      var $cs = $(this).closest('.revision-tbl').find(':checkbox:checked'),
+          $diffBtn = $(".compare-revisions");
+
       if ($cs.length > 2) {
-        this.checked=false;
+        this.checked = false;
+      }
+
+      if ($cs.length >= 2) {
+        $diffBtn.removeClass('btn-default').addClass('btn-info');
+      } else {
+        $diffBtn.removeClass('btn-info').addClass('btn-default');
       }
     });
 

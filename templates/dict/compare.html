@@ -1,6 +1,6 @@
 <link href="/static/css/compare.css" rel="stylesheet" />
 
-{{template "header" .}}
+{{template "header-editor" .}}
 
 <!-- Page Menu -->
 <div class="container">
@@ -53,11 +53,11 @@
                   {{end}}
               </div>
               {{if $file.IsDeleted}}
-                <a class="pull-right" rel="nofollow" href="{{$.BeforeSourcePath}}/{{.Name}}">古いHTMLを表示する</a>
-                <a class="pull-right" rel="nofollow" href="{{$.BeforeSourcePath}}/{{.Name}}">新しいHTMLを表示する</a>
+                <a class="pull-right" rel="nofollow" href="{{$.BeforeSourcePath}}/{{.Name}}">古い記事のプレビュー</a>
+                <a class="pull-right" rel="nofollow" href="{{$.BeforeSourcePath}}/{{.Name}}">新しい記事のプレビュー</a>
               {{else}}
-                <a class="pull-right" rel="nofollow" href="{{$.SourcePath}}/{{.Name}}">古いHTMLを表示する</a>
-                <a class="pull-right" rel="nofollow" href="{{$.SourcePath}}/{{.Name}}">新しいHTMLを表示する</a>
+                <a class="pull-right" rel="nofollow" href="{{$.SourcePath}}/{{.Name}}">古い記事のプレビュー</a>
+                <a class="pull-right" rel="nofollow" href="{{$.SourcePath}}/{{.Name}}">新しい記事のプレビュー</a>
               {{end}}
               <span class="file">{{$file.Name}}</span>
           </div>
@@ -87,10 +87,10 @@
               </table>
           </div>
       </div>
-      <br> 
+      <br>
       {{end}}
 
   </div>
 </div>
 
-{{template "footer" .}}
+{{template "footer-editor" .}}

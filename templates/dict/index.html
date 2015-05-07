@@ -1,105 +1,107 @@
 {{template "header" .}}
+{{$g := .}}
 
-<!-- Page Menu -->
-<div class="container">
-  <div id="main-body">
-      <div class='alert alert-primary'>
-        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+<!-- =============== BEGIN #page ==============================-->
+<div id="page">
+  <!-- =========== BEGIN CONTENT FOR THE PAGE =========================================================================== -->
+  <div class="page-content" role="main">
+    <div class="container">
+
+      <div class="headline-inline">
+        <h3 class="headline"> 新着の記事 </h3>
+        <a class="headline-link" href="#"><i class="ti ti-arrow-right"></i> もっとみる</a>
       </div>
 
-      <div class="page-header">
-        <h1>新着タグ <small>すべて</small></h1>
+      <div class="filter">
+        <span class="filter-title">
+          Choose Filter
+        </span>
+        <ul class="sort">
+          <li><a class="active" href="#" data-filter="*">すべて</a></li>
+          {{range $i, $c := .CategoriesALL|reverse}}
+            <li><a href="#" data-filter=".{{$c.Prefix}}">{{$c.Name}}</a></li>
+          {{end}}
+        </ul>
       </div>
-      <table class="table table-bordered data-table">
-        <thead>
-        <tr>
-          <th>Name</th>
-          <th class="hidden-xs">Bytes</th>
-          <th>Modified</th>
-          <th class="hidden-xs hidden-sm">Created</th>
-        </tr>
-        </thead>
-        {{range $i, $d := .Dicts}}
-          <tr>
-            <td><a href='{{urlFor "show" $d.Name}}'>{{$d.Name}}</a></td>
-            <td class="hidden-xs">{{$d.Prefix}}</td>
-            <td>{{timeSince $d.UpdatedAt}}</td>
-            <td class="hidden-xs hidden-sm">{{timeSince $d.CreatedAt}}</td>
-          </tr>
+      <div class="filter-clone">
+        <!-- this is where the clone of the filter goes-->
+      </div>
+      
+      <!-- _________ MASONRY WITH ISOTOPE ___________ -->
+      
+      <ul class="row row-masonry filter-masonry">
+        <li class="grid-sizer"></li>
+        <!-- required for fluid masonry layout -->
+        <li class="gutter-sizer"></li>
+        <!-- required for fluid masonry layout --> 
+        
+        <!-- TEXT POST -->
+        {{range $i, $c := .CategoriesALL}}
+          {{range $i, $d := $c.Dicts}}
+            <li class="post msnry-blog-entry {{$c.Prefix}}">
+              <div class="msnry-blog-entry-text">
+                <h4 class="h5"><a href='{{urlFor "show" $d.Name}}'>{{$d.Name}}</a></h4>
+                <p><a href='{{urlFor "show" $d.Name}}'>{{truncate ($d.Content|markdownHTML|sanitizeHTML) 70}}</a></p>
+                <ul class="msnry-blog-entry-meta list-inline">
+                  <li>
+                    <span class="ti ti-pencil-alt">
+                    </span>
+                    by Nameof Author</li>
+                  <li><a href='{{urlFor "show" $d.Name}}'>
+                    <span class="ti ti-comments">
+                    </span>
+                    5</a></li>
+                  <li>
+                    <span class="ti ti-calendar">
+                    </span>
+                    {{timeSince $d.UpdatedAt}}
+                  </li>
+                </ul>
+              </div>
+            </li>
+          {{end}}
         {{end}}
-      </table>
+        <!--/ .post .msnry-blog-entry --> 
 
-      <div class="page-header">
-        <h1>新着タグ <small>{{.Diva.Name}}</small></h1>
+      </ul>
+      <!--/ .row-masonry -->
+      
+      {{if false}}
+      <div class="text-center">
+        <span class="new-pagination-toggle">
+          Pagination
+        </span>
+        <ul class="new-pagination pagination pagination-lg clearfix">
+          <li><a href="#">&laquo;</a></li>
+          <li><a href="#">1</a></li>
+          <li><a href="#">2</a></li>
+          <li class="disabled">
+            <span>
+              ...
+            </span>
+          </li>
+          <li><a href="#">4</a></li>
+          <li><a href="#">5</a></li>
+          <li><a href="#">&raquo;</a></li>
+        </ul>
       </div>
-      <table class="table table-bordered data-table">
-        <thead>
-        <tr>
-          <th>Name</th>
-          <th class="hidden-xs">Bytes</th>
-          <th>Modified</th>
-          <th class="hidden-xs hidden-sm">Created</th>
-        </tr>
-        </thead>
-        {{range $i, $d := .Diva.Dicts}}
-          <tr>
-            <td><a href='{{urlFor "show" $d.Name}}'>{{$d.Name}}</a></td>
-            <td class="hidden-xs">{{$d.Prefix}}</td>
-            <td>{{timeSince $d.UpdatedAt}}</td>
-            <td class="hidden-xs hidden-sm">{{timeSince $d.CreatedAt}}</td>
-          </tr>
-        {{end}}
-      </table>
-
-      <div class="page-header">
-        <h1>新着タグ <small>{{.Anime.Name}}</small></h1>
-      </div>
-      <table class="table table-bordered data-table">
-        <thead>
-        <tr>
-          <th>Name</th>
-          <th class="hidden-xs">Bytes</th>
-          <th>Modified</th>
-          <th class="hidden-xs hidden-sm">Created</th>
-        </tr>
-        </thead>
-        {{range $i, $d := .Anime.Dicts}}
-          <tr>
-            <td><a href='{{urlFor "show" $d.Name}}'>{{$d.Name}}</a></td>
-            <td class="hidden-xs">{{$d.Prefix}}</td>
-            <td>{{timeSince $d.UpdatedAt}}</td>
-            <td class="hidden-xs hidden-sm">{{timeSince $d.CreatedAt}}</td>
-          </tr>
-        {{end}}
-      </table>
-
-      <div class="page-header">
-        <h1>新着タグ <small>{{.Character.Name}}</small></h1>
-      </div>
-      <table class="table table-bordered data-table">
-        <thead>
-        <tr>
-          <th>Name</th>
-          <th class="hidden-xs">Bytes</th>
-          <th>Modified</th>
-          <th class="hidden-xs hidden-sm">Created</th>
-        </tr>
-        </thead>
-        {{range $i, $d := .Character.Dicts}}
-          <tr>
-            <td><a href='{{urlFor "show" $d.Name}}'>{{$d.Name}}</a></td>
-            <td class="hidden-xs">{{$d.Prefix}}</td>
-            <td>{{timeSince $d.UpdatedAt}}</td>
-            <td class="hidden-xs hidden-sm">{{timeSince $d.CreatedAt}}</td>
-          </tr>
-        {{end}}
-      </table>
-
+      <!-- /.text-center holding .pagination which shows at 992px and higher and is toggled otherwise -->
+      {{end}}
+      
+    </div>
+    <!--/ .container-->
   </div>
+  <!-- /.page-content role=main --> 
+  <!--=========== END CONTENT FOR THE PAGE ============================================================ -->
 </div>
+<!-- ================== END #page ================= --> 
+
+<!-- _________ GO TO TOP ___________ --> 
+<a id="go-to-top" href="#top" title="up"> <i class="ti ti-arrow-up"></i> </a> 
 
 {{template "footer" .}}
 {{template "script" .}}
+
 <script>
 $(document).ready(function() {
     $('.data-table').dataTable();

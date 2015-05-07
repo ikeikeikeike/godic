@@ -1,20 +1,490 @@
 {{template "header" .}}
 
-<!-- Page Menu -->
-<div class="container">
-  <div id="main-body">
-      <div class='alert alert-primary'>
-        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-      </div>
-
-      <div id="page-content">{{.ContentHTML|safeHTML}}</div>
+<!-- =============== BEGIN #page ==============================-->
+<div id="page">
+  <!-- =========== PAGE HEADER ON ALL BUT INDEX PAGES =========================================================================== -->
+  <!-- _________ Page Header ___________ -->
+  <div class="page-header-primary">
+    <div class="container">
+      <h2>{{.Dict.Name}} <small style='display: inline;'>{{.Dict.Yomi}}</small></h2>
+      <ol class="breadcrumb page-header-breadcrumb hidden-xs">
+        <li><a href='{{urlFor "index"}}' class="link-underline">ホーム</a></li>
+        <li class="active">{{.Dict.Name}}</li>
+      </ol>
+    </div>
+    <!-- /.container (for page-header-primary) -->
   </div>
+  <!-- /.page-header-primary -->
+  <!-- =========== BEGIN CONTENT FOR THE PAGE =========================================================================== -->
+  <div class="page-content" role="main">
+    <!--slide to sidebar toggle -->
+    <a class="visible-xs slide-sidebar has-anchor" href="#sidebar"><i class="ti ti-menu"></i> <em>Sidebar</em></a>
+    <div class="container blog">
+      <!-- add class blog summary  -->
+      <div class="row">
+        <!-- ____ PRIMARY COLUMN GOES HERE ____ -->
+        <div class="col-sm-8 col-md-9 primary-column" role="main">
+          <div class="entry-full-post">
+            <!-- _____________ BEGIN 'entry-post' _________ -->
+            <article class="entry-post clearfix">
+
+              {{if false}}
+              <p class="bookmarkhub" style="min-height: 20px;" bookmarkhub-url="{{.Meta.URL}}"></p>
+              {{end}}
+
+              <div id="page-content">{{.ContentHTML|safeHTML}}</div>
+
+              <header class="entry-header">
+                <h1 class="entry-title"> {{.Dict.Name}} </h1>
+                <ul class="entry-meta list-inline">
+                  <li>
+                    <span class="ti ti-pencil-alt">
+                    </span>
+                    by Nameof Author</li>
+                  <li><a href="blog-single.html#view-comments" class="has-anchor">
+                    <span class="ti ti-comments">
+                    </span>
+                    6 Comments</a></li>
+                  <li>
+                    <span class="ti ti-calendar">
+                    </span>
+                    March 3, 2015</li>
+                </ul>
+                <ul class="entry-tags hidden-xs">
+                  <li><a href="#">video</a></li>
+                  <li><a href="#">css3</a></li>
+                  <li><a href="#">theme</a></li>
+                </ul>
+                <div class="entry-fancy-date">
+                  <div>
+                    <span class="day">
+                      {{.Dict.CreatedAt|toDay}}
+                    </span>
+                    <span class="month">
+                      {{.Dict.CreatedAt|toMonth}}
+                    </span>
+                    <span class="year">
+                      {{.Dict.CreatedAt|toYear}}
+                    </span>
+                  </div>
+                </div>
+                <div class="addthis_toolbox">
+                  <div class="addthis_inner addthis_inner_extra">
+                    <!-- for sticking -->
+                    {{if .Dict}}
+                      <a class="edit-icon" data-hover="tooltip" data-placement="right" data-original-title="{{.Dict.Name}}を編集する"
+                         href='{{urlFor "edit" .Dict.Name}}' title="{{.Dict.Name}}を編集する">
+                        <i class="fa fa-fw fa-edit fa-3x"></i>
+                      </a>
+                    {{else}}
+                      <a class="add-icon" data-hover="tooltip" data-placement="right" data-original-title="新しく記事を追加する"
+                         href='{{urlFor "new"}}' title="新しく記事を追加する">
+                        <i class="fa fa-fw fa-plus fa-3x"></i>
+                      </a>
+                    {{end}}
+
+                    <div style='margin-top: -12px; margin-right: 10px;' class="bookmarkhub-vertical" style="min-height: 20px;" bookmarkhub-url="{{.Meta.URL}}"></div>
+                  </div>
+                </div>
+              </header>
+              <!--/ entry-header -->
+            </article>
+          </div>
+          <!-- /.entry-full-post -->
+
+          <!-- pager -->
+          <ul class="pager">
+            <li><a href="#" title="fake link"><i class="ti ti-arrow-left"></i> Older Articles</a></li>
+            <li><a href="#" title="fake link">Newer Articles <i class="ti ti-arrow-right"></i></a></li>
+          </ul>
+
+          <!--begin comments section-->
+          {{if false}}
+            <section id="view-comments" class="clearfix">
+              <h4>6 Comments | <a href="#comment-form" class="has-anchor">Make a comment</a></h4>
+              <!--begin threaded comments -->
+              <ol class="comment-thread">
+                <li>
+                  <div class="comment">
+                    <header class="comment-header"> <a href="#" class="avatar" title="Kathy"><img alt="" src="/assets/demo-images/people/kathy.jpg" /></a>
+                      <ul class="comment-meta">
+                        <li><a href="#" rel="external nofollow">Kathy</a></li>
+                        <li>October 10, 2014</li>
+                        <li><a href="#">Permalink</a></li>
+                        <li><a href="#">Reply</a></li>
+                      </ul>
+                    </header>
+                    <footer class="comment-text">
+                      <div>
+                        <p>Avatars by <a href="http://fotogrph.com/">fotogrph.</a> Sample threaded comments. Nam sed orci massa, quis placerat libero. Vivamus at ligula odio. Morbi vel dictum ligula. Mauris id neque leo. Nullam orci quam, luctus sed posuere eu, dignissim sollicitudin sem. Sed velit arcu, rutrum et varius sit amet, congue id nunc. Aenean enim nisl, suscipit a condimentum et, malesuada et massa. Vestibulum convallis sem nec mauris dapibus non dapibus velit lobortis.</p>
+                      </div>
+                    </footer>
+                  </div>
+                  <!--/.comment-->
+                  <!-- BEGIN nested comment thread -->
+                  <ol>
+                    <li>
+                      <div class="comment moderator">
+                        <header class="comment-header"> <a href="#" class="avatar" title="Dave"><img alt="" src="/assets/demo-images/people/dave.jpg" /></a>
+                          <ul class="comment-meta">
+                            <li><a href="#" rel="external nofollow">Dave</a></li>
+                            <li>October 10, 2014</li>
+                            <li><a href="#">Permalink</a></li>
+                            <li><a href="#">Reply</a></li>
+                          </ul>
+                        </header>
+                        <footer class="comment-text">
+                          <div>
+                            <p>Donec <a href="#">sagittis lobortis</a> libero vel semper. Nulla facilisi. Sed venenatis laoreet ligula, vulputate ornare magna posuere lobortis. Proin volutpat massa nec odio laoreet pharetra. Suspendisse quis dolor et nisl volutpat pretium. Mauris blandit metus sit amet risus aliquet et dapibus est vestibulum. Pellentesque dignissim condimentum porttitor. Vivamus est ipsum, ultrices ac ultrices sed, semper non nulla.</p>
+                          </div>
+                        </footer>
+                      </div>
+                      <!--/.comment-->
+                    </li>
+                    <li>
+                      <div class="comment">
+                        <header class="comment-header"> <a href="#" class="avatar" title="Nickie"><img alt="" src="/assets/demo-images/people/nickie.jpg" /></a>
+                          <ul class="comment-meta">
+                            <li><a href="#" rel="external nofollow">Nickie</a></li>
+                            <li>October 10, 2014</li>
+                            <li><a href="#">Permalink</a></li>
+                            <li><a href="#">Reply</a></li>
+                          </ul>
+                        </header>
+                        <footer class="comment-text">
+                          <div>
+                            <p>Donec sagittis lobortis libero vel semper. Nulla facilisi. Sed venenatis laoreet ligula, vulputate ornare magna posuere lobortis. Proin volutpat massa nec odio laoreet pharetra. Suspendisse quis dolor et nisl volutpat pretium. Mauris blandit metus sit amet risus aliquet et dapibus est vestibulum. Pellentesque dignissim condimentum porttitor. Vivamus est ipsum, ultrices ac ultrices sed, semper non nulla.</p>
+                          </div>
+                        </footer>
+                      </div>
+                      <!--/.comment-->
+                    </li>
+                    <li>
+                      <div class="comment">
+                        <header class="comment-header"> <a href="#" class="avatar" title="Jake"><img alt="" src="/assets/demo-images/people/jake.jpg" /></a>
+                          <ul class="comment-meta">
+                            <li><a href="#" rel="external nofollow">Jake</a></li>
+                            <li>October 10, 2014</li>
+                            <li><a href="#">Permalink</a></li>
+                            <li><a href="#">Reply</a></li>
+                          </ul>
+                        </header>
+                        <footer class="comment-text">
+                          <div>
+                            <p>Donec sagittis lobortis libero vel semper. Nulla facilisi. Sed venenatis laoreet ligula, vulputate ornare magna posuere lobortis. Proin volutpat massa nec odio laoreet pharetra. Suspendisse quis dolor et nisl volutpat pretium. Mauris blandit metus sit amet risus aliquet et dapibus est vestibulum. Pellentesque dignissim condimentum porttitor. Vivamus est ipsum, ultrices ac ultrices sed, semper non nulla.</p>
+                          </div>
+                        </footer>
+                      </div>
+                    </li>
+                  </ol>
+                  <!-- close nested ol-->
+                </li>
+                <li>
+                  <div class="comment">
+                    <header class="comment-header"> <a href="#" class="avatar" title="Scott"><img alt="" src="/assets/demo-images/people/scott.jpg" /></a>
+                      <ul class="comment-meta">
+                        <li><a href="#" rel="external nofollow">Scott</a></li>
+                        <li>October 10, 2014</li>
+                        <li><a href="#">Permalink</a></li>
+                        <li><a href="#">Reply</a></li>
+                      </ul>
+                    </header>
+                    <footer class="comment-text">
+                      <div>
+                        <p>Donec sagittis lobortis libero vel semper. Nulla facilisi. Sed venenatis laoreet ligula, vulputate ornare magna posuere lobortis. Proin volutpat massa nec odio laoreet pharetra. Suspendisse quis dolor et nisl volutpat pretium. Mauris blandit metus sit amet risus aliquet et dapibus est vestibulum. Pellentesque dignissim condimentum porttitor. Vivamus est ipsum, ultrices ac ultrices sed, semper non nulla.</p>
+                      </div>
+                    </footer>
+                  </div>
+                  <ol>
+                    <li>
+                      <div class="comment">
+                        <header class="comment-header"> <a href="#" class="avatar" title="Jackie"><img alt="" src="/assets/demo-images/people/jackie.jpg" /></a>
+                          <ul class="comment-meta">
+                            <li><a href="#" rel="external nofollow">Jackie</a></li>
+                            <li>October 10, 2014</li>
+                            <li><a href="#">Permalink</a></li>
+                            <li><a href="#">Reply</a></li>
+                          </ul>
+                        </header>
+                        <footer class="comment-text">
+                          <div>
+                            <p>Donec sagittis lobortis libero vel semper. Nulla facilisi. Sed venenatis laoreet ligula, vulputate ornare magna posuere lobortis. Proin volutpat massa nec odio laoreet pharetra. Suspendisse quis dolor et nisl volutpat pretium. Mauris blandit metus sit amet risus aliquet et dapibus est vestibulum. Pellentesque dignissim condimentum porttitor. Vivamus est ipsum, ultrices ac ultrices sed, semper non nulla.</p>
+                          </div>
+                        </footer>
+                      </div>
+                    </li>
+                  </ol>
+                  <!-- close nested ul-->
+                </li>
+              </ol>
+              <!--end threaded comments -->
+
+              <!-- Begin Comments Form -->
+              <div id="comment-form" class="anchor">
+                <h3>Leave a Comment</h3>
+                <p class="small"><em>Required fields are marked *. Your email will not be published or shared.</em></p>
+                <form class="comment_form" action="your-form-action.php" method="post" role="form">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <input type="text" class="form-control form-control-lg" placeholder="Your Name" />
+                      </div>
+                      <!--/form-group-->
+                    </div>
+                    <!--/col-md-6-->
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <input type="email" class="form-control form-control-lg" placeholder="Email Address" />
+                      </div>
+                      <!--/form-group-->
+                    </div>
+                    <!--/col-md-6-->
+                  </div>
+                  <!--/row-->
+                  <div class="form-group">
+                    <input type="url" class="form-control form-control-lg" placeholder="Website" />
+                  </div>
+                  <!--/form-group-->
+                  <div class="form-group">
+                    <textarea class="form-control form-control-lg" placeholder="Message" rows="5" cols="30"></textarea>
+                  </div>
+                  <!--/form-group-->
+                  <div class="form-group">
+                    <input type="submit" value="Add Comment" class="btn btn-inverse btn-lg" name="submit" />
+                  </div>
+                  <!--/form-group-->
+                </form>
+              </div>
+              <!-- End Comment Form -->
+            </section>
+          <!--close comment section-->
+          {{end}}
+
+        </div>
+        <!-- _________ END /.col-*-* :: containing primary content ______ -->
+        <!-- ____ SECONDARY COLUMN GOES HERE ____ -->
+        <div class="col-sm-4 col-md-3 hidden-print" id="sidebar" role="complementary">
+          <div class="blog-single-sidebar">
+            <!-- for sticking -->
+            <!-- _____________ WIDGET _________ -->
+            <aside class="widget">
+              <h5 class="widget-title">検索</h5>
+              <form class="searchform" method="get" action="YOURSEARCHACTION">
+                <div class="form-group">
+                  <input class="form-control" type="text" placeholder="Search and hit enter" />
+                </div>
+              </form>
+              <!--your own form scripts-->
+            </aside>
+            <!--/widget -->
+
+            <!-- _____________ WIDGET _________ -->
+            {{$popularDicts := (slice (.CategoriesALL|shuffle) 0 1)}}
+            <aside class="widget">
+              <h5 class="widget-title">人気の記事</h5>
+              <!--begin tabs going in narrow content -->
+              <ul class="nav nav-tabs sidebar-tabs" id="unique-id" role="tablist" style='display: inline-flex !important;'>
+                <!-- Important: limit tabs to no more than three short items or you will need to change the
+                 grid classes used on this page (all of them) to make this column wider OR adjust the tab collapse
+                 breakpoints in the css OR just use the collapse component and forget about tabs here -->
+                {{range $i, $c := $popularDicts}}
+                  <li style='font-size: 11px; font-weight: bold;' 
+                      class="bold {{if eq $i 0}}active{{end}}" role="presentation"><a href="#tab-{{$i}}" role="tab" data-toggle="tab">{{$c.Name}}</a></li>
+                {{end}}
+              </ul>
+              <!--/.nav-tabs.sidebar-tabs -->
+              <!-- Tab panes -->
+              <div class="tab-content">
+
+                {{range $i, $c := $popularDicts}}
+                  <div class="tab-pane {{if eq $i 0}}active{{end}}" id="tab-{{$i}}">
+                    <ul class="list-unstyled media-list">
+                      {{range $i, $d := $c.Dicts}}
+                        <li> 
+                          <a href='{{urlFor "show" $d.Name}}'>
+                            <div class="media-list-visual">
+                              <img src="/static/img/siteicon/favicon-32x32.png" alt="{{truncate ($d.Content|markdownHTML|sanitizeHTML) 100}}" />
+                            </div>
+                            <!-- if this goes in a side bar, the text must be truncated using a plugin for this -->
+                            <div class="media-list-content">
+                              <p style='font-size: 15px; font-weight: bold;'>{{$d.Name}}</p>
+                            </div>
+                          </a> 
+                        </li>
+                      {{end}}
+
+                      {{if false}}
+                      <li> <a href="#">
+                        <div class="media-list-visual">
+                          <img src="/assets/demo-images/img-widget/2.jpg" alt="" />
+                        </div>
+                        <div class="media-list-content">
+                          <p> We realize that if you evolve virally then you may also orchestrate interactively</p>
+                        </div>
+                        </a> </li>
+                      <li> <a href="#">
+                        <div class="media-list-visual">
+                          <img src="/assets/demo-images/img-widget/3.jpg" alt="" />
+                        </div>
+                        <div class="media-list-content">
+                          <p> If you brand proactively, you may have to morph seamlessly</p>
+                        </div>
+                        </a> </li>
+                      <li> <a href="#">
+                        <div class="media-list-visual">
+                          <img src="/assets/demo-images/img-widget/4.jpg" alt="" />
+                        </div>
+                        <div class="media-list-content">
+                          <p>Is it more important for something to be customer-directed, intuitive, synergistic or to be wireless</p>
+                        </div>
+                        </a> </li>
+                      <li> <a href="#">
+                        <div class="media-list-visual">
+                          <img src="/assets/demo-images/img-widget/5.jpg" alt="" />
+                        </div>
+                        <div class="media-list-content">
+                          <p> We pride ourselves not only on our feature set, but our user-proof administration and easy operation</p>
+                        </div>
+                        </a> 
+                      </li>
+                      {{end}}
+                    </ul>
+                  </div>
+                {{end}}
+
+                {{if false}}
+                <!--/.tab-pane -->
+                <div class="tab-pane" id="tab-2">
+                  <p class="margin-bottom-10px"><a href="contact.html"><img class="img-responsive" src="http://placehold.it/400x150/000000/FFFFFF&amp;text=hello" alt="" /></a></p>
+                  <p>According to Wikipedia: a paragraph (from the Greek paragraphos, "to write beside" or "written beside") is a self-contained unit of a discourse in writing dealing with a particular point or idea.</p>
+                </div>
+                <!--/.tab-pane -->
+                <div class="tab-pane" id="tab-3">
+                  <ul class="entry-tags">
+                    <!-- these are too tiny and not important for small screens-->
+                    <li><a href="#">video</a></li>
+                    <li><a href="#">css3</a></li>
+                    <li><a href="#">theme</a></li>
+                    <li><a href="#">video</a></li>
+                    <li><a href="#">css3</a></li>
+                    <li><a href="#">theme</a></li>
+                    <li><a href="#">video</a></li>
+                    <li><a href="#">css3</a></li>
+                    <li><a href="#">theme</a></li>
+                  </ul>
+                </div>
+                {{end}}
+                <!--/.tab-pane -->
+              </div>
+              <!--/.tab-content -->
+            </aside>
+            <!-- /widget -->
+
+            <!-- _____________ WIDGET _________ -->
+            <aside class="widget">
+              <h5 class="widget-title">更新された記事</h5>
+                <ul class="list-unstyled media-list">
+                  {{range $i, $d := .UpdatedDicts}}
+                    <li> 
+                      <a href='{{urlFor "show" $d.Name}}'>
+                        <div class="media-list-visual">
+                          <img src="/static/img/siteicon/favicon-32x32.png" alt="{{truncate ($d.Content|markdownHTML|sanitizeHTML) 100}}" />
+                        </div>
+                        <!-- if this goes in a side bar, the text must be truncated using a plugin for this -->
+                        <div class="media-list-content">
+                          <p style=''>
+                            <span style='font-size: 15px; font-weight: bold;'>{{$d.Name}}</span><br />
+                            {{$d.UpdatedAt|timeSince}}
+                          </p>
+                        </div>
+                      </a> 
+                    </li>
+                  {{end}}
+                </ul>
+            </aside>
+            <!-- /widget -->
+
+            <!-- _____________ WIDGET _________ -->
+            <aside class="widget">
+              <h5 class="widget-title">新しく作成された記事</h5>
+                <ul class="list-unstyled media-list">
+                  {{range $i, $d := .CreatedDicts}}
+                    <li> 
+                      <a href='{{urlFor "show" $d.Name}}'>
+                        <div class="media-list-visual">
+                          <img src="/static/img/siteicon/favicon-32x32.png" alt="{{truncate ($d.Content|markdownHTML|sanitizeHTML) 100}}" />
+                        </div>
+                        <!-- if this goes in a side bar, the text must be truncated using a plugin for this -->
+                        <div class="media-list-content">
+                          <p style=''>
+                            <span style='font-size: 15px; font-weight: bold;'>{{$d.Name}}</span><br />
+                            {{$d.UpdatedAt|timeSince}}
+                          </p>
+                        </div>
+                      </a> 
+                    </li>
+                  {{end}}
+                </ul>
+            </aside>
+            <!-- /widget -->
+
+            <!-- _____________ WIDGET _________ -->
+            <aside class="widget">
+              <h5 class="widget-title">記事のカテゴリー</h5>
+              <ul class="list-unstyled icon-list arrow-right">
+                {{range $i, $c := .CategoriesALL}}<li><a href="#">{{$c.Name}}</a></li>{{end}}
+              </ul>
+            </aside>
+            <!-- /widget -->
+
+            <!-- _____________ WIDGET _________ -->
+            <aside class="widget">
+              <h5 class="widget-title">Recent Images</h5>
+              <!-- you might want to bump up the original size of the images to 100 px square -->
+              <div class="img-widget fade-hover-img">
+                <a href="#"><img src="/assets/demo-images/img-widget/1.jpg" alt="" /></a> <a href="#"><img src="/assets/demo-images/img-widget/2.jpg" alt="" /></a> <a href="#"><img src="/assets/demo-images/img-widget/3.jpg" alt="" /></a> <a href="#"><img src="/assets/demo-images/img-widget/4.jpg" alt="" /></a> <a href="#"><img src="/assets/demo-images/img-widget/5.jpg" alt="" /></a> <a href="#"><img src="/assets/demo-images/img-widget/6.jpg" alt="" /></a> <a href="#"><img src="/assets/demo-images/img-widget/7.jpg" alt="" /></a> <a href="#"><img src="/assets/demo-images/img-widget/8.jpg" alt="" /></a> <a href="#"><img src="/assets/demo-images/img-widget/9.jpg" alt="" /></a> <a href="#"><img src="/assets/demo-images/img-widget/10.jpg" alt="" /></a>
+              </div>
+            </aside>
+            <!--/ widget -->
+
+            <!-- _____________ WIDGET _________ -->
+            <aside class="widget">
+              <h5 class="widget-title">Another Widget</h5>
+              <p> According to Wikipedia: a paragraph (from the Greek paragraphos, "to write beside" or "written beside") is a self-contained unit of a discourse in writing dealing with a particular point or idea. </p>
+            </aside>
+            <!-- /widget -->
+          </div>
+          <!-- /.blog-single-sidebar -->
+        </div>
+        <!--/#sidebar-->
+      </div>
+      <!--/.row-->
+    </div>
+    <!--/.container-->
+  </div>
+  <!-- /.page-content role=main -->
+  <!--=========== END CONTENT FOR THE PAGE ============================================================ -->
 </div>
+<!-- ================== END #page ================= -->
+
+<!-- _________ GO TO TOP ___________ -->
+<a id="go-to-top" href="#top" title="up"> <i class="ti ti-arrow-up"></i> </a>
 
 {{template "footer" .}}
 {{template "script" .}}
+<!-- REPLACE THIS CODE WITH YOUR OWN, otherwise your tracking won't work -->
+<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-54a2dd9a57c313a8" async></script>
+<script type="text/javascript">
+if (typeof addthis_config !== "undefined") {
+    addthis_config.ui_click = true
+    } else {
+    var addthis_config = {
+    ui_click: true
+   };
+}
+</script>
 <script>
-  $(function(){ 
-    // $("#page-content").html(MDR.convert({{.Content|safeHTML}})).show(); 
+  $(function(){
+    // $("#page-content").html(MDR.convert({{.Content|safeHTML}})).show();
   });
 </script>
