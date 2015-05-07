@@ -11,6 +11,7 @@ import (
 	"github.com/go-martini/martini"
 	"github.com/ikeikeikeike/godic/middlewares/html"
 	"github.com/ikeikeikeike/godic/models"
+	// "github.com/ikeikeikeike/godic/models/category"
 	"github.com/ikeikeikeike/godic/models/category"
 	"github.com/ikeikeikeike/godic/models/dict"
 	"github.com/ikeikeikeike/godic/modules/git"
@@ -30,14 +31,11 @@ func init() {
 func DictIndex(r render.Render, html html.HTMLContext) {
 	log.Debugln("IndexDict action !!!!!")
 
-	var dicts []*models.Dict
-	dict.Dicts().Find(&dicts)
-
-	html["Dicts"] = dicts
-
-	html["Diva"] = category.Diva()
-	html["Anime"] = category.Anime()
-	html["Character"] = category.Character()
+	all := category.CategoriesALL()
+	for _, c := range all {
+		c.DictLoader(25)
+	}
+	html["CategoriesALL"] = all
 
 	r.HTML(200, "dict/index", html)
 }
@@ -64,10 +62,11 @@ func DictHistory(r render.Render, params martini.Params, html html.HTMLContext) 
 		return
 	}
 
+	html["Dict"] = m
 	html["Name"] = params["name"]
 	html["History"] = history
 
-	r.HTML(200, "dict/history", html)
+	r.HTML(200, "dict/history", html, render.HTMLOptions{"layout-editor"})
 }
 
 func CompareDict(r render.Render, params martini.Params, html html.HTMLContext) {
@@ -92,10 +91,11 @@ func CompareDict(r render.Render, params martini.Params, html html.HTMLContext) 
 		return
 	}
 
+	html["Dict"] = m
 	html["Name"] = params["name"]
 	html["Diff"] = diff
 
-	r.HTML(200, "dict/compare", html)
+	r.HTML(200, "dict/compare", html, render.HTMLOptions{"layout-editor"})
 }
 
 func ShowDict(r render.Render, params martini.Params, html html.HTMLContext) {
@@ -131,6 +131,19 @@ func ShowDict(r render.Render, params martini.Params, html html.HTMLContext) {
 
 	html["Dict"] = m
 
+	var cdicts, udicts []*models.Dict
+	dict.RelationDB().Order("dicts.created_at DESC").Limit(5).Find(&cdicts)
+	dict.RelationDB().Order("dicts.created_at DESC").Limit(5).Find(&udicts)
+
+	html["CreatedDicts"] = cdicts
+	html["UpdatedDicts"] = udicts
+
+	all := category.CategoriesALL()
+	for _, c := range all {
+		c.DictLoader(10)
+	}
+	html["CategoriesALL"] = all
+
 	r.HTML(200, "dict/show", html)
 }
 
@@ -145,22 +158,20 @@ func NewDict(r render.Render, params martini.Params, html html.HTMLContext, req 
 	html["Name"] = name
 	html["Content"] = ""
 
-	category := &models.Category{}
-	models.DB.Where("prefix = ?", req.URL.Query().Get("category")).First(&category)
-	if category.ID > 0 {
-		html["Category"] = category
+	c := &models.Category{}
+	models.DB.Where("prefix = ?", req.URL.Query().Get("category")).First(&c)
+	if c.ID > 0 {
+		html["Category"] = c
 	}
 
-	var categories []*models.Category
-	models.DB.Find(&categories)
-	html["Categories"] = categories
+	html["Categories"] = category.Categories()
 
 	bytes, err := ioutil.ReadFile(path.Join(BasePath, "template.txt"))
 	if err == nil {
 		html["Content"] = fmt.Sprintf(string(bytes), name)
 	}
 
-	r.HTML(200, "dict/edit", html)
+	r.HTML(200, "dict/edit", html, render.HTMLOptions{"layout-editor"})
 }
 
 func EditDict(r render.Render, params martini.Params, html html.HTMLContext) {
@@ -196,17 +207,14 @@ func EditDict(r render.Render, params martini.Params, html html.HTMLContext) {
 		c = e.Value.(*git2go.Commit)
 	}
 
-	var categories []*models.Category
-	models.DB.Find(&categories)
-
 	html["Name"] = params["name"]
 	html["Yomi"] = m.Yomi
 	html["Content"] = string(blob.Contents())
-	html["Categories"] = categories
+	html["Categories"] = category.Categories()
 
 	html["Dict"] = m
 	html["Category"] = m.Category
 	html["Commit"] = c
 
-	r.HTML(200, "dict/edit", html)
+	r.HTML(200, "dict/edit", html, render.HTMLOptions{"layout-editor"})
 }
