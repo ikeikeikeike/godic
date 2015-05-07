@@ -6,7 +6,7 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
-func Dicts() *gorm.DB {
+func RelationDB() *gorm.DB {
 	return m.DB.Table("dicts").Preload("Image").Preload("Category").Select("dicts.*")
 }
 
@@ -24,22 +24,16 @@ func UpdateByCommit(c forms.Commit) *m.Dict {
 		d.Yomi = c.Yomi
 		do = true
 	}
-	if d.Outline != c.Outline {
-		d.Outline = c.Outline
+	if d.Content != c.Content {
+		d.Content = c.Content
 		do = true
 	}
 
 	cate := &m.Category{}
 	m.DB.First(cate, c.Category)
-	if cate.ID > 0 {
-		if d.Category == nil {
-			d.Category = cate
-			do = true
-		}
-		if d.Category.ID != c.Category {
-			d.Category = cate
-			do = true
-		}
+	if d.Category.ID != c.Category {
+		d.Category = cate
+		do = true
 	}
 
 	if do {
@@ -58,7 +52,7 @@ func FirstOrCreateByCommit(c forms.Commit) (*m.Dict, bool) {
 		created = true
 
 		d.Yomi = c.Yomi
-		d.Outline = c.Outline
+		d.Content = c.Content
 
 		// if v, ok := p["image"]; ok {
 		// d.Image = &m.Image{}
@@ -68,6 +62,7 @@ func FirstOrCreateByCommit(c forms.Commit) (*m.Dict, bool) {
 		if c.Category > 0 {
 			cate := &m.Category{}
 			m.DB.First(cate, c.Category)
+			d.Category = cate
 		}
 
 		m.DB.Save(&d)
