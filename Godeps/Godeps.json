@@ -51,8 +51,24 @@
 			"Rev": "f61c3ec2cf65d69e7efedfd4d060fe128882c951"
 		},
 		{
+			"ImportPath": "github.com/ikeikeikeike/gopkg/convert",
+			"Rev": "d2203024f99fa02c008fd16de389f564c8fc2e1d"
+		},
+		{
+			"ImportPath": "github.com/ikeikeikeike/gopkg/rdm",
+			"Rev": "d2203024f99fa02c008fd16de389f564c8fc2e1d"
+		},
+		{
+			"ImportPath": "github.com/ikeikeikeike/shuffler",
+			"Rev": "32e90db7c7a3c8e4ac139948227667fd3fe2168e"
+		},
+		{
 			"ImportPath": "github.com/jinzhu/gorm",
 			"Rev": "1eb1ed091f2b725699a930e03a05890c861d2c50"
+		},
+		{
+			"ImportPath": "github.com/kennygrant/sanitize",
+			"Rev": "5247e0e15fa822886e7b64bde03ad0c88c2b0d3b"
 		},
 		{
 			"ImportPath": "github.com/lib/pq",
@@ -78,6 +94,11 @@
 		{
 			"ImportPath": "github.com/martini-contrib/sessions",
 			"Rev": "fa13114fbcf036dff8185d728651d85fcef772db"
+		},
+		{
+			"ImportPath": "github.com/mattn/go-runewidth",
+			"Comment": "travisish-31-g58a0da4",
+			"Rev": "58a0da4ed7b321c9b5dfeffb7e03ee188fae1c60"
 		},
 		{
 			"ImportPath": "github.com/mattn/go-sqlite3",
