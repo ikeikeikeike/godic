@@ -71,3 +71,17 @@ func TimeSince(t time.Time) template.HTML {
 func ToUnix(t time.Time) int64 {
 	return t.Unix()
 }
+
+func ToDay(t time.Time) int {
+	return t.Day()
+}
+func ToMonth(t time.Time) time.Month {
+	return t.Month()
+}
+func ToYear(t time.Time) int {
+	return t.Year()
+}
+
+func Datenow(format string) string {
+	return time.Now().Add(time.Duration(9) * time.Hour).Format(format)
+}

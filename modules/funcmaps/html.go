@@ -5,6 +5,11 @@ import (
 	"html/template"
 	"strings"
 	"time"
+
+	"github.com/kennygrant/sanitize"
+	"github.com/mattn/go-runewidth"
+	"github.com/microcosm-cc/bluemonday"
+	"github.com/russross/blackfriday"
 )
 
 func ToAge(bd time.Time) int {
@@ -24,8 +29,20 @@ func SafeHTML(text string) template.HTML {
 	return template.HTML(text)
 }
 
-func EscapeHTML(in string) string {
-	return html.EscapeString(in)
+func EscapeHTML(text string) string {
+	return html.EscapeString(text)
+}
+
+func SanitizeHTML(text string) string {
+	content, _ := sanitize.HTMLAllowing(text)
+	content = sanitize.HTML(text)
+	return html.EscapeString(content)
+}
+
+func MarkdownHTML(markdown string) string {
+	unsafe := blackfriday.MarkdownCommon([]byte(markdown))
+	contentHtml := bluemonday.UGCPolicy().SanitizeBytes(unsafe)
+	return string(contentHtml)
 }
 
 func Nl2br(in string) string {
@@ -49,4 +66,8 @@ func DiffTypeToStr(diffType int) string {
 		1: "add", 2: "modify", 3: "del",
 	}
 	return diffTypes[diffType]
+}
+
+func Truncate(in string, length int) string {
+	return runewidth.Truncate(in, length, "...")
 }
