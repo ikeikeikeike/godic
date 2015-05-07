@@ -51,7 +51,7 @@ func CreateDict(params martini.Params, commit forms.Commit, errs binding.Errors,
 
 	if len(errs) > 0 {
 		msg := fmt.Sprintf("valid error (%d):\n%+v", len(errs), errs)
-		r.JSON(400, APIResponse{Ok: false, Msg: msg}) // # TODO: using error message in javascript alert, must change to japanease.
+		r.JSON(400, APIResponse{Ok: false, Msg: msg}) // TODO: Now this error message is used in javascript alert, next time must be change to japanese.
 		log.Warn(msg)
 		return
 	}

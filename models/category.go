@@ -17,3 +17,7 @@ type Category struct {
 
 	Dicts []*Dict
 }
+
+func (m *Category) DictLoader(limit int) {
+	DB.Model(&m).Order("dicts.id DESC").Limit(limit).Related(&m.Dicts, "Dicts")
+}

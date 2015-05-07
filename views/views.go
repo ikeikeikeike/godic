@@ -55,6 +55,9 @@ func init() {
 	}))
 
 	App.Get("/", func(r render.Render) { r.Redirect("/d/index") }).Name("root")
+	App.Group("/abouts", func(r martini.Router) {
+		r.Get("/sitemap", func(r render.Render) { r.Redirect("/") }).Name("abouts_sitemap")
+	})
 
 	App.Group("/d", func(r martini.Router) {
 		r.Get("/index", DictIndex).Name("index")

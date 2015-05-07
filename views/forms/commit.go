@@ -5,7 +5,7 @@ type Commit struct {
 	Yomi     string `form:"yomi" binding:"required"`
 	Content  string `form:"content" binding:"required"`
 	Message  string `form:"message"`
-	Outline  string `form:"outline"`
+	// Outline  string `form:"outline"`
 	Category int64  `form:"category"`
 }
 
