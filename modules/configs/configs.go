@@ -1,7 +1,6 @@
 package configs
 
 import (
-	"github.com/k0kubun/pp"
 	"github.com/yuin/gluamapper"
 	"github.com/yuin/gopher-lua"
 )
@@ -35,8 +34,6 @@ func Register(filepath, environ string) {
 	if err := gluamapper.Map(table, &s); err != nil {
 		panic(err)
 	}
-
-	pp.Println(s)
 
 	Settings = s
 }
