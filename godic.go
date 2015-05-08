@@ -6,12 +6,15 @@ import (
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/go-martini/martini"
+	"github.com/ikeikeikeike/godic/models"
+	"github.com/ikeikeikeike/godic/modules/configs"
 	"github.com/ikeikeikeike/godic/views"
-	_ "github.com/ikeikeikeike/godic/models"
 )
 
 func init() {
 	initLogger()
+	initSettings()
+	models.InitDB()
 }
 
 func initLogger() {
@@ -35,6 +38,11 @@ func initLogger() {
 	}
 
 	views.App.Map(log.StandardLogger())
+}
+
+func initSettings() {
+	p, _ := os.Getwd()
+	configs.Register(path.Join(p, "config/settings.lua"), martini.Env)
 }
 
 func main() {
