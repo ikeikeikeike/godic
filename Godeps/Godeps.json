@@ -109,6 +109,10 @@
 			"Rev": "fcd0f5074e55df204568c7419509fb59ddcad228"
 		},
 		{
+			"ImportPath": "github.com/mitchellh/mapstructure",
+			"Rev": "442e588f213303bec7936deba67901f8fc8f18b1"
+		},
+		{
 			"ImportPath": "github.com/oxtoacart/bpool",
 			"Rev": "754d38fccfc6e52083355014b6abc8d626445dfd"
 		},
@@ -125,6 +129,14 @@
 			"ImportPath": "github.com/woothee/woothee-go",
 			"Comment": "1.0.0-14-gc030b6c",
 			"Rev": "c030b6cbd49d996911072ecf99cea7daaeaf02b7"
+		},
+		{
+			"ImportPath": "github.com/yuin/gluamapper",
+			"Rev": "d836955830e75240d46ce9f0e6d148d94f2e1d3a"
+		},
+		{
+			"ImportPath": "github.com/yuin/gopher-lua",
+			"Rev": "bd6e94ca8e337e5a3396c187d93413609280623f"
 		},
 		{
 			"ImportPath": "golang.org/x/net/context",
