@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/go-martini/martini"
+	"github.com/ikeikeikeike/godic/modules/configs"
 	"github.com/ikeikeikeike/gopkg/rdm"
 	"github.com/jinzhu/gorm"
 	_ "github.com/lib/pq"
@@ -24,12 +25,12 @@ type Model struct {
 
 var DB gorm.DB
 
-func init() {
+func InitDB() {
 	var err error
 
 	switch martini.Env {
 	case "production":
-		DB, err = gorm.Open("postgres", os.Getenv("DSN"))
+		DB, err = gorm.Open("postgres", configs.Settings.Dsn)
 		if err != nil {
 			panic(err)
 		}
@@ -39,7 +40,7 @@ func init() {
 		DB.DB().SetMaxIdleConns(100)
 		DB.DB().SetMaxOpenConns(100)
 	default:
-		DB, err = gorm.Open("sqlite3", os.Getenv("DSN"))
+		DB, err = gorm.Open("sqlite3", configs.Settings.Dsn)
 		if err != nil {
 			panic(err)
 		}

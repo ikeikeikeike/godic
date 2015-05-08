@@ -6,63 +6,50 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/ikeikeikeike/godic/modules/configs"
 	"github.com/ikeikeikeike/gopkg/convert"
 	woothee "github.com/woothee/woothee-go"
 )
 
 type Meta struct {
-	AppName         string
-	Copyright       string
-	Author          string
-	Email           string
-	Keywords        string
-	Description     string
-	ApplicationName string
-	Domain          string
-	Host            string
-	URL             string
-	Type            string
-	Title           string
-	Image           string
-	SiteName        string
-	Locale          string
-	FBAppId         string
-	TWCard          string
-	TWDomain        string
-	TWSite          string
-	TWImage         string
-	UA              *woothee.Result
+	AppName     string
+	Email       string
+	Copyright   string
+	Keywords    string
+	Description string
+	URL         string
+	Host        string
+	Domain      string
+	UA          *woothee.Result
 }
 
 func NewMeta() *Meta {
 	return &Meta{
 		AppName:     "",
-		Copyright:   "",
-		Author:      "",
 		Email:       "",
+		Copyright:   "",
 		Keywords:    "",
 		Description: "",
-		Domain:      "",
-		Host:        "",
 		URL:         "",
-		Type:        "",
-		Title:       "",
-		Image:       "",
-		SiteName:    "",
-		Locale:      "",
-		FBAppId:     "",
-		TWCard:      "",
-		TWDomain:    "",
-		TWSite:      "",
-		TWImage:     "",
+		Host:        "",
+		Domain:      "",
 	}
 }
 
 func HTMLMeta(res http.ResponseWriter, req *http.Request, html HTMLContext) {
 	m := NewMeta()
+
+	m.AppName = configs.Settings.AppName
+	m.Email = configs.Settings.Email
+	m.Copyright = configs.Settings.Copyright
+	m.Keywords = configs.Settings.Keywords
+	m.Description = configs.Settings.Description
+
 	m.URL = BuildRequestUrl(req, "")
 	m.Host = Site(req)
+	m.Domain = Domain(req)
 	m.UA, _ = woothee.Parse(UserAgent(req))
+
 	html["Meta"] = m
 }
 
