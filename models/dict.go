@@ -14,7 +14,7 @@ type Dict struct {
 
 	Content string `sql:"type:text"` // gin index
 
-	Prefix string `sql:"type:varchar(8);index;not null"`
+	Prefix string `sql:"type:varchar(16);index;not null"`
 
 	Image   *Image
 	ImageID sql.NullInt64

@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"os"
 	"path"
+	"strings"
 	"time"
 
 	"github.com/go-martini/martini"
@@ -28,9 +29,14 @@ var DB gorm.DB
 func InitDB() {
 	var err error
 
+	dialect := "sqlite3"
+	if strings.HasPrefix(configs.Settings.Dsn, "postgres") {
+		dialect = "postgres"
+	}
+
 	switch martini.Env {
 	case "production":
-		DB, err = gorm.Open("postgres", configs.Settings.Dsn)
+		DB, err = gorm.Open(dialect, configs.Settings.Dsn)
 		if err != nil {
 			panic(err)
 		}
@@ -40,7 +46,7 @@ func InitDB() {
 		DB.DB().SetMaxIdleConns(100)
 		DB.DB().SetMaxOpenConns(100)
 	default:
-		DB, err = gorm.Open("sqlite3", configs.Settings.Dsn)
+		DB, err = gorm.Open(dialect, configs.Settings.Dsn)
 		if err != nil {
 			panic(err)
 		}

@@ -10,7 +10,7 @@ type Category struct {
 	Romaji string `sql:"type:varchar(128)"`
 	Gyou   string `sql:"type:varchar(6);index"`
 
-	Prefix string `sql:"type:varchar(8);unique;not null"`
+	Prefix string `sql:"type:varchar(16);unique;not null"`
 
 	Image   *Image
 	ImageID sql.NullInt64
