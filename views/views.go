@@ -30,6 +30,7 @@ func init() {
 	App.Use(html.GenHTMLContext())
 	App.Use(html.HTMLHeader)
 	App.Use(html.HTMLMeta)
+	App.Use(html.HTMLSettings)
 
 	App.Use(sessions.Sessions(
 		"godic_sesssion", sessions.NewCookieStore([]byte("secret09131ffl2"))),

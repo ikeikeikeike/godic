@@ -6,21 +6,13 @@
         <div class="col-sm-5 col-md-3 footer-col">
           <h4 class="footer-title">サービス一覧</h4>
           <ul class="social-icon-list">
-            <li>
-              <a target='_blank' href="http://r-18.org/" data-hover="tooltip" data-placement="top" data-original-title="アンテナサイト">
-                <img src="http://r-18.org/static/img/siteicon-white/favicon-32x32.png" />
-              </a>
-            </li>
-            <li>
-              <a target='_blank' href="http://book.r-18.org" data-hover="tooltip" data-placement="top" data-original-title="画像サイト">
-                <img src="http://book.r-18.org/static/img/book/siteicon/favicon-32x32.png" />
-              </a>
-            </li>
-            <li>
-              <a target='_blank' href="http://video.r-18.org" data-hover="tooltip" data-placement="top" data-original-title="動画サイト">
-                <img src="http://video.r-18.org/static/img/video/siteicon/favicon-32x32.png" />
-              </a>
-            </li>
+            {{range $i, $s := .Settings.GroupServices}}
+              <li>
+                <a target='_blank' href="{{$s.Href}}" data-hover="tooltip" data-placement="top" data-original-title="{{$s.Title}}">
+                  <img src="{{$s.Src}}" />
+                </a>
+              </li>
+            {{end}}
           </ul>
         </div>
         <!-- /.col-sm-5 .col-md-3 footer-col -->
@@ -72,7 +64,7 @@
   <!--/.footer-column-wrapper -->
   <div class="footer-copyright">
     <div class="container">
-      <p class="no-margin">&copy; Copyright 2014-{{datenow "2006"}} {{.Meta.Copyright}}. All rights reserved.
+      <p class="no-margin">&copy; Copyright 2014-{{datenow "2006"}} {{.Settings.Copyright}}. All rights reserved.
         <a class="link-underline" href='{{urlFor "abouts_sitemap"}}'>Site Map</a>
       </p>
     </div>

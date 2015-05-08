@@ -81,8 +81,8 @@ func InitSeed() {
 		bytes, err := ioutil.ReadFile(path.Join(basePath, "template.txt"))
 
 		i := 0
-		for i < 100 {
-			name := letterCombinePtn(7)
+		for i < 10 {
+			name := letterCombinePtn(5)
 
 			content := ""
 			if err == nil {
