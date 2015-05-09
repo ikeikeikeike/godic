@@ -129,7 +129,7 @@ func ShowDict(r render.Render, params martini.Params, html html.HTMLContext) {
 	repo := git.NewRepo()
 	repo.Init(path.Join(RepoPath, m.GetPrefix()))
 
-	blob, err := repo.GetFileBlob(params["name"])
+	blob, err := repo.GetFileBlobWithHash(params["name"], params["sha1"])
 	if err != nil {
 		r.HTML(200, "dict/notfound", html)
 		return

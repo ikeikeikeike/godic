@@ -89,6 +89,28 @@ func (r *Repo) GetFileBlob(filename string) (*git.Blob, error) {
 	return r.Repo.LookupBlob(entry.Id)
 }
 
+func (r *Repo) GetFileBlobWithHash(filename, hash string) (*git.Blob, error) {
+	if hash == "" {
+		return r.GetFileBlob(filename)
+	}
+
+	commit, err, _ := r.Head.GetCommitByHash(hash)
+	if err != nil {
+		log.Error(err)
+		return nil, err
+	}
+	tree, err := commit.Tree()
+	if err != nil {
+		log.Error(err)
+		return nil, err
+	}
+	entry, err := tree.EntryByPath(filename)
+	if err != nil {
+		return nil, err
+	}
+	return r.Repo.LookupBlob(entry.Id)
+}
+
 func (r *Repo) GetCommit(filename string) (*git.Commit, error) {
 	commit, err, _ := r.Head.Commit()
 	if err != nil {

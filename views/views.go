@@ -67,6 +67,7 @@ func init() {
 		r.Get("/:name", ShowDict).Name("show")
 		r.Get("/edit/:name", EditDict).Name("edit")
 		r.Get("/history/:name", DictHistory).Name("history")
+		r.Get("/:name/:sha1", ShowDict).Name("show")
 		r.Get(`/compare/:name/(?P<fromsha1>[^\.]+)\.{2,3}(?P<tosha1>.+)`, CompareDict).Name("compare")
 	}, html.RequestParams)
 
