@@ -92,7 +92,7 @@ func InitSeed() {
 
 			content := ""
 			if err == nil {
-				content = fmt.Sprintf(string(bytes), name)
+				content = fmt.Sprintf(string(bytes), name, "")
 			}
 
 			c := &Category{}

@@ -11,7 +11,6 @@ import (
 	"github.com/go-martini/martini"
 	"github.com/ikeikeikeike/godic/middlewares/html"
 	"github.com/ikeikeikeike/godic/models"
-	// "github.com/ikeikeikeike/godic/models/category"
 	"github.com/ikeikeikeike/godic/models/category"
 	"github.com/ikeikeikeike/godic/models/dict"
 	"github.com/ikeikeikeike/godic/modules/git"
@@ -105,31 +104,8 @@ func ShowDict(r render.Render, params martini.Params, html html.HTMLContext) {
 		r.HTML(404, "errors/404", html)
 		return
 	}
-	m := &models.Dict{}
-	if err := dict.FirstByName(params["name"], m).Error; err != nil {
-		r.HTML(404, "errors/404", html)
-		return
-	}
-
-	repo := git.NewRepo()
-	repo.Init(path.Join(RepoPath, m.GetPrefix()))
-
-	blob, err := repo.GetFileBlob(params["name"])
-	if err != nil {
-		r.HTML(404, "errors/404", html)
-		return
-	}
-
-	markdown := blob.Contents()
-	unsafe := blackfriday.MarkdownCommon(markdown)
-	contentHtml := bluemonday.UGCPolicy().SanitizeBytes(unsafe)
 
 	html["Name"] = params["name"]
-	html["Yomi"] = m.Yomi
-	html["Content"] = string(markdown)
-	html["ContentHTML"] = string(contentHtml)
-
-	html["Dict"] = m
 
 	var cdicts, udicts []*models.Dict
 	dict.RelationDB().Order("dicts.created_at DESC").Limit(5).Find(&cdicts)
@@ -143,6 +119,31 @@ func ShowDict(r render.Render, params martini.Params, html html.HTMLContext) {
 		c.DictLoader(10)
 	}
 	html["CategoriesALL"] = all
+
+	m := &models.Dict{}
+	if err := dict.FirstByName(params["name"], m).Error; err != nil {
+		r.HTML(200, "dict/notfound", html)
+		return
+	}
+
+	repo := git.NewRepo()
+	repo.Init(path.Join(RepoPath, m.GetPrefix()))
+
+	blob, err := repo.GetFileBlob(params["name"])
+	if err != nil {
+		r.HTML(200, "dict/notfound", html)
+		return
+	}
+
+	markdown := blob.Contents()
+	unsafe := blackfriday.MarkdownCommon(markdown)
+	contentHtml := bluemonday.UGCPolicy().SanitizeBytes(unsafe)
+
+	html["Yomi"] = m.Yomi
+	html["Content"] = string(markdown)
+	html["ContentHTML"] = string(contentHtml)
+
+	html["Dict"] = m
 
 	r.HTML(200, "dict/show", html)
 }
@@ -168,7 +169,7 @@ func NewDict(r render.Render, params martini.Params, html html.HTMLContext, req 
 
 	bytes, err := ioutil.ReadFile(path.Join(BasePath, "template.txt"))
 	if err == nil {
-		html["Content"] = fmt.Sprintf(string(bytes), name)
+		html["Content"] = fmt.Sprintf(string(bytes), name, req.URL.Query().Get("image"))
 	}
 
 	r.HTML(200, "dict/edit", html, render.HTMLOptions{"layout-editor"})

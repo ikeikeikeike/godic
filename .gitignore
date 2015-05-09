@@ -34,3 +34,5 @@ _testmain.go
 /abc.db
 /template.txt
 /config/settings.lua
+/.hg
+/.hgignore
