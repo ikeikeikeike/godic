@@ -1,0 +1,245 @@
+{{template "header" .}}
+
+<!-- =============== BEGIN #page ==============================-->
+<div id="page">
+  <!-- =========== PAGE HEADER ON ALL BUT INDEX PAGES =========================================================================== -->
+  <!-- _________ Page Header ___________ -->
+  <div class="page-header-primary">
+    <div class="container">
+      <h2>{{.Name}} <small style='display: inline;'>{{.Dict.Yomi}}</small></h2>
+      <ol class="breadcrumb page-header-breadcrumb hidden-xs">
+        <li><a href='{{urlFor "index"}}' class="link-underline">ホーム</a></li>
+        <li class="active">{{.Name}}</li>
+      </ol>
+    </div>
+    <!-- /.container (for page-header-primary) -->
+  </div>
+  <!-- /.page-header-primary -->
+  <!-- =========== BEGIN CONTENT FOR THE PAGE =========================================================================== -->
+  <div class="page-content" role="main">
+    <!--slide to sidebar toggle -->
+    <a class="visible-xs slide-sidebar has-anchor" href="#sidebar"><i class="ti ti-menu"></i> <em>Sidebar</em></a>
+    <div class="container blog">
+      <!-- add class blog summary  -->
+      <div class="row">
+        <!-- ____ PRIMARY COLUMN GOES HERE ____ -->
+        <div class="col-sm-8 col-md-9 primary-column" role="main">
+          <div class="entry-full-post">
+            <!-- _____________ BEGIN 'entry-post' _________ -->
+            <article class="entry-post clearfix">
+
+              <div id="page-content" style='margin: 43px;'>
+                <p><strong>このタイトルの記事は、まだ作成されていません。</strong></p>
+                <a href='{{urlFor "new"}}{{.Name}}?category={{index .Params "category"}}&image={{index .Params "image"}}' 
+                   class='btn btn-lg btn-default'><i class="fa fa-fw fa-plus"></i>記事を作成</a>
+              </div>
+
+              <header class="entry-header">
+                <h1 class="entry-title"> {{.Dict.Name}} </h1>
+                <div class="entry-fancy-date">
+                  <div>
+                    <span class="day">
+                      None
+                    </span>
+                    <span class="month">
+                      None
+                    </span>
+                    <span class="year">
+                      None
+                    </span>
+                  </div>
+                </div>
+                <div class="addthis_toolbox">
+                  <div class="addthis_inner addthis_inner_extra">
+                    <!-- for sticking -->
+                    {{if .Dict}}
+                      <a class="edit-icon" data-hover="tooltip" data-placement="right" data-original-title="{{.Dict.Name}}を編集する"
+                         href='{{urlFor "edit" .Dict.Name}}' title="{{.Dict.Name}}を編集する">
+                        <i class="fa fa-fw fa-edit fa-3x"></i>
+                      </a>
+                    {{else}}
+                      <a class="add-icon" data-hover="tooltip" data-placement="right" data-original-title="新しく記事を追加する"
+                        href='{{urlFor "new"}}{{.Name}}?category={{index .Params "category"}}&image={{index .Params "image"}}' title="新しく記事を追加する">
+                        <i class="fa fa-fw fa-plus fa-3x"></i>
+                      </a>
+                    {{end}}
+
+                    <div style='margin-top: -12px; {{if .Dict}}margin-right: 10px;{{end}}'  
+                         class="bookmarkhub-vertical" style="min-height: 20px;" bookmarkhub-url="{{.Meta.URL}}"></div>
+                  </div>
+                </div>
+              </header>
+              <!--/ entry-header -->
+            </article>
+          </div>
+          <!-- /.entry-full-post -->
+
+        </div>
+        <!-- _________ END /.col-*-* :: containing primary content ______ -->
+        <!-- ____ SECONDARY COLUMN GOES HERE ____ -->
+        <div class="col-sm-4 col-md-3 hidden-print" id="sidebar" role="complementary">
+          <div class="blog-single-sidebar">
+            <!-- for sticking -->
+            <!-- _____________ WIDGET _________ -->
+            <aside class="widget">
+              <h5 class="widget-title">検索</h5>
+              <form class="searchform" method="get" action="YOURSEARCHACTION">
+                <div class="form-group">
+                  <input disabled class="form-control" type="text" placeholder="Search and hit enter" />
+                </div>
+              </form>
+              <!--your own form scripts-->
+            </aside>
+            <!--/widget -->
+
+            <!-- _____________ WIDGET _________ -->
+            {{$popularDicts := (slice (.CategoriesALL|shuffle) 0 1)}}
+            <aside class="widget">
+              <h5 class="widget-title">人気の記事</h5>
+              <!--begin tabs going in narrow content -->
+              <ul class="nav nav-tabs sidebar-tabs" id="unique-id" role="tablist" style='display: inline-flex !important;'>
+                <!-- Important: limit tabs to no more than three short items or you will need to change the
+                 grid classes used on this page (all of them) to make this column wider OR adjust the tab collapse
+                 breakpoints in the css OR just use the collapse component and forget about tabs here -->
+                {{range $i, $c := $popularDicts}}
+                  <li style='font-size: 11px; font-weight: bold;' 
+                      class="bold {{if eq $i 0}}active{{end}}" role="presentation"><a href="#tab-{{$i}}" role="tab" data-toggle="tab">{{$c.Name}}</a></li>
+                {{end}}
+              </ul>
+              <!--/.nav-tabs.sidebar-tabs -->
+              <!-- Tab panes -->
+              <div class="tab-content">
+
+                {{range $i, $c := $popularDicts}}
+                  <div class="tab-pane {{if eq $i 0}}active{{end}}" id="tab-{{$i}}">
+                    <ul class="list-unstyled media-list">
+                      {{range $i, $d := $c.Dicts}}
+                        <li> 
+                          <a href='{{urlFor "show" $d.Name}}'>
+                            <div class="media-list-visual">
+                              <img src="/static/img/siteicon/favicon-32x32.png" alt="{{truncate ($d.Content|markdownHTML|sanitizeHTML) 100}}" />
+                            </div>
+                            <!-- if this goes in a side bar, the text must be truncated using a plugin for this -->
+                            <div class="media-list-content">
+                              <p style='font-size: 15px; font-weight: bold;'>{{$d.Name}}</p>
+                            </div>
+                          </a> 
+                        </li>
+                      {{end}}
+                    </ul>
+                  </div>
+                {{end}}
+
+
+                <!--/.tab-pane -->
+              </div>
+              <!--/.tab-content -->
+            </aside>
+            <!-- /widget -->
+
+            <!-- _____________ WIDGET _________ -->
+            <aside class="widget">
+              <h5 class="widget-title">更新された記事</h5>
+                <ul class="list-unstyled media-list">
+                  {{range $i, $d := .UpdatedDicts}}
+                    <li> 
+                      <a href='{{urlFor "show" $d.Name}}'>
+                        <div class="media-list-visual">
+                          <img src="/static/img/siteicon/favicon-32x32.png" alt="{{truncate ($d.Content|markdownHTML|sanitizeHTML) 100}}" />
+                        </div>
+                        <!-- if this goes in a side bar, the text must be truncated using a plugin for this -->
+                        <div class="media-list-content">
+                          <p style=''>
+                            <span style='font-size: 15px; font-weight: bold;'>{{$d.Name}}</span><br />
+                            {{$d.UpdatedAt|timeSince}}
+                          </p>
+                        </div>
+                      </a> 
+                    </li>
+                  {{end}}
+                </ul>
+            </aside>
+            <!-- /widget -->
+
+            <!-- _____________ WIDGET _________ -->
+            <aside class="widget">
+              <h5 class="widget-title">新しく作成された記事</h5>
+                <ul class="list-unstyled media-list">
+                  {{range $i, $d := .CreatedDicts}}
+                    <li> 
+                      <a href='{{urlFor "show" $d.Name}}'>
+                        <div class="media-list-visual">
+                          <img src="/static/img/siteicon/favicon-32x32.png" alt="{{truncate ($d.Content|markdownHTML|sanitizeHTML) 100}}" />
+                        </div>
+                        <!-- if this goes in a side bar, the text must be truncated using a plugin for this -->
+                        <div class="media-list-content">
+                          <p style=''>
+                            <span style='font-size: 15px; font-weight: bold;'>{{$d.Name}}</span><br />
+                            {{$d.UpdatedAt|timeSince}}
+                          </p>
+                        </div>
+                      </a> 
+                    </li>
+                  {{end}}
+                </ul>
+            </aside>
+            <!-- /widget -->
+
+            <!-- _____________ WIDGET _________ -->
+            <aside class="widget">
+              <h5 class="widget-title">記事のカテゴリー</h5>
+              <ul class="list-unstyled icon-list arrow-right">
+                {{range $i, $c := .CategoriesALL}}<li><a href="#">{{$c.Name}}</a></li>{{end}}
+              </ul>
+            </aside>
+            <!-- /widget -->
+
+            <!-- _____________ WIDGET _________ -->
+            <aside class="widget">
+              <h5 class="widget-title">Recent Images</h5>
+              <!-- you might want to bump up the original size of the images to 100 px square -->
+              <div class="img-widget fade-hover-img">
+                <a href="#"><img src="/assets/demo-images/img-widget/1.jpg" alt="" /></a> <a href="#"><img src="/assets/demo-images/img-widget/2.jpg" alt="" /></a> <a href="#"><img src="/assets/demo-images/img-widget/3.jpg" alt="" /></a> <a href="#"><img src="/assets/demo-images/img-widget/4.jpg" alt="" /></a> <a href="#"><img src="/assets/demo-images/img-widget/5.jpg" alt="" /></a> <a href="#"><img src="/assets/demo-images/img-widget/6.jpg" alt="" /></a> <a href="#"><img src="/assets/demo-images/img-widget/7.jpg" alt="" /></a> <a href="#"><img src="/assets/demo-images/img-widget/8.jpg" alt="" /></a> <a href="#"><img src="/assets/demo-images/img-widget/9.jpg" alt="" /></a> <a href="#"><img src="/assets/demo-images/img-widget/10.jpg" alt="" /></a>
+              </div>
+            </aside>
+            <!--/ widget -->
+
+            <!-- _____________ WIDGET _________ -->
+            <aside class="widget">
+              <h5 class="widget-title">Another Widget</h5>
+              <p> According to Wikipedia: a paragraph (from the Greek paragraphos, "to write beside" or "written beside") is a self-contained unit of a discourse in writing dealing with a particular point or idea. </p>
+            </aside>
+            <!-- /widget -->
+          </div>
+          <!-- /.blog-single-sidebar -->
+        </div>
+        <!--/#sidebar-->
+      </div>
+      <!--/.row-->
+    </div>
+    <!--/.container-->
+  </div>
+  <!-- /.page-content role=main -->
+  <!--=========== END CONTENT FOR THE PAGE ============================================================ -->
+</div>
+<!-- ================== END #page ================= -->
+
+<!-- _________ GO TO TOP ___________ -->
+<a id="go-to-top" href="#top" title="up"> <i class="ti ti-arrow-up"></i> </a>
+
+{{template "footer" .}}
+{{template "script" .}}
+<!-- REPLACE THIS CODE WITH YOUR OWN, otherwise your tracking won't work -->
+<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-54a2dd9a57c313a8" async></script>
+<script type="text/javascript">
+if (typeof addthis_config !== "undefined") {
+    addthis_config.ui_click = true
+    } else {
+    var addthis_config = {
+    ui_click: true
+   };
+}
+</script>
+<script>
+  $(function(){});
+</script>
