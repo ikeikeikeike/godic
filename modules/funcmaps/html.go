@@ -1,11 +1,13 @@
 package funcmaps
 
 import (
+	"fmt"
 	"html"
 	"html/template"
 	"strings"
 	"time"
 
+	gq "github.com/PuerkitoBio/goquery"
 	"github.com/kennygrant/sanitize"
 	"github.com/mattn/go-runewidth"
 	"github.com/microcosm-cc/bluemonday"
@@ -70,4 +72,34 @@ func DiffTypeToStr(diffType int) string {
 
 func Truncate(in string, length int) string {
 	return runewidth.Truncate(in, length, "...")
+}
+
+// Expect sorted string-length.
+func AutoLink(html string, names []string) string {
+	doc, err := gq.NewDocumentFromReader(strings.NewReader(html))
+	if err != nil {
+		return html
+	}
+
+	sel := "div#page-content"
+
+	for _, name := range names {
+		doc.Find(sel).Find("*").Each(func(i int, s *gq.Selection) {
+			if strings.Contains(s.Text(), name) {
+				t := s.Text()
+				h, _ := s.Html()
+				if t != "" && h == "" {
+					html := strings.Replace(t, name, fmt.Sprintf(`<a href="/d/%[1]s">%[1]s</a>`, name), 1)
+					s.ReplaceWithHtml(html)
+				}
+			}
+		})
+	}
+
+	res, err := doc.Find(sel).Parent().Html()
+	if err != nil {
+		return html
+	}
+
+	return res
 }
