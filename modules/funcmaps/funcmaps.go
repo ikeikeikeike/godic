@@ -28,6 +28,7 @@ func init() {
 			"reverse":           Reverse,
 			"slice":             Slice,
 			"plus":              Plus,
+			"autoLink":          AutoLink,
 		},
 	}
 }

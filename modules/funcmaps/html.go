@@ -8,6 +8,9 @@ import (
 	"time"
 
 	gq "github.com/PuerkitoBio/goquery"
+	"github.com/ikeikeikeike/godic/modules/configs"
+	"github.com/ikeikeikeike/gopkg/extract/image"
+	"github.com/ikeikeikeike/gopkg/str"
 	"github.com/kennygrant/sanitize"
 	"github.com/mattn/go-runewidth"
 	"github.com/microcosm-cc/bluemonday"
@@ -81,10 +84,12 @@ func AutoLink(html string, names []string) string {
 		return html
 	}
 
-	sel := "div#page-content"
-
 	for _, name := range names {
-		doc.Find(sel).Find("*").Each(func(i int, s *gq.Selection) {
+		if len([]rune(name)) <= 1 {
+			continue
+		}
+
+		doc.Find("*").Each(func(i int, s *gq.Selection) {
 			if strings.Contains(s.Text(), name) {
 				t := s.Text()
 				h, _ := s.Html()
@@ -96,10 +101,47 @@ func AutoLink(html string, names []string) string {
 		})
 	}
 
-	res, err := doc.Find(sel).Parent().Html()
+	res, err := doc.Find("body").Html()
 	if err != nil {
 		return html
 	}
 
 	return res
+}
+
+type Img struct {
+	*image.FileInfo
+
+	Src string
+	Alt string
+}
+
+func ExtractIMGs(html string) (imgs []*Img) {
+	doc, err := gq.NewDocumentFromReader(strings.NewReader(html))
+	if err != nil {
+		return
+	}
+
+	info := image.NewInfo()
+	info.Header("User-Agent", configs.Settings.UserAgent)
+
+	doc.Find("img").Each(func(i int, s *gq.Selection) {
+		src, ok := s.Attr("src")
+		if !ok {
+			return
+		}
+		alt, _ := s.Attr("alt")
+		if alt == "" {
+			alt, _ = s.Attr("title")
+		}
+
+		src = str.Clean(src)
+		f, err := info.Fetch(src)
+		if err == nil {
+			img := &Img{FileInfo: f, Src: src, Alt: alt}
+			imgs = append(imgs, img)
+		}
+	})
+
+	return
 }
