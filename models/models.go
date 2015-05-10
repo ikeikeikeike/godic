@@ -26,7 +26,7 @@ type Model struct {
 
 var DB gorm.DB
 
-func InitDB() {
+func init() {
 	var err error
 
 	dialect := "sqlite3"
@@ -87,7 +87,7 @@ func InitSeed() {
 		bytes, err := ioutil.ReadFile(path.Join(basePath, "template.txt"))
 
 		i := 0
-		for i < 10 {
+		for i < 0 {
 			name := letterCombinePtn(5)
 
 			content := ""

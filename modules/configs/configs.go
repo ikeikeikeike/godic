@@ -1,6 +1,10 @@
 package configs
 
 import (
+	"os"
+	"path"
+
+	"github.com/go-martini/martini"
 	"github.com/yuin/gluamapper"
 	"github.com/yuin/gopher-lua"
 )
@@ -18,9 +22,22 @@ type settings struct {
 		Href  string
 		Src   string
 	}
+
+	RedisConn string
+	UserAgent string
 }
 
 var Settings settings
+var s = defaultSettings()
+
+func defaultSettings() int {
+	p, _ := os.Getwd()
+	Register(
+		path.Join(p, "config/settings.lua"),
+		martini.Env,
+	)
+	return 0
+}
 
 func Register(filepath, environ string) {
 	L := lua.NewState()

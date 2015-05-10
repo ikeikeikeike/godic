@@ -126,24 +126,28 @@ func ShowDict(r render.Render, params martini.Params, html html.HTMLContext) {
 		return
 	}
 
-	repo := git.NewRepo()
-	repo.Init(path.Join(RepoPath, m.GetPrefix()))
-
-	blob, err := repo.GetFileBlobWithHash(params["name"], params["sha1"])
-	if err != nil {
-		r.HTML(200, "dict/notfound", html)
-		return
-	}
-
-	markdown := blob.Contents()
-	unsafe := blackfriday.MarkdownCommon(markdown)
-	contentHtml := bluemonday.UGCPolicy().SanitizeBytes(unsafe)
-
-	html["Yomi"] = m.Yomi
-	html["Content"] = string(markdown)
-	html["ContentHTML"] = string(contentHtml)
-
 	html["Dict"] = m
+	html["Yomi"] = m.Yomi
+	html["Content"] = m.Content
+	html["ContentHTML"] = m.ContentHTML
+
+	if params["sha1"] != "" {
+		repo := git.NewRepo()
+		repo.Init(path.Join(RepoPath, m.GetPrefix()))
+
+		blob, err := repo.GetFileBlobWithHash(params["name"], params["sha1"])
+		if err != nil {
+			r.HTML(200, "dict/notfound", html)
+			return
+		}
+
+		markdown := blob.Contents()
+		unsafe := blackfriday.MarkdownCommon(markdown)
+		contentHtml := bluemonday.UGCPolicy().SanitizeBytes(unsafe)
+
+		html["Content"] = string(markdown)
+		html["ContentHTML"] = string(contentHtml)
+	}
 
 	r.HTML(200, "dict/show", html)
 }
