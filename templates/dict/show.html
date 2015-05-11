@@ -303,7 +303,11 @@
                         <li> 
                           <a href='{{urlFor "show" $d.Name}}'>
                             <div class="media-list-visual">
-                              <img src="/static/img/siteicon/favicon-32x32.png" alt="{{truncate ($d.Content|markdownHTML|sanitizeHTML) 100}}" />
+                              {{if $d.Image}}
+                                <img src="{{$d.Image.Src}}" alt="{{$d.Image.Name}}: {{truncate ($d.Content|markdownHTML|sanitizeHTML) 100}}" />
+                              {{else}}
+                                <img src="/static/img/siteicon/favicon-32x32.png" alt="{{truncate ($d.Content|markdownHTML|sanitizeHTML) 100}}" />
+                              {{end}}
                             </div>
                             <!-- if this goes in a side bar, the text must be truncated using a plugin for this -->
                             <div class="media-list-content">
@@ -388,7 +392,11 @@
                     <li> 
                       <a href='{{urlFor "show" $d.Name}}'>
                         <div class="media-list-visual">
-                          <img src="/static/img/siteicon/favicon-32x32.png" alt="{{truncate ($d.Content|markdownHTML|sanitizeHTML) 100}}" />
+                          {{if $d.Image}}
+                            <img src="{{$d.Image.Src}}" alt="{{$d.Image.Name}}: {{truncate ($d.Content|markdownHTML|sanitizeHTML) 100}}" />
+                          {{else}}
+                            <img src="/static/img/siteicon/favicon-32x32.png" alt="{{truncate ($d.Content|markdownHTML|sanitizeHTML) 100}}" />
+                          {{end}}
                         </div>
                         <!-- if this goes in a side bar, the text must be truncated using a plugin for this -->
                         <div class="media-list-content">
@@ -412,7 +420,11 @@
                     <li> 
                       <a href='{{urlFor "show" $d.Name}}'>
                         <div class="media-list-visual">
-                          <img src="/static/img/siteicon/favicon-32x32.png" alt="{{truncate ($d.Content|markdownHTML|sanitizeHTML) 100}}" />
+                          {{if $d.Image}}
+                            <img src="{{$d.Image.Src}}" alt="{{$d.Image.Name}}: {{truncate ($d.Content|markdownHTML|sanitizeHTML) 100}}" />
+                          {{else}}
+                            <img src="/static/img/siteicon/favicon-32x32.png" alt="{{truncate ($d.Content|markdownHTML|sanitizeHTML) 100}}" />
+                          {{end}}
                         </div>
                         <!-- if this goes in a side bar, the text must be truncated using a plugin for this -->
                         <div class="media-list-content">
