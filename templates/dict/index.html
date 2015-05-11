@@ -44,8 +44,8 @@
                   <img src="{{$d.Image.Src}}" alt="{{$d.Image.Name}}" />
                   <div>
                     <span>
-                      <a href="{{urlFor "show" $d.Name}}" class="ti ti-link"></a> 
-                      <a class="pop-image ti ti-layers" href="{{$d.Image.Src}}"></a>
+                      <a href='{{urlFor "show" $d.Name}}' class="ti ti-link"></a> 
+                      <a href='{{urlFor "edit" $d.Name}}' class="ti ti-pencil-alt"></a>
                     </span>
                   </div>
                 </div>

@@ -59,11 +59,54 @@ func timeSince(then time.Time) string {
 	}
 }
 
+func timeSinceColor(then time.Time) string {
+	now := time.Now()
+
+	diff := now.Unix() - then.Unix()
+	if then.After(now) {
+		diff = then.Unix() - now.Unix()
+	}
+
+	switch {
+	case diff <= 0:
+		return "red"
+	case diff <= 2:
+		return "red"
+	case diff < 1*Minute:
+		return "red"
+	case diff < 2*Minute:
+		return "red"
+	case diff < 1*Hour:
+		return "salmon"
+	case diff < 2*Hour:
+		return "salmon"
+	case diff < 1*Day:
+		return "darkorange"
+	case diff < 2*Day:
+		return "chocolate"
+	case diff < 1*Week:
+		return "darkred"
+	case diff < 2*Week:
+		return "darkred"
+	case diff < 1*Month:
+		return "olivedrab"
+	case diff < 2*Month:
+		return "olivedrab"
+	case diff < 1*Year:
+		return "steelblue"
+	case diff < 2*Year:
+		return "steelblue"
+	default:
+		return "slategrey"
+	}
+}
+
+
 func TimeSince(t time.Time) template.HTML {
 	return template.HTML(
 		fmt.Sprintf(
-			`<span class="time-since" title="%s">%s</span>`,
-			t.Format("2006/01/02 15:04"), timeSince(t),
+			`<span class="time-since" style="color: %s;" title="%s">%s</span>`,
+			timeSinceColor(t), t.Format("2006/01/02 15:04"), timeSince(t),
 		),
 	)
 }
