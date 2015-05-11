@@ -5,6 +5,7 @@ import "strings"
 func ToCanonical(name string) string {
 	name = strings.Replace(name, "!", "！", -1)
 	name = strings.Replace(name, "`", "｀", -1)
+	name = strings.Replace(name, "~", "〜", -1)
 	name = strings.Replace(name, "'", "’", -1)
 	name = strings.Replace(name, `"`, "”", -1)
 	name = strings.Replace(name, `*`, "＊", -1)
