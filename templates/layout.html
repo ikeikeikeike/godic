@@ -8,9 +8,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <title>{{.Settings.AppName}}</title>
-  <meta name="keywords" content="{{.Settings.Keywords}}" />
-  <meta name="description" content="{{.Settings.Description}}" />
+  <title>{{genMetaTitle .Params}}</title>
+  <meta name="keywords" content="{{genMetaKeywords .Params}}" />
+  <meta name="description" content="{{genMetaDescription .Params}}" />
 
   <link rel="apple-touch-icon" sizes="57x57" href="/static/img/siteicon/apple-touch-icon-57x57.png">
   <link rel="apple-touch-icon" sizes="60x60" href="/static/img/siteicon/apple-touch-icon-60x60.png">

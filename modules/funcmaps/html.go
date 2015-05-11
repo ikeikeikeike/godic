@@ -147,3 +147,28 @@ func ExtractIMGs(html string) (imgs []*Img) {
 
 	return
 }
+
+func GenMetaTitle(params map[string]string) string {
+	v := configs.Settings.AppName
+	if name, ok := params["name"]; ok {
+		return fmt.Sprintf("%[1]s | %[2]sの記事", v, name)
+	} else {
+		return fmt.Sprintf("%[1]s | 人気新着の記事まとめ", v)
+	}
+}
+
+func GenMetaKeywords(params map[string]string) string {
+	if name, ok := params["name"]; ok {
+		return fmt.Sprintf("%[1]s,%[2]s", configs.Settings.Keywords, name)
+	} else {
+		return configs.Settings.Keywords
+	}
+}
+
+func GenMetaDescription(params map[string]string) string {
+	if name, ok := params["name"]; ok {
+		return fmt.Sprintf("%[2]sを見るなら%[1]s", configs.Settings.Description, name)
+	} else {
+		return configs.Settings.Description
+	}
+}
