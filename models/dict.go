@@ -7,7 +7,6 @@ import (
 
 	"github.com/ikeikeikeike/godic/modules/funcmaps"
 	"github.com/ikeikeikeike/godic/modules/redis"
-	"github.com/k0kubun/pp"
 )
 
 type Dict struct {
@@ -40,16 +39,19 @@ func (m *Dict) BeforeCreate() error {
 func (m *Dict) BeforeSave() error {
 	html := funcmaps.MarkdownHTML(m.Content)
 
+	do := false
 	for _, img := range funcmaps.ExtractIMGs(html) {
-		pp.Println(img)
 		if m.Image == nil {
 			m.Image = NewImageByIMG(img)
-			continue
-		}
-
-		if m.Image.Width < img.Width || m.Image.Height < img.Height {
+			do = true
+		} else if m.Image.Width < img.Width || m.Image.Height < img.Height {
 			m.Image = NewImageByIMG(img)
+			do = true
 		}
+	}
+	if do {
+		DB.Save(m.Image)
+		m.ImageID = sql.NullInt64{m.Image.ID, true}
 	}
 
 	c := funcmaps.AutoLink(html, CachedDictNames())

@@ -19,5 +19,6 @@ type Category struct {
 }
 
 func (m *Category) DictLoader(limit int) {
-	DB.Model(&m).Order("dicts.id DESC").Limit(limit).Related(&m.Dicts, "Dicts")
+	DB.Model(&m).Preload("Category").Preload("Image").
+		Order("dicts.id DESC").Limit(limit).Related(&m.Dicts, "Dicts")
 }

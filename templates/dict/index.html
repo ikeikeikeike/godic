@@ -35,34 +35,70 @@
         <li class="gutter-sizer"></li>
         <!-- required for fluid masonry layout --> 
         
-        <!-- TEXT POST -->
+        <!-- IMAGE POST with image pop up -->
         {{range $i, $c := .CategoriesALL}}
           {{range $i, $d := $c.Dicts}}
-            <li class="post msnry-blog-entry {{$c.Prefix}}">
-              <div class="msnry-blog-entry-text">
-                <h4 class="h5"><a href='{{urlFor "show" $d.Name}}'>{{$d.Name}}</a></h4>
-                <p><a href='{{urlFor "show" $d.Name}}'>{{truncate ($d.Content|markdownHTML|sanitizeHTML) 70}}</a></p>
-                <ul class="msnry-blog-entry-meta list-inline">
-                  <li>
-                    <span class="ti ti-pencil-alt">
+            {{if $d.Image}}
+              <li class="post msnry-blog-entry {{$c.Prefix}}">
+                <div class="click-slide click-top">
+                  <img src="{{$d.Image.Src}}" alt="{{$d.Image.Name}}" />
+                  <div>
+                    <span>
+                      <a href="{{urlFor "show" $d.Name}}" class="ti ti-link"></a> 
+                      <a class="pop-image ti ti-layers" href="{{$d.Image.Src}}"></a>
                     </span>
-                    by Nameof Author</li>
-                  <li><a href='{{urlFor "show" $d.Name}}'>
-                    <span class="ti ti-comments">
-                    </span>
-                    5</a></li>
-                  <li>
-                    <span class="ti ti-calendar">
-                    </span>
-                    {{timeSince $d.UpdatedAt}}
-                  </li>
-                </ul>
-              </div>
-            </li>
+                  </div>
+                </div>
+                <div class="msnry-blog-entry-text">
+                  <h4 class="h5"><a href='{{urlFor "show" $d.Name}}'>{{$d.Name}}</a></h4>
+                  <p><a href='{{urlFor "show" $d.Name}}'>{{truncate ($d.Content|markdownHTML|sanitizeHTML) 70}}</a></p>
+                  <ul class="msnry-blog-entry-meta list-inline">
+                    <li>
+                      <span class="ti ti-pencil-alt">
+                      </span>
+                      by Nameof Author
+                    </li>
+                    <li><a href="{{urlFor "show" $d.Name}}">
+                      <span class="ti ti-comments">
+                      </span>
+                      5</a>
+                    </li>
+                    <li>
+                      <span class="ti ti-calendar">
+                      </span>
+                      {{timeSince $d.UpdatedAt}}
+                    </li>
+                  </ul>
+                </div>
+              </li>
+            {{else}}
+              <li class="post msnry-blog-entry {{$c.Prefix}}">
+                <div class="msnry-blog-entry-text">
+                  <h4 class="h5"><a href='{{urlFor "show" $d.Name}}'>{{$d.Name}}</a></h4>
+                  <p><a href='{{urlFor "show" $d.Name}}'>{{truncate ($d.Content|markdownHTML|sanitizeHTML) 70}}</a></p>
+                  <ul class="msnry-blog-entry-meta list-inline">
+                    <li>
+                      <span class="ti ti-pencil-alt">
+                      </span>
+                      by Nameof Author</li>
+                    <li>
+                      <a href='{{urlFor "show" $d.Name}}'>
+                      <span class="ti ti-comments">
+                      </span>
+                      5</a>
+                    </li>
+                    <li>
+                      <span class="ti ti-calendar">
+                      </span>
+                      {{timeSince $d.UpdatedAt}}
+                    </li>
+                  </ul>
+                </div>
+              </li>
+            {{end}}
           {{end}}
         {{end}}
         <!--/ .post .msnry-blog-entry --> 
-
       </ul>
       <!--/ .row-masonry -->
       
