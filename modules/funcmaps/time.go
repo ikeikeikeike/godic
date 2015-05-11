@@ -81,7 +81,7 @@ func timeSinceColor(then time.Time) string {
 	case diff < 2*Hour:
 		return "salmon"
 	case diff < 1*Day:
-		return "darkorange"
+		return "chocolate"
 	case diff < 2*Day:
 		return "chocolate"
 	case diff < 1*Week:
