@@ -13,6 +13,7 @@ import (
 	"github.com/ikeikeikeike/godic/models"
 	"github.com/ikeikeikeike/godic/models/category"
 	"github.com/ikeikeikeike/godic/models/dict"
+	"github.com/ikeikeikeike/godic/modules/funcmaps"
 	"github.com/ikeikeikeike/godic/modules/git"
 	git2go "github.com/libgit2/git2go"
 	"github.com/martini-contrib/render"
@@ -159,6 +160,7 @@ func NewDict(r render.Render, params martini.Params, html html.HTMLContext, req 
 	if name == "" {
 		name = "no_title"
 	}
+	name = funcmaps.ToCanonical(name)
 
 	html["Name"] = name
 	html["Content"] = ""
@@ -181,7 +183,7 @@ func NewDict(r render.Render, params martini.Params, html html.HTMLContext, req 
 
 func EditDict(r render.Render, params martini.Params, html html.HTMLContext) {
 	log.Debugln("EditDict action !!!!!")
-	name := params["name"]
+	name := funcmaps.ToCanonical(params["name"])
 
 	if name == "" {
 		r.HTML(404, "errors/404", html)
