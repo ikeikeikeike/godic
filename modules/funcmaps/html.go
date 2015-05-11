@@ -89,15 +89,17 @@ func AutoLink(html string, names []string) string {
 			continue
 		}
 
-		doc.Find("*").Each(func(i int, s *gq.Selection) {
+		doc.Find("*").EachWithBreak(func(i int, s *gq.Selection) bool {
 			if strings.Contains(s.Text(), name) {
 				t := s.Text()
 				h, _ := s.Html()
 				if t != "" && h == "" {
 					html := strings.Replace(t, name, fmt.Sprintf(`<a href="/d/%[1]s">%[1]s</a>`, name), 1)
 					s.ReplaceWithHtml(html)
+					return false
 				}
 			}
+			return true
 		})
 	}
 
