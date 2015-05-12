@@ -110,7 +110,7 @@ func ShowDict(r render.Render, params martini.Params, html html.HTMLContext) {
 
 	var cdicts, udicts []*models.Dict
 	dict.RelationDB().Order("dicts.created_at DESC").Limit(5).Find(&cdicts)
-	dict.RelationDB().Order("dicts.created_at DESC").Limit(5).Find(&udicts)
+	dict.RelationDB().Order("dicts.updated_at DESC").Limit(5).Find(&udicts)
 
 	html["CreatedDicts"] = cdicts
 	html["UpdatedDicts"] = udicts
