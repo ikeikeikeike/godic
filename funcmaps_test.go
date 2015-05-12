@@ -16,9 +16,9 @@ func TestAutoLink(t *testing.T) {
 <p><code>テスト</code>の<strong>概要</strong>を<a href="/d/%E6%9B%B8%E3%81%84%E3%81%A6" rel="nofollow">書いて</a>ください。</p>
 <p>関連記事</p>
 <p><code>テスト</code>に関する<strong>example.orgの記事</strong>を紹介してください。</p>
-<p>関連エロ本</p>
+<p>関連本</p>
 <p><code>テスト</code>に関する<strong>example.orgの本</strong>を紹介してください。</p>
-<p>関連エロ動画</p>
+<p>関連動画</p>
 <p><code>テスト</code>に関する<strong>example.orgの動画</strong>を紹介してください。</p>
 <p>関連項目</p>
 <p><code>テスト</code>に関する<strong>項目</strong>を紹介してください。</p>

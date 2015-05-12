@@ -3,6 +3,16 @@
 	"GoVersion": "go1.4.2",
 	"Deps": [
 		{
+			"ImportPath": "code.google.com/p/cascadia",
+			"Comment": "null-31",
+			"Rev": "5d796540e3cb93ea0556c897e6a3c7690f614d35"
+		},
+		{
+			"ImportPath": "github.com/PuerkitoBio/goquery",
+			"Comment": "v0.3.2-69-g4cf64c5",
+			"Rev": "4cf64c51f7e80d56d9ae2ffe7d684d3dd5dbd5d0"
+		},
+		{
 			"ImportPath": "github.com/Sirupsen/logrus",
 			"Comment": "v0.7.3-2-g26709e2",
 			"Rev": "26709e2714106fb8ad40b773b711ebce25b78914"
@@ -43,6 +53,10 @@
 			"Rev": "215affda49addc4c8ef7e2534915df2c8c35c6cd"
 		},
 		{
+			"ImportPath": "github.com/gorilla/feeds",
+			"Rev": "2e133eb352fab1ff3569ee169e9a3a94f69c9081"
+		},
+		{
 			"ImportPath": "github.com/gorilla/securecookie",
 			"Rev": "8e98dd730fc43f1383f19615db6f2e702c9738e8"
 		},
@@ -55,7 +69,27 @@
 			"Rev": "d2203024f99fa02c008fd16de389f564c8fc2e1d"
 		},
 		{
+			"ImportPath": "github.com/ikeikeikeike/gopkg/encoding/image",
+			"Rev": "d2203024f99fa02c008fd16de389f564c8fc2e1d"
+		},
+		{
+			"ImportPath": "github.com/ikeikeikeike/gopkg/extract/image",
+			"Rev": "d2203024f99fa02c008fd16de389f564c8fc2e1d"
+		},
+		{
+			"ImportPath": "github.com/ikeikeikeike/gopkg/net/http",
+			"Rev": "d2203024f99fa02c008fd16de389f564c8fc2e1d"
+		},
+		{
 			"ImportPath": "github.com/ikeikeikeike/gopkg/rdm",
+			"Rev": "d2203024f99fa02c008fd16de389f564c8fc2e1d"
+		},
+		{
+			"ImportPath": "github.com/ikeikeikeike/gopkg/redis",
+			"Rev": "d2203024f99fa02c008fd16de389f564c8fc2e1d"
+		},
+		{
+			"ImportPath": "github.com/ikeikeikeike/gopkg/str",
 			"Rev": "d2203024f99fa02c008fd16de389f564c8fc2e1d"
 		},
 		{
@@ -82,6 +116,10 @@
 		{
 			"ImportPath": "github.com/martini-contrib/binding",
 			"Rev": "1928ed2850e7d65507ea4198d935597e43612c7d"
+		},
+		{
+			"ImportPath": "github.com/martini-contrib/cors",
+			"Rev": "553b9208d353a39b0850c02355f478ba020c86d7"
 		},
 		{
 			"ImportPath": "github.com/martini-contrib/oauth2",
