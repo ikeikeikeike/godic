@@ -8,6 +8,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
+  {{.Settings.ExtraHeader|safeHTML}} 
+
   <title>{{genMetaTitle .Params}}</title>
   <meta name="keywords" content="{{genMetaKeywords .Params}}" />
   <meta name="description" content="{{genMetaDescription .Params}}" />
@@ -88,6 +90,8 @@
 <!--  /.sr-only accessibility--> 
 
 {{yield}}
+
+{{.Settings.ExtraFooter|safeHTML}} 
 
 </body>
 </html>

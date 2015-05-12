@@ -10,14 +10,21 @@ import (
 )
 
 type settings struct {
-	Name          string
-	Dsn           string
-	Email         string
-	Author        string
-	AppName       string
-	Keywords      string
-	Copyright     string
-	Description   string
+	Name    string
+	AppName string
+
+	Email  string
+	Author string
+
+	Dsn string
+
+	Keywords    string
+	Copyright   string
+	Description string
+
+	ExtraHeader string
+	ExtraFooter string
+
 	GroupServices []struct {
 		Title string
 		Href  string
