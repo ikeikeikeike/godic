@@ -25,10 +25,12 @@
         {{range $list}}
           <tr>
             <td class="checkbox-cell text-center">
-              <input type="checkbox" name="versions" value="{{.Id}}" />
+              <label for="versions{{.Id}}" style="display:block; cursor:pointer; width:100%; height:100%;">
+                <input id="versions{{.Id}}" type="checkbox" name="versions" value="{{.Id}}" />
+              </label> 
             </td>
             <td>{{.Author.Name}}</td>
-            <td><a href="{{.Id.String}}" class='label label-primary'>View</a> {{.Message}} </td>
+            <td><a target='_blank' href='{{urlFor "show" $.Name}}/{{.Id.String}}' class='label label-primary'>プレビュー表示</a> {{.Message}} </td>
             <td>
               {{timeSince .Author.When}}
             </td>
