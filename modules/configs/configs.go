@@ -13,6 +13,7 @@ type settings struct {
 	Name          string
 	Dsn           string
 	Email         string
+	Author        string
 	AppName       string
 	Keywords      string
 	Copyright     string

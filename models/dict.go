@@ -54,7 +54,7 @@ func (m *Dict) BeforeSave() error {
 		m.ImageID = sql.NullInt64{m.Image.ID, true}
 	}
 
-	c := funcmaps.AutoLink(html, CachedDictNames())
+	c := funcmaps.AutoLink(html, cachedDictNames())
 	m.ContentHTML = c
 
 	return nil
@@ -68,7 +68,7 @@ func (m *Dict) GetPrefix() string {
 	}
 }
 
-func CachedDictNames() []string {
+func cachedDictNames() []string {
 	key := "godic.models.dict.caches.CachedDicts"
 	s := reflect.ValueOf(redis.RC.Get(key))
 

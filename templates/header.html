@@ -82,7 +82,14 @@
           <!-- this link above links to your facebook page -->
           <!-- /END 6th .header-btn .header-btn-sm in second row -->
           <!-- BEGIN 7th .header-btn .header-btn-sm in second row -->
-          <a href="#" class="header-btn header-btn-sm" data-hover="tooltip" data-placement="left" title="subscribe to our RSS"> <i class="fa fa-rss header-icon"></i> </a>
+          <a id='rss-choices' class="header-btn header-btn-sm popovers"  
+             href='#' role="button" data-toggle="popover" data-html="true" data-placement="left" data-original-title="" title=""
+             data-content='
+             <a style="box-shadow: none; color: #fff;" target="_blank" href="{{urlFor "rss_latest"}}">新しく作成された順</a> | 
+             <a style="box-shadow: none; color: #fff;" target="_blank" href="{{urlFor "rss_modified"}}">更新された順</a>'
+          > <i class="fa fa-rss header-icon"></i> </a>
+            
+            
           <!-- this link above links to your google+ page -->
           <!-- /END 7th .header-btn .header-btn-sm in second row -->
         </div>

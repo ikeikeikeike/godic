@@ -51,7 +51,7 @@ func MarkdownHTML(markdown string) string {
 }
 
 func Nl2br(in string) string {
-	return strings.Replace(in, "\n", "<br>", -1)
+	return strings.Replace(in, "\n", "<br />", -1)
 }
 
 func DiffLineTypeToStr(diffType int) string {

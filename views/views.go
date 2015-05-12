@@ -5,6 +5,7 @@ import (
 
 	"github.com/go-martini/martini"
 	"github.com/martini-contrib/binding"
+	"github.com/martini-contrib/cors"
 	"github.com/martini-contrib/oauth2"
 	"github.com/martini-contrib/render"
 	"github.com/martini-contrib/sessions"
@@ -55,10 +56,22 @@ func init() {
 		Scopes: []string{"https://www.googleapis.com/auth/drive"},
 	}))
 
+	allowCORS := cors.Allow(&cors.Options{
+		AllowHeaders:     []string{"*"},
+		AllowMethods:     []string{"POST", "GET", "OPTIONS"},
+		AllowAllOrigins:  true,
+		AllowCredentials: true,
+	})
+
 	App.Get("/", func(r render.Render) { r.Redirect("/d/index") }).Name("root")
 	App.Group("/abouts", func(r martini.Router) {
 		r.Get("/sitemap", func(r render.Render) { r.Redirect("/") }).Name("abouts_sitemap")
 	})
+
+	App.Group("/rss", func(r martini.Router) {
+		r.Get("/latest.xml", LatestRSS).Name("rss_latest")
+		r.Get("/modified.xml", ModifiedRSS).Name("rss_modified")
+	}, allowCORS)
 
 	App.Group("/d", func(r martini.Router) {
 		r.Get("/index", DictIndex).Name("index")
@@ -78,7 +91,7 @@ func init() {
 		r.Delete("/:name", DeleteDict).Name("api_delete")
 	})
 
-	App.NotFound(func() (int, string) {
-		return 404, "not found"
+	App.NotFound(func(r render.Render, html html.HTMLContext) {
+		r.HTML(404, "errors/404", html)
 	})
 }
