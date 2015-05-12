@@ -1,1 +1,36 @@
-404 not found
+{{template "header" .}}
+
+<!-- =============== BEGIN #page ==============================-->
+<div id="page">
+  <!-- =========== PAGE HEADER ON ALL BUT INDEX PAGES =========================================================================== -->
+  <!-- _________ Page Header ___________ -->
+  <div class="page-header-primary">
+    <div class="container">
+      <h2>ご指定のページが見つかりません。<small style='display: inline;'>404 Not Found</small></h2>
+      <ol class="breadcrumb page-header-breadcrumb hidden-xs">
+        <li><a href='{{urlFor "index"}}' class="link-underline">ホーム</a></li>
+        <li class="active">404</li>
+      </ol>
+    </div>
+    <!-- /.container (for page-header-primary) -->
+  </div>
+  <!-- /.page-header-primary -->
+  <!-- =========== BEGIN CONTENT FOR THE PAGE =========================================================================== -->
+  <div class="page-content container" role="main">
+    <div class="well">
+      <h2 class="h1">ご指定のページは削除されたか移動した可能性があります</h2>
+      <ul class="h3 no-margin-bottom list-inline link-color-inherit">
+        <li> <a href="{{urlFor "index"}}" title="go home"> <i class="ti ti-home"> 
+        </i> </a> </li>
+        <li>- or -</li>
+        <li> <a href="#" data-target="#search-panel" data-slide="slide" title="search site"> <i class="ti ti-search"> 
+        </i> </a> </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<a id="go-to-top" href="#top" title="up"> <i class="ti ti-arrow-up"></i> </a>
+
+{{template "footer" .}}
+{{template "script" .}}
