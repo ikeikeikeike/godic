@@ -56,11 +56,11 @@ func CreateDict(params martini.Params, commit forms.Commit, errs binding.Errors,
 		return
 	}
 
-	m, created := dict.FirstOrCreateByCommit(commit)
-	if !created {
+	m, created, err := dict.FirstOrCreateByCommit(commit)
+	if !created || err != nil {
 		msg := fmt.Sprintf("%[1]sは既に存在します: > <a target='blank_' href='/d/%[1]s'>%[1]s</a>", m.Name)
 		r.JSON(400, APIResponse{Ok: false, Msg: msg})
-		log.Warn(msg)
+		log.Warn(msg, err)
 		return
 	}
 

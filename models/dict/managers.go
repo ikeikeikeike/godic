@@ -42,9 +42,12 @@ func UpdateByCommit(c forms.Commit) *m.Dict {
 	return &d
 }
 
-func FirstOrCreateByCommit(c forms.Commit) (*m.Dict, bool) {
+func FirstOrCreateByCommit(c forms.Commit) (*m.Dict, bool, error) {
 	var d m.Dict
-	m.DB.Where(m.Dict{Name: c.Name}).FirstOrInit(&d)
+
+	if err := m.DB.Where(m.Dict{Name: c.Name}).FirstOrInit(&d).Error; err != nil {
+		return nil, false, err
+	}
 
 	// created
 	created := false
@@ -68,5 +71,5 @@ func FirstOrCreateByCommit(c forms.Commit) (*m.Dict, bool) {
 		m.DB.Save(&d)
 	}
 
-	return &d, created
+	return &d, created, nil
 }
