@@ -20,7 +20,7 @@ type APIResponse struct {
 	Msg string `json:"msg"`
 }
 
-func UpdateDict(params martini.Params, commit forms.Commit, errs binding.Errors, r render.Render) {
+func UpdateDicts(params martini.Params, commit forms.Commit, errs binding.Errors, r render.Render) {
 	log.Debugln("UpdateDict action !!!!!")
 
 	if len(errs) > 0 {
@@ -46,7 +46,7 @@ func UpdateDict(params martini.Params, commit forms.Commit, errs binding.Errors,
 	r.JSON(200, APIResponse{Ok: true, Sha: sha1.String()})
 }
 
-func CreateDict(params martini.Params, commit forms.Commit, errs binding.Errors, r render.Render) {
+func CreateDicts(params martini.Params, commit forms.Commit, errs binding.Errors, r render.Render) {
 	log.Debugln("CreateDict action !!!!!")
 
 	if len(errs) > 0 {
@@ -79,7 +79,7 @@ func CreateDict(params martini.Params, commit forms.Commit, errs binding.Errors,
 	r.JSON(200, APIResponse{Ok: true, Sha: sha1.String()})
 }
 
-func DeleteDict(params martini.Params, html html.HTMLContext, r render.Render) {
+func DeleteDicts(params martini.Params, html html.HTMLContext, r render.Render) {
 	log.Debugln("DeleteDict action !!!!!")
 
 	if params["name"] == "" {
