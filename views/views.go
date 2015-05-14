@@ -63,7 +63,10 @@ func init() {
 		AllowCredentials: true,
 	})
 
-	App.Get("/", func(r render.Render) { r.Redirect("/d/index") }).Name("root")
+	App.Get("/", Roots).Name("roots")
+	App.Get("/latest", LatestRoots).Name("roots_latest")
+	App.Get("/modified", ModifiedRoots).Name("roots_modified")
+
 	App.Group("/abouts", func(r martini.Router) {
 		r.Get("/sitemap", func(r render.Render) { r.Redirect("/") }).Name("abouts_sitemap")
 	})
@@ -74,21 +77,21 @@ func init() {
 	}, allowCORS)
 
 	App.Group("/d", func(r martini.Router) {
-		r.Get("/index", DictIndex).Name("index")
-		r.Get("/new/", NewDict).Name("new")
-		r.Get("/new/:name", NewDict).Name("new")
-		r.Get("/:name", ShowDict).Name("show")
-		r.Get("/edit/:name", EditDict).Name("edit")
-		r.Get("/history/:name", DictHistory).Name("history")
-		r.Get("/:name/:sha1", ShowDict).Name("show")
-		r.Get(`/compare/:name/(?P<fromsha1>[^\.]+)\.{2,3}(?P<tosha1>.+)`, CompareDict).Name("compare")
+		r.Get("/index", func(r render.Render) { r.Redirect("/") }).Name("index")
+		r.Get("/new/", NewDicts).Name("new")
+		r.Get("/new/:name", NewDicts).Name("new")
+		r.Get("/:name", ShowDicts).Name("show")
+		r.Get("/edit/:name", EditDicts).Name("edit")
+		r.Get("/history/:name", DictsHistory).Name("history")
+		r.Get("/:name/:sha1", ShowDicts).Name("show")
+		r.Get(`/compare/:name/(?P<fromsha1>[^\.]+)\.{2,3}(?P<tosha1>.+)`, CompareDicts).Name("compare")
 	}, html.RequestParams)
 
 	App.Group("/_d", func(r martini.Router) {
 		r.Get("/:name", func(r render.Render, p martini.Params) { r.Redirect("/d/" + p["name"]) })
-		r.Put("/:name", binding.Bind(forms.Commit{}), UpdateDict).Name("api_put")
-		r.Post("/:name", binding.Bind(forms.Commit{}), CreateDict).Name("api_post")
-		r.Delete("/:name", DeleteDict).Name("api_delete")
+		r.Put("/:name", binding.Bind(forms.Commit{}), UpdateDicts).Name("api_put")
+		r.Post("/:name", binding.Bind(forms.Commit{}), CreateDicts).Name("api_post")
+		r.Delete("/:name", DeleteDicts).Name("api_delete")
 	})
 
 	App.NotFound(func(r render.Render, html html.HTMLContext) {
