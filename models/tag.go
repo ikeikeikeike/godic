@@ -11,7 +11,7 @@ type Tag struct {
 	Gyou   string `sql:"type:varchar(6);index"`
 
 	Image   *Image
-	ImageID sql.NullInt64
+	ImageID sql.NullInt64 `sql:"index"`
 
 	Dicts []*Dict `gorm:"many2many:dict_tags;"`
 }

@@ -9,7 +9,7 @@ import (
 )
 
 /*
-	Cache expires: 1 days
+	Cache expires: 1 hour
 */
 func CachedDicts() (objs []*models.Dict) {
 	key := "godic.models.dict.caches.CachedDicts"
@@ -19,7 +19,7 @@ func CachedDicts() (objs []*models.Dict) {
 		RelationDB().Limit(-1).Find(&objs)
 
 		bytes, _ := json.Marshal(objs)
-		redis.RC.Put(key, bytes, 60*60*24*1)
+		redis.RC.Put(key, bytes, 60*60*1)
 	} else {
 		json.Unmarshal(s.Interface().([]uint8), &objs)
 	}

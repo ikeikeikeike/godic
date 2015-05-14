@@ -23,12 +23,12 @@ type Dict struct {
 	Prefix string `sql:"type:varchar(16);index;not null"`
 
 	Image   *Image
-	ImageID sql.NullInt64
+	ImageID sql.NullInt64 `sql:"index"`
 
 	Category   *Category
-	CategoryID sql.NullInt64
+	CategoryID sql.NullInt64 `sql:"index"`
 
-	Tags []*Tag `gorm:"many2many:dict_tags;"`
+	Tags []*Tag `gorm:"many2many:dict_tags"`
 }
 
 func (m *Dict) BeforeCreate() error {

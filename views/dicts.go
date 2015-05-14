@@ -28,20 +28,8 @@ func init() {
 	RepoPath = path.Join(BasePath, "repo")
 }
 
-func DictIndex(r render.Render, html html.HTMLContext) {
-	log.Debugln("IndexDict action !!!!!")
-
-	all := category.CategoriesALL()
-	for _, c := range all {
-		c.DictLoader(25)
-	}
-	html["CategoriesALL"] = all
-
-	r.HTML(200, "dict/index", html)
-}
-
-func DictHistory(r render.Render, params martini.Params, html html.HTMLContext) {
-	log.Debugln("IndexDict action !!!!!")
+func DictsHistory(r render.Render, params martini.Params, html html.HTMLContext) {
+	log.Debugln("DictsHistory action !!!!!")
 
 	if params["name"] == "" {
 		r.HTML(404, "errors/404", html)
@@ -66,11 +54,11 @@ func DictHistory(r render.Render, params martini.Params, html html.HTMLContext) 
 	html["Name"] = params["name"]
 	html["History"] = history
 
-	r.HTML(200, "dict/history", html, render.HTMLOptions{"layout-editor"})
+	r.HTML(200, "dicts/history", html, render.HTMLOptions{"layout-editor"})
 }
 
-func CompareDict(r render.Render, params martini.Params, html html.HTMLContext) {
-	log.Debugln("CompareDict action !!!!!")
+func CompareDicts(r render.Render, params martini.Params, html html.HTMLContext) {
+	log.Debugln("CompareDicts action !!!!!")
 
 	if params["name"] == "" || params["fromsha1"] == "" || params["tosha1"] == "" {
 		r.HTML(404, "errors/404", html)
@@ -95,11 +83,11 @@ func CompareDict(r render.Render, params martini.Params, html html.HTMLContext) 
 	html["Name"] = params["name"]
 	html["Diff"] = diff
 
-	r.HTML(200, "dict/compare", html, render.HTMLOptions{"layout-editor"})
+	r.HTML(200, "dicts/compare", html, render.HTMLOptions{"layout-editor"})
 }
 
-func ShowDict(r render.Render, params martini.Params, html html.HTMLContext) {
-	log.Debugln("ShowDict action !!!!!")
+func ShowDicts(r render.Render, params martini.Params, html html.HTMLContext) {
+	log.Debugln("ShowDicts action !!!!!")
 
 	if params["name"] == "" {
 		r.HTML(404, "errors/404", html)
@@ -117,13 +105,13 @@ func ShowDict(r render.Render, params martini.Params, html html.HTMLContext) {
 
 	all := category.CategoriesALL()
 	for _, c := range all {
-		c.DictLoader(10)
+		c.LatestDicts(10)
 	}
 	html["CategoriesALL"] = all
 
 	m := &models.Dict{}
 	if err := dict.FirstByName(params["name"], m).Error; err != nil {
-		r.HTML(200, "dict/notfound", html)
+		r.HTML(200, "dicts/notfound", html)
 		return
 	}
 
@@ -138,7 +126,7 @@ func ShowDict(r render.Render, params martini.Params, html html.HTMLContext) {
 
 		blob, err := repo.GetFileBlobWithHash(params["name"], params["sha1"])
 		if err != nil {
-			r.HTML(200, "dict/notfound", html)
+			r.HTML(200, "dicts/notfound", html)
 			return
 		}
 
@@ -150,11 +138,11 @@ func ShowDict(r render.Render, params martini.Params, html html.HTMLContext) {
 		html["ContentHTML"] = string(contentHtml)
 	}
 
-	r.HTML(200, "dict/show", html)
+	r.HTML(200, "dicts/show", html)
 }
 
-func NewDict(r render.Render, params martini.Params, html html.HTMLContext, req *http.Request) {
-	log.Debugln("NewDict action !!!!!")
+func NewDicts(r render.Render, params martini.Params, html html.HTMLContext, req *http.Request) {
+	log.Debugln("NewDicts action !!!!!")
 
 	name := params["name"]
 	if name == "" {
@@ -178,11 +166,11 @@ func NewDict(r render.Render, params martini.Params, html html.HTMLContext, req 
 		html["Content"] = fmt.Sprintf(string(bytes), name, req.URL.Query().Get("image"))
 	}
 
-	r.HTML(200, "dict/edit", html, render.HTMLOptions{"layout-editor"})
+	r.HTML(200, "dicts/edit", html, render.HTMLOptions{"layout-editor"})
 }
 
-func EditDict(r render.Render, params martini.Params, html html.HTMLContext) {
-	log.Debugln("EditDict action !!!!!")
+func EditDicts(r render.Render, params martini.Params, html html.HTMLContext) {
+	log.Debugln("EditDicts action !!!!!")
 	name := funcmaps.ToCanonical(params["name"])
 
 	if name == "" {
@@ -223,5 +211,5 @@ func EditDict(r render.Render, params martini.Params, html html.HTMLContext) {
 	html["Category"] = m.Category
 	html["Commit"] = c
 
-	r.HTML(200, "dict/edit", html, render.HTMLOptions{"layout-editor"})
+	r.HTML(200, "dicts/edit", html, render.HTMLOptions{"layout-editor"})
 }

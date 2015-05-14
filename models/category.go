@@ -13,12 +13,17 @@ type Category struct {
 	Prefix string `sql:"type:varchar(16);unique;not null"`
 
 	Image   *Image
-	ImageID sql.NullInt64
+	ImageID sql.NullInt64 `sql:"index"`
 
 	Dicts []*Dict
 }
 
-func (m *Category) DictLoader(limit int) {
+func (m *Category) LatestDicts(limit int) {
 	DB.Model(&m).Preload("Category").Preload("Image").
 		Order("dicts.id DESC").Limit(limit).Related(&m.Dicts, "Dicts")
+}
+
+func (m *Category) ModifiedDicts(limit int) {
+	DB.Model(&m).Preload("Category").Preload("Image").
+		Order("dicts.updated_at DESC").Limit(limit).Related(&m.Dicts, "Dicts")
 }

@@ -19,9 +19,9 @@ import (
 
 type Model struct {
 	ID        int64 `gorm:"primary_key"`
-	CreatedAt time.Time
-	UpdatedAt time.Time
-	DeletedAt *time.Time
+	CreatedAt time.Time `sql:"index"`
+	UpdatedAt time.Time `sql:"index"`
+	DeletedAt *time.Time `sql:"index"`
 }
 
 var DB gorm.DB
@@ -56,6 +56,8 @@ func init() {
 	}
 
 	DB.AutoMigrate(&Dict{}, &Tag{}, &Category{}, &Image{})
+	DB.Table("dict_tags").AddIndex("idx_dict_tags_dict_id", "dict_id")
+	DB.Table("dict_tags").AddIndex("idx_dict_tags_tag_id", "tag_id")
 
 	InitSeed()
 }
