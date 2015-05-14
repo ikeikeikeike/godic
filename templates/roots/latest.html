@@ -8,8 +8,8 @@
     <div class="container">
       <h2>新しく作成された記事</h2>
       <ol class="breadcrumb page-header-breadcrumb hidden-xs">
-        <li><a href="index.html" class="link-underline">ホーム</a></li>
-        <li class="active">新しく作成された記事</li>
+        <li><a href='{{urlFor "roots"}}' class="link-underline">ホーム</a></li>
+        <li class="active"><a href='{{urlFor "roots_latest"}}' class="link-underline">新しく作成された記事</a></li>
       </ol>
     </div>
     <!-- /.container (for page-header-primary) -->
@@ -55,9 +55,9 @@
                 </ul>
                 <ul class="entry-tags hidden-xs">
                   <!-- these are too tiny and not important for small screens-->
-                  <li><a href="#">video</a></li>
-                  <li><a href="#">css3</a></li>
-                  <li><a href="#">theme</a></li>
+                  {{range $i, $t := $d.Tags}}
+                    <li><a href='{{urlFor "show" $t.Name}}'>{{$t.Name}}</a></li>
+                  {{end}}
                 </ul>
                 <p><a class='gray-letter' href='{{urlFor "show" $d.Name}}'>{{truncate ($d.Content|markdownHTML|sanitizeHTML) 150}}</a></p>
                 <ul class="social-icon-list">
