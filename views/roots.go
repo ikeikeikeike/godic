@@ -64,6 +64,9 @@ func ModifiedRoots(r render.Render, html html.HTMLContext, req *http.Request) {
 
 	var modified []*models.Dict
 	db.Limit(pers).Offset(pager.Offset()).Order("dicts.updated_at DESC").Find(&modified)
+	for _, d := range modified {
+		d.TagsLoader()
+	}
 
 	html["ModifiedDicts"] = modified
 

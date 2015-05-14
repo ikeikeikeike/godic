@@ -7,11 +7,13 @@ import (
 )
 
 func RelationDB() *gorm.DB {
-	return m.DB.Table("dicts").Preload("Image").Preload("Category").Select("dicts.*")
+	return m.DB.Table("dicts").Preload("Image").Preload("Category").
+		// Preload("Tags"). XXX: m2m preload does not work.
+		Select("dicts.*")
 }
 
 func FirstByName(name string, out interface{}) *gorm.DB {
-	return m.DB.Where("name = ?", name).Preload("Image").Preload("Category").First(out)
+	return RelationDB().Where("name = ?", name).First(out)
 }
 
 func UpdateByCommit(c forms.Commit) *m.Dict {

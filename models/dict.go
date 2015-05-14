@@ -31,6 +31,10 @@ type Dict struct {
 	Tags []*Tag `gorm:"many2many:dict_tags"`
 }
 
+func (m *Dict) TagsLoader() {
+	DB.Model(&m).Preload("Image").Order("tags.id DESC").Limit(7).Related(&m.Tags, "Tags")
+}
+
 func (m *Dict) BeforeCreate() error {
 	m.Prefix = letterCombinePtn(7)
 	return nil
@@ -56,6 +60,24 @@ func (m *Dict) BeforeSave() error {
 
 	c := funcmaps.AutoLink(html, cachedDictNames())
 	m.ContentHTML = c
+
+	return nil
+}
+
+func (m *Dict) AfterCreate() error {
+	var tags []*Tag
+	for _, name := range funcmaps.ExtractAutoLink(m.ContentHTML) {
+		if m.Name != name {
+			var t Tag
+			if err := DB.Where(Tag{Name: name}).FirstOrCreate(&t).Error; err == nil {
+				tags = append(tags, &t)
+			}
+		}
+	}
+	if len(tags) > 0 {
+		// TODO: [Bugfix] If has record tags on dict alredy, blocking(freeze) execute.
+		DB.Model(&m).Association("Tags").Append(tags)
+	}
 
 	return nil
 }

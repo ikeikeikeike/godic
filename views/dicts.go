@@ -15,6 +15,7 @@ import (
 	"github.com/ikeikeikeike/godic/models/dict"
 	"github.com/ikeikeikeike/godic/modules/funcmaps"
 	"github.com/ikeikeikeike/godic/modules/git"
+	dichttp "github.com/ikeikeikeike/godic/modules/http"
 	git2go "github.com/libgit2/git2go"
 	"github.com/martini-contrib/render"
 	"github.com/microcosm-cc/bluemonday"
@@ -163,7 +164,12 @@ func NewDicts(r render.Render, params martini.Params, html html.HTMLContext, req
 
 	bytes, err := ioutil.ReadFile(path.Join(BasePath, "template.txt"))
 	if err == nil {
-		html["Content"] = fmt.Sprintf(string(bytes), name, req.URL.Query().Get("image"))
+		image := req.URL.Query().Get("image")
+		if image == "" {
+			image = dichttp.BuildRequestUrl(req, "/static/img/siteicon/apple-touch-icon-180x180.png")
+		}
+
+		html["Content"] = fmt.Sprintf(string(bytes), name, image)
 	}
 
 	r.HTML(200, "dicts/edit", html, render.HTMLOptions{"layout-editor"})

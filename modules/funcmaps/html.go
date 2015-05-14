@@ -111,6 +111,18 @@ func AutoLink(html string, names []string) string {
 	return res
 }
 
+func ExtractAutoLink(html string) (names []string) {
+	doc, err := gq.NewDocumentFromReader(strings.NewReader(html))
+	if err != nil {
+		return
+	}
+
+	doc.Find("a.link-underline.external").Each(func(i int, s *gq.Selection) {
+		names = append(names, s.Text())
+	})
+	return
+}
+
 type Img struct {
 	*image.FileInfo
 
