@@ -1,0 +1,94 @@
+{{template "header" .}}
+{{$g := .}}
+
+<!-- =============== BEGIN #page ==============================-->
+<div id="page">
+
+  <div class="page-header-primary">
+    <div class="container">
+      <h2>更新された記事</h2>
+      <ol class="breadcrumb page-header-breadcrumb hidden-xs">
+        <li><a href="index.html" class="link-underline">ホーム</a></li>
+        <li class="active">更新された記事</li>
+      </ol>
+    </div>
+    <!-- /.container (for page-header-primary) -->
+  </div>
+  <!-- =========== BEGIN CONTENT FOR THE PAGE =========================================================================== -->
+  <div class="page-content" role="main">
+    <div class="container">
+      <div class="row about-page">
+        <!-- uses Masonry/Isotope script :: columns must have a size for all breakpoints -->
+        <div class="grid-sizer">
+        </div>
+        <!-- required for fluid masonry layout -->
+        <div class="gutter-sizer">
+        </div>
+        <!-- required for fluid masonry layout -->
+       
+        {{range $i, $d := .ModifiedDicts}}
+          <div class="post person">
+            <div class="inner">
+              {{if $d.Image}}
+                <div class="image">
+                  <img src="{{$d.Image.Src}}" class="img-responsive" alt="{{$d.Image.Name}}" />
+                </div>
+              {{end}}
+              <div class="{{if $d.Image}}text{{end}}">
+                <h4 class="title"><a class='gray-letter' href='{{urlFor "show" $d.Name}}'>{{$d.Name}}</a></h4>
+                <ul class="entry-meta list-inline">
+                  <li>
+                    <span class="ti ti-pencil-alt">
+                    </span>
+                    by Nameof Author
+                  </li>
+                  <li><a href='{{urlFor "show" $d.Name}}'>
+                    <span class="ti ti-comments">
+                    </span>
+                    5 Comments</a>
+                  </li>
+                  <li>
+                    <span class="ti ti-calendar">
+                    </span>
+                    {{timeSince $d.UpdatedAt}}
+                  </li>
+                </ul>
+                <ul class="entry-tags hidden-xs">
+                  <!-- these are too tiny and not important for small screens-->
+                  <li><a href="#">video</a></li>
+                  <li><a href="#">css3</a></li>
+                  <li><a href="#">theme</a></li>
+                </ul>
+                <p><a class='gray-letter' href='{{urlFor "show" $d.Name}}'>{{truncate ($d.Content|markdownHTML|sanitizeHTML) 150}}</a></p>
+                <ul class="social-icon-list">
+                  <li><a href="#"><i class="fa fa-2x fa-fw fa-google-plus"></i></a></li>
+                  <li><a href="#"><i class="fa fa-2x fa-fw fa-facebook"></i></a></li>
+                  <li><a href="#"><i class="fa fa-2x fa-fw fa-twitter"></i></a></li>
+                  <li><a href="#"><i class="fa fa-2x fa-fw fa-github"></i></a></li>
+                </ul>
+              </div>
+            </div>
+            <!--/ .inner -->
+          </div>
+          <!--/ .post.person -->
+        {{end}}
+       
+      </div>
+      <!--/ .row -->
+
+      {{template "paginator" .}}
+      <!-- /.text-center holding .pagination which shows at 992px and higher and is toggled otherwise -->
+
+    </div>
+    <!--/ .container -->
+  </div>
+  <!-- /.page-content role=main --> 
+
+</div>
+<!-- ================== END #page ================= --> 
+
+<!-- _________ GO TO TOP ___________ --> 
+<a id="go-to-top" href="#top" title="up"> <i class="ti ti-arrow-up"></i> </a> 
+
+{{template "footer" .}}
+{{template "script" .}}

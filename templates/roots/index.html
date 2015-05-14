@@ -8,8 +8,8 @@
     <div class="container">
 
       <div class="headline-inline">
-        <h3 class="headline"> 新着の記事 </h3>
-        <a class="headline-link" href="#"><i class="ti ti-arrow-right"></i> もっとみる</a>
+        <h3 class="headline"> 更新された記事 </h3>
+        <a class="headline-link" href='{{urlFor "roots_modified"}}'><i class="ti ti-arrow-right"></i> もっとみる</a>
       </div>
 
       <div class="filter">
@@ -18,7 +18,7 @@
         </span>
         <ul class="sort">
           <li><a class="active" href="#" data-filter="*">すべて</a></li>
-          {{range $i, $c := .CategoriesALL|reverse}}
+          {{range $i, $c := .ModifiedDicts|reverse}}
             <li><a href="#" data-filter=".{{$c.Prefix}}">{{$c.Name}}</a></li>
           {{end}}
         </ul>
@@ -36,7 +36,102 @@
         <!-- required for fluid masonry layout --> 
         
         <!-- IMAGE POST with image pop up -->
-        {{range $i, $c := .CategoriesALL}}
+        {{range $i, $c := .ModifiedDicts}}
+          {{range $i, $d := $c.Dicts}}
+            {{if $d.Image}}
+              <li class="post msnry-blog-entry {{$c.Prefix}}">
+                <div class="click-slide click-top">
+                  <img src="{{$d.Image.Src}}" alt="{{$d.Image.Name}}" />
+                  <div>
+                    <span>
+                      <a href='{{urlFor "show" $d.Name}}' class="ti ti-link"></a> 
+                      <a href='{{urlFor "edit" $d.Name}}' class="ti ti-pencil-alt"></a>
+                    </span>
+                  </div>
+                </div>
+                <div class="msnry-blog-entry-text">
+                  <h4 class="h5"><a href='{{urlFor "show" $d.Name}}'>{{$d.Name}}</a></h4>
+                  <p><a href='{{urlFor "show" $d.Name}}'>{{truncate ($d.Content|markdownHTML|sanitizeHTML) 70}}</a></p>
+                  <ul class="msnry-blog-entry-meta list-inline">
+                    <li>
+                      <span class="ti ti-pencil-alt">
+                      </span>
+                      by Nameof Author
+                    </li>
+                    <li><a href="{{urlFor "show" $d.Name}}">
+                      <span class="ti ti-comments">
+                      </span>
+                      5</a>
+                    </li>
+                    <li>
+                      <span class="ti ti-calendar">
+                      </span>
+                      {{timeSince $d.UpdatedAt}}
+                    </li>
+                  </ul>
+                </div>
+              </li>
+            {{else}}
+              <li class="post msnry-blog-entry {{$c.Prefix}}">
+                <div class="msnry-blog-entry-text">
+                  <h4 class="h5"><a href='{{urlFor "show" $d.Name}}'>{{$d.Name}}</a></h4>
+                  <p><a href='{{urlFor "show" $d.Name}}'>{{truncate ($d.Content|markdownHTML|sanitizeHTML) 70}}</a></p>
+                  <ul class="msnry-blog-entry-meta list-inline">
+                    <li>
+                      <span class="ti ti-pencil-alt">
+                      </span>
+                      by Nameof Author</li>
+                    <li>
+                      <a href='{{urlFor "show" $d.Name}}'>
+                      <span class="ti ti-comments">
+                      </span>
+                      5</a>
+                    </li>
+                    <li>
+                      <span class="ti ti-calendar">
+                      </span>
+                      {{timeSince $d.UpdatedAt}}
+                    </li>
+                  </ul>
+                </div>
+              </li>
+            {{end}}
+          {{end}}
+        {{end}}
+        <!--/ .post .msnry-blog-entry --> 
+      </ul>
+      <!--/ .row-masonry -->
+
+      <div class="headline-inline">
+        <h3 class="headline"> 新しく作成された記事 </h3>
+        <a class="headline-link" href='{{urlFor "roots_latest"}}'><i class="ti ti-arrow-right"></i> もっとみる</a>
+      </div>
+
+      <div class="filter">
+        <span class="filter-title">
+          Choose Filter
+        </span>
+        <ul class="sort">
+          <li><a class="active" href="#" data-filter="*">すべて</a></li>
+          {{range $i, $c := .LatestDicts|reverse}}
+            <li><a href="#" data-filter=".{{$c.Prefix}}">{{$c.Name}}</a></li>
+          {{end}}
+        </ul>
+      </div>
+      <div class="filter-clone">
+        <!-- this is where the clone of the filter goes-->
+      </div>
+      
+      <!-- _________ MASONRY WITH ISOTOPE ___________ -->
+      
+      <ul class="row row-masonry filter-masonry">
+        <li class="grid-sizer"></li>
+        <!-- required for fluid masonry layout -->
+        <li class="gutter-sizer"></li>
+        <!-- required for fluid masonry layout --> 
+        
+        <!-- IMAGE POST with image pop up -->
+        {{range $i, $c := .LatestDicts}}
           {{range $i, $d := $c.Dicts}}
             {{if $d.Image}}
               <li class="post msnry-blog-entry {{$c.Prefix}}">
