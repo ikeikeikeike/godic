@@ -1,0 +1,35 @@
+{{if gt .Paginator.PageNums 1}}
+
+
+{{if ne .Meta.UA.Category "pc"}}
+<style> .pagination-lg>li>a, .pagination-lg>li>span { padding: 16px 22px; font-size: 23px; margin-left: 5px; } </style>
+{{end}}
+
+<div class="text-center">
+  <span class="new-pagination-toggle"> ページャー </span>
+  <ul id='pagination' class="new-pagination pagination pagination-{{if eq .Meta.UA.Category "pc"}}sm{{else}}lg{{end}} clearfix">
+      {{if .Paginator.HasPrev}}
+          <li><a href="{{.Paginator.PageLinkFirst}}">&lt;&lt;</a></li>
+          <li><a href="{{.Paginator.PageLinkPrev}}">&lt;</a></li>
+      {{else}}
+          <li class="disabled"><a>&lt;&lt;</a></li>
+          <li class="disabled"><a>&lt;</a></li>
+      {{end}}
+      {{if eq .Meta.UA.Category "pc"}}
+          {{range $index, $page := .Paginator.Pages}}
+              <li{{if $.Paginator.IsActive .}} class="active"{{end}}>
+                  <a href="{{$.Paginator.PageLink $page}}">{{$page}}</a>
+              </li>
+          {{end}}
+      {{end}}
+      {{if .Paginator.HasNext}}
+          <li><a href="{{.Paginator.PageLinkNext}}">&gt;</a></li>
+          <li><a href="{{.Paginator.PageLinkLast}}">&gt;&gt;</a></li>
+      {{else}}
+          <li class="disabled"><a>&gt;</a></li>
+          <li class="disabled"><a>&gt;&gt;</a></li>
+      {{end}}
+  </ul>
+</div>
+
+{{end}}
