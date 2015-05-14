@@ -94,7 +94,7 @@ func AutoLink(html string, names []string) string {
 				t := s.Text()
 				h, _ := s.Html()
 				if t != "" && h == "" {
-					html := strings.Replace(t, name, fmt.Sprintf(`<a href="/d/%[1]s">%[1]s</a>`, name), 1)
+					html := strings.Replace(t, name, fmt.Sprintf(`<a class="link-underline external" href="/d/%[1]s">%[1]s</a>`, name), 1)
 					s.ReplaceWithHtml(html)
 					return false
 				}
