@@ -44,6 +44,9 @@ func LatestRoots(r render.Render, html html.HTMLContext, req *http.Request) {
 
 	var latests []*models.Dict
 	db.Limit(pers).Offset(pager.Offset()).Order("dicts.id DESC").Find(&latests)
+	for _, d := range latests {
+		d.TagsLoader()
+	}
 
 	html["LatestDicts"] = latests
 

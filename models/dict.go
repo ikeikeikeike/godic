@@ -75,7 +75,8 @@ func (m *Dict) AfterCreate() error {
 		}
 	}
 	if len(tags) > 0 {
-		// TODO: [Bugfix] If has record tags on dict alredy, blocking(freeze) execute.
+		// TODO: [Bugfix] If have record tags on dict already, locked(freeze) executing.
+		// We will in the future be modified it.
 		DB.Model(&m).Association("Tags").Append(tags)
 	}
 

@@ -76,6 +76,10 @@ func init() {
 		r.Get("/modified.xml", ModifiedRSS).Name("rss_modified")
 	}, allowCORS)
 
+	App.Group("/category", func(r martini.Router) {
+		r.Get("/:name", Categories).Name("categories")
+	})
+
 	App.Group("/d", func(r martini.Router) {
 		r.Get("/index", func(r render.Render) { r.Redirect("/") }).Name("index")
 		r.Get("/new/", NewDicts).Name("new")
