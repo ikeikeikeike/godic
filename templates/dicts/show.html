@@ -35,25 +35,28 @@
               <div id="page-content">{{.ContentHTML|safeHTML}}</div>
 
               <header class="entry-header">
-                <h1 class="entry-title"> {{.Dict.Name}} </h1>
+                <hr style='border-color: #B3B3B3;   border-top: 1px dotted;' />
                 <ul class="entry-meta list-inline">
                   <li>
-                    <span class="ti ti-pencil-alt">
-                    </span>
-                    by Nameof Author</li>
-                  <li><a href="blog-single.html#view-comments" class="has-anchor">
+                    <span class="ti ti-direction-alt">
+                    </span><a href='{{urlFor "categories" .Dict.Category.Prefix}}'>{{.Dict.Category.Name}}</a>
+                  </li>
+                  <li>
+                    <a href='{{urlFor "show" .Dict.Name}}'>
                     <span class="ti ti-comments">
                     </span>
-                    6 Comments</a></li>
+                    5</a>
+                  </li>
                   <li>
                     <span class="ti ti-calendar">
                     </span>
-                    March 3, 2015</li>
+                    {{timeSince .Dict.CreatedAt}}
+                  </li>
                 </ul>
                 <ul class="entry-tags hidden-xs">
-                  <li><a href="#">video</a></li>
-                  <li><a href="#">css3</a></li>
-                  <li><a href="#">theme</a></li>
+                  {{range $i, $t := .Dict.Tags}}
+                    <li><a href='{{urlFor "show" $t.Name}}'>{{$t.Name}}</a></li>
+                  {{end}}
                 </ul>
                 <div class="entry-fancy-date">
                   <div>
@@ -444,7 +447,7 @@
             <aside class="widget">
               <h5 class="widget-title">記事のカテゴリー</h5>
               <ul class="list-unstyled icon-list arrow-right">
-                {{range $i, $c := .CategoriesALL}}<li><a href="#">{{$c.Name}}</a></li>{{end}}
+                {{range $i, $c := .CategoriesALL}}<li><a href='{{urlFor "categories" $c.Prefix}}'>{{$c.Name}}</a></li>{{end}}
               </ul>
             </aside>
             <!-- /widget -->
@@ -454,7 +457,11 @@
               <h5 class="widget-title">Recent Images</h5>
               <!-- you might want to bump up the original size of the images to 100 px square -->
               <div class="img-widget fade-hover-img">
-                <a href="#"><img src="/assets/demo-images/img-widget/1.jpg" alt="" /></a> <a href="#"><img src="/assets/demo-images/img-widget/2.jpg" alt="" /></a> <a href="#"><img src="/assets/demo-images/img-widget/3.jpg" alt="" /></a> <a href="#"><img src="/assets/demo-images/img-widget/4.jpg" alt="" /></a> <a href="#"><img src="/assets/demo-images/img-widget/5.jpg" alt="" /></a> <a href="#"><img src="/assets/demo-images/img-widget/6.jpg" alt="" /></a> <a href="#"><img src="/assets/demo-images/img-widget/7.jpg" alt="" /></a> <a href="#"><img src="/assets/demo-images/img-widget/8.jpg" alt="" /></a> <a href="#"><img src="/assets/demo-images/img-widget/9.jpg" alt="" /></a> <a href="#"><img src="/assets/demo-images/img-widget/10.jpg" alt="" /></a>
+                {{range $i, $d := .RecentDicts}}
+                  {{if $d.Image}}
+                    <a href='{{urlFor "show" $d.Name}}'><img src="{{$d.Image.Src}}" alt="{{$d.Name}}" /></a> 
+                  {{end}}
+                {{end}}
               </div>
             </aside>
             <!--/ widget -->

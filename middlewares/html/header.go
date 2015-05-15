@@ -1,7 +1,7 @@
 package html
 
+import "github.com/ikeikeikeike/godic/models/dict"
+
 func HTMLHeader(html HTMLContext) {
-	// html["HeadMetas"] = []map[string]string{}
-	// html["HeadStyles"] = []string{}
-	// html["HeadScripts"] = []string{}
+	html["RecentDicts"] = dict.CachedDicts(10)
 }
