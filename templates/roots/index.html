@@ -54,9 +54,8 @@
                   <p><a href='{{urlFor "show" $d.Name}}'>{{truncate ($d.Content|markdownHTML|sanitizeHTML) 70}}</a></p>
                   <ul class="msnry-blog-entry-meta list-inline">
                     <li>
-                      <span class="ti ti-pencil-alt">
-                      </span>
-                      by Nameof Author
+                      <span class="ti ti-direction-alt">
+                      </span><a href='{{urlFor "categories" $d.Category.Prefix}}'>{{$d.Category.Name}}</a>
                     </li>
                     <li><a href="{{urlFor "show" $d.Name}}">
                       <span class="ti ti-comments">
@@ -78,9 +77,9 @@
                   <p><a href='{{urlFor "show" $d.Name}}'>{{truncate ($d.Content|markdownHTML|sanitizeHTML) 70}}</a></p>
                   <ul class="msnry-blog-entry-meta list-inline">
                     <li>
-                      <span class="ti ti-pencil-alt">
-                      </span>
-                      by Nameof Author</li>
+                      <span class="ti ti-direction-alt">
+                      </span><a href='{{urlFor "categories" $d.Category.Prefix}}'>{{$d.Category.Name}}</a>
+                    </li>
                     <li>
                       <a href='{{urlFor "show" $d.Name}}'>
                       <span class="ti ti-comments">
@@ -149,9 +148,8 @@
                   <p><a href='{{urlFor "show" $d.Name}}'>{{truncate ($d.Content|markdownHTML|sanitizeHTML) 70}}</a></p>
                   <ul class="msnry-blog-entry-meta list-inline">
                     <li>
-                      <span class="ti ti-pencil-alt">
-                      </span>
-                      by Nameof Author
+                      <span class="ti ti-direction-alt">
+                      </span><a href='{{urlFor "categories" $d.Category.Prefix}}'>{{$d.Category.Name}}</a>
                     </li>
                     <li><a href="{{urlFor "show" $d.Name}}">
                       <span class="ti ti-comments">
@@ -173,9 +171,9 @@
                   <p><a href='{{urlFor "show" $d.Name}}'>{{truncate ($d.Content|markdownHTML|sanitizeHTML) 70}}</a></p>
                   <ul class="msnry-blog-entry-meta list-inline">
                     <li>
-                      <span class="ti ti-pencil-alt">
-                      </span>
-                      by Nameof Author</li>
+                      <span class="ti ti-direction-alt">
+                      </span><a href='{{urlFor "categories" $d.Category.Prefix}}'>{{$d.Category.Name}}</a>
+                    </li>
                     <li>
                       <a href='{{urlFor "show" $d.Name}}'>
                       <span class="ti ti-comments">

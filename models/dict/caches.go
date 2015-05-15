@@ -2,6 +2,7 @@ package dict
 
 import (
 	"encoding/json"
+	"fmt"
 	"reflect"
 
 	"github.com/ikeikeikeike/godic/models"
@@ -11,12 +12,12 @@ import (
 /*
 	Cache expires: 1 hour
 */
-func CachedDicts() (objs []*models.Dict) {
-	key := "godic.models.dict.caches.CachedDicts"
+func CachedDicts(limit int) (objs []*models.Dict) {
+	key := fmt.Sprintf("godic.models.dict.caches.CachedDicts:limit%d", limit)
 	s := reflect.ValueOf(redis.RC.Get(key))
 
 	if !redis.RC.IsExist(key) {
-		RelationDB().Limit(-1).Find(&objs)
+		RelationDB().Limit(limit).Order("dicts.updated_at DESC").Find(&objs)
 
 		bytes, _ := json.Marshal(objs)
 		redis.RC.Put(key, bytes, 60*60*1)
@@ -28,7 +29,7 @@ func CachedDicts() (objs []*models.Dict) {
 }
 
 func CachedNames() []string {
-	dicts := CachedDicts()
+	dicts := CachedDicts(-1)
 	names := make([]string, len(dicts))
 	for i, d := range dicts {
 		names[i] = d.Name

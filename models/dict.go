@@ -92,16 +92,16 @@ func (m *Dict) GetPrefix() string {
 }
 
 func cachedDictNames() []string {
-	key := "godic.models.dict.caches.CachedDicts"
+	key := "godic.models.dict.caches.CachedDicts:limit-1"
 	s := reflect.ValueOf(redis.RC.Get(key))
 
 	var dicts []*Dict
 
 	if !redis.RC.IsExist(key) {
-		DB.Table("dicts").Limit(-1).Find(&dicts)
+		DB.Table("dicts").Limit(-1).Order("dicts.updated_at DESC").Find(&dicts)
 
 		bytes, _ := json.Marshal(dicts)
-		redis.RC.Put(key, bytes, 60*60*24*1)
+		redis.RC.Put(key, bytes, 60*60*1)
 	} else {
 		json.Unmarshal(s.Interface().([]uint8), &dicts)
 	}

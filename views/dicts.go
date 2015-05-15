@@ -41,6 +41,7 @@ func DictsHistory(r render.Render, params martini.Params, html html.HTMLContext)
 		r.HTML(404, "errors/404", html)
 		return
 	}
+	m.TagsLoader()
 
 	repo := git.NewRepo()
 	repo.Init(path.Join(RepoPath, m.GetPrefix()))
@@ -70,6 +71,7 @@ func CompareDicts(r render.Render, params martini.Params, html html.HTMLContext)
 		r.HTML(404, "errors/404", html)
 		return
 	}
+	m.TagsLoader()
 
 	repo := git.NewRepo()
 	repo.Init(path.Join(RepoPath, m.GetPrefix()))
@@ -115,6 +117,7 @@ func ShowDicts(r render.Render, params martini.Params, html html.HTMLContext) {
 		r.HTML(200, "dicts/notfound", html)
 		return
 	}
+	m.TagsLoader()
 
 	html["Dict"] = m
 	html["Yomi"] = m.Yomi
@@ -188,6 +191,7 @@ func EditDicts(r render.Render, params martini.Params, html html.HTMLContext) {
 		r.HTML(404, "errors/404", html)
 		return
 	}
+	m.TagsLoader()
 
 	repo := git.NewRepo()
 	repo.Init(path.Join(RepoPath, m.GetPrefix()))
