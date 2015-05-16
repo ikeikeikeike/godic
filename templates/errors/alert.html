@@ -1,0 +1,19 @@
+{{if .Errors}}
+  {{range $i, $e := .Errors}}
+    {{if eq $e.Error "Required"}}
+        <div class="alert alert-warning" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            <span class="sr-only">{{$e.Classification}}:</span>
+            <strong>{{index $e.FieldNames 0}}</strong>は必須項目です。
+        </div>
+    {{else}}
+        <div class="alert alert-warning" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            <span class="sr-only">メッセージエラーです:</span>
+            {{$e.Error}}
+        </div>
+    {{end}}
+  {{end}}
+{{end}}
