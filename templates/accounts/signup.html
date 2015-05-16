@@ -47,19 +47,24 @@
         </div>
         <!-- /.col-*-6 -->
         <div class="col-md-6">
-          <h3>Sign Up</h3>
-          <form role="form" action="your-script.php">
+          <h3>新規登録</h3>
+          <form role="form" action='{{urlFor "accounts_signup"}}' method='POST'>
             <div class="form-group">
-              <input type="email" class="form-control form-control-lg" placeholder="Enter email">
+              <input name="email" type="email" class="form-control form-control-lg" placeholder="例: admin@example.com" required />
             </div>
             <div class="form-group">
-              <input type="password" class="form-control form-control-lg" placeholder="Password">
+              <input name="password" type="password" class="form-control form-control-lg" placeholder="パスワードを入力してください" required 
+                     pattern=".{6,}" title="パスワードは6文字以上を入力してください" />
+            </div>
+            <div class="form-group">
+              <input name="repassword" type="password" class="form-control form-control-lg" placeholder="再度パスワードを入力してください" required 
+                     pattern=".{6,}" title="パスワードは6文字以上を入力してください" />
             </div>
             <p class="text-center">
               <button class="btn btn-default btn-block btn-lg btn-inverse" type="submit"><i class="fa fa-lock"></i> Register</button>
             </p>
           </form>
-          <p class="text-center clear">Already have an account? <a class="link-underline" href="login.html">Login</a></p>
+          <p class="text-center clear">すでにアカウントを持っていますか？ <a class="link-underline" href={{urlFor "accounts_login"}}>&gt;&gt; ログイン</a></p>
         </div>
         <!-- /.col-*-6 -->
       </div>

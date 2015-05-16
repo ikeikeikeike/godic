@@ -72,9 +72,10 @@ func init() {
 
 	App.Group("", func(r martini.Router) {
 		r.Get("/signup", SignupAccounts).Name("accounts_signup")
+		r.Post("/signup", binding.Form(models.User{}), SaveSignupAccounts).Name("accounts_signup")
 		r.Get("/login", LoginAccounts).Name("accounts_login")
 		r.Post("/login", binding.Form(models.User{}), SaveLoginAccounts).Name("accounts_login")
-		r.Get("/logout", sessionauth.LoginRequired, func(r render.Render, session sessions.Session, user sessionauth.User) {
+		r.Get("/logout", func(r render.Render, session sessions.Session, user sessionauth.User) {
 			sessionauth.Logout(session, user)
 			r.Redirect("/")
 		})
@@ -95,10 +96,10 @@ func init() {
 
 	App.Group("/d", func(r martini.Router) {
 		r.Get("/index", func(r render.Render) { r.Redirect("/") }).Name("index")
-		r.Get("/new/", sessionauth.LoginRequired, NewDicts).Name("new")
-		r.Get("/new/:name", sessionauth.LoginRequired, NewDicts).Name("new")
+		r.Get("/new/", NewDicts).Name("new")
+		r.Get("/new/:name", NewDicts).Name("new")
 		r.Get("/:name", ShowDicts).Name("show")
-		r.Get("/edit/:name", sessionauth.LoginRequired, EditDicts).Name("edit")
+		r.Get("/edit/:name", EditDicts).Name("edit")
 		r.Get("/history/:name", DictsHistory).Name("history")
 		r.Get("/:name/:sha1", ShowDicts).Name("show")
 		r.Get(`/compare/:name/(?P<fromsha1>[^\.]+)\.{2,3}(?P<tosha1>.+)`, CompareDicts).Name("compare")
