@@ -28,7 +28,8 @@ type Dict struct {
 	Category   *Category
 	CategoryID sql.NullInt64 `sql:"index"`
 
-	Tags []*Tag `gorm:"many2many:dict_tags"`
+	Tags     []*Tag     `gorm:"many2many:dict_tags"`
+	Comments []*Comment `gorm:"polymorphic:Object;"`
 }
 
 func (m *Dict) TagsLoader() {
