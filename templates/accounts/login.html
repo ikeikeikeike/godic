@@ -1,0 +1,88 @@
+{{template "header" .}}
+
+<!-- =============== BEGIN #page ==============================-->
+<div id="page">
+  <!-- =========== PAGE HEADER ON ALL BUT INDEX PAGES =========================================================================== --> 
+  <!-- _________ Page Header ___________ -->
+  <div class="page-header-primary">
+    <div class="container">
+      <h2>ログイン</h2>
+      <ol class="breadcrumb page-header-breadcrumb hidden-xs">
+        <li><a href='{{urlFor "roots"}}' class="link-underline">ホーム</a></li>
+        <li class="active"><a href='{{urlFor "roots_modified"}}' class="link-underline">ログイン</a></li>
+      </ol>
+    </div>
+    <!-- /.container (for page-header-primary) -->
+  </div>
+  <!-- /.page-header-primary --> 
+  <!-- =========== BEGIN CONTENT FOR THE PAGE =========================================================================== -->
+  <div class="page-content" role="main">
+    <div class="container">
+
+      {{template "errors/alert" .}}
+
+      <div class="row">
+        <div class="col-md-6">
+          <h3>ソーシャル</h3>
+          <ul class="list-unstyled social-user">
+            <li><a href="#" title="Login with Facebook" class="facebook"><i class="fa fa-facebook"></i>
+              <span>
+                Facebookでログイン
+              </span>
+              </a></li>
+            <li><a href="#" title="Login with Google Plus" class="google"><i class="fa fa-google-plus"></i>
+              <span>
+                Googleでログイン
+              </span>
+              </a></li>
+            <li><a href="#" title="Login with Twitter" class="twitter"><i class="fa fa-twitter"></i>
+              <span>
+                Twitterでログイン
+              </span>
+              </a></li>
+            <li><a href="#" title="Login with Wordpress" class="wordpress"><i class="fa fa-wordpress"></i>
+              <span>
+                Wordpressでログイン
+              </span>
+              </a></li>
+          </ul>
+          <!-- /.social-user -->
+        </div>
+        <!-- /.col-*-6 -->
+        <div class="col-md-6">
+          <h3>メールアドレス</h3>
+          <form role="form" action='{{urlFor "accounts_login"}}' method='POST'>
+            <div class="form-group">
+              <input name="email" type="email" class="form-control form-control-lg" placeholder="例: admin@example.com" required />
+            </div>
+            <div class="form-group">
+              <input name="password" type="password" class="form-control form-control-lg" placeholder="パスワードを入力してください" required 
+                     pattern=".{6,}" title="パスワードは6文字以上を入力してください" />
+            </div>
+            <div class="form-group checkbox small">
+              <label>
+                <input type="checkbox">
+                Remember Me </label>
+            </div>
+            <p class="text-center">
+              <button class="btn btn-default btn-block btn-lg btn-inverse" type="submit"><i class="fa fa-lock"></i> ログイン</button>
+            </p>
+          </form>
+          <p class="text-center clear"><a href="#" class="link-underline">パスワードを忘れましたか？</a> <br>
+            アカウントを持っていない？ <a class="link-underline" href='{{urlFor "accounts_signup"}}'>&gt;&gt; 新規登録</a> </p>
+        </div>
+        <!-- /.col-*-6 -->
+      </div>
+      <!-- /.row -->
+    </div>
+    <!-- /.container -->
+  </div>
+  <!-- /.page-content role=main --> 
+  <!--=========== END CONTENT FOR THE PAGE ============================================================ -->
+</div>
+
+<!-- _________ GO TO TOP ___________ --> 
+<a id="go-to-top" href="#top" title="up"> <i class="ti ti-arrow-up"></i> </a> 
+
+{{template "footer" .}}
+{{template "script" .}}
