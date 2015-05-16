@@ -55,7 +55,7 @@ func init() {
 		DB.LogMode(true)
 	}
 
-	DB.AutoMigrate(&Dict{}, &Tag{}, &Category{}, &Image{})
+	DB.AutoMigrate(&Dict{}, &Tag{}, &Category{}, &Image{}, &User{}, &Comment{})
 	DB.Table("dict_tags").AddIndex("idx_dict_tags_dict_id", "dict_id")
 	DB.Table("dict_tags").AddIndex("idx_dict_tags_tag_id", "tag_id")
 
