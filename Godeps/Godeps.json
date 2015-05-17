@@ -8,6 +8,11 @@
 			"Rev": "5d796540e3cb93ea0556c897e6a3c7690f614d35"
 		},
 		{
+			"ImportPath": "code.google.com/p/xsrftoken",
+			"Comment": "null-4",
+			"Rev": "bd5a620fff6e6167cccc9291a8d079402428a17a"
+		},
+		{
 			"ImportPath": "github.com/PuerkitoBio/goquery",
 			"Comment": "v0.3.2-69-g4cf64c5",
 			"Rev": "4cf64c51f7e80d56d9ae2ffe7d684d3dd5dbd5d0"
@@ -137,12 +142,16 @@
 			"Rev": "553b9208d353a39b0850c02355f478ba020c86d7"
 		},
 		{
-			"ImportPath": "github.com/martini-contrib/oauth2",
-			"Rev": "383220cdf3349109f5ced723c921d4d76478176c"
+			"ImportPath": "github.com/martini-contrib/csrf",
+			"Rev": "b016a25855e9ed4604a5e59b818342f2b8883f93"
 		},
 		{
 			"ImportPath": "github.com/martini-contrib/render",
 			"Rev": "b65063311fac6cbf84d3538f5715f7847e648322"
+		},
+		{
+			"ImportPath": "github.com/martini-contrib/sessionauth",
+			"Rev": "3c15d8cae6c39a8feb3d3f72750084bd50bd52cc"
 		},
 		{
 			"ImportPath": "github.com/martini-contrib/sessions",
@@ -192,16 +201,8 @@
 			"Rev": "bd6e94ca8e337e5a3396c187d93413609280623f"
 		},
 		{
-			"ImportPath": "golang.org/x/net/context",
-			"Rev": "7dbad50ab5b31073856416cdcfeb2796d682f844"
-		},
-		{
 			"ImportPath": "golang.org/x/net/html",
 			"Rev": "7dbad50ab5b31073856416cdcfeb2796d682f844"
-		},
-		{
-			"ImportPath": "golang.org/x/oauth2",
-			"Rev": "ec6d5d770f531108a6464462b2201b74fcd09314"
 		},
 		{
 			"ImportPath": "golang.org/x/text/encoding",
@@ -210,14 +211,6 @@
 		{
 			"ImportPath": "golang.org/x/text/transform",
 			"Rev": "af4c2d73d0954e6f7ed1bd89afe33c9d347d9be5"
-		},
-		{
-			"ImportPath": "google.golang.org/cloud/compute/metadata",
-			"Rev": "8feee7e7483fecf1f6c3e600ee386772e88e2c3a"
-		},
-		{
-			"ImportPath": "google.golang.org/cloud/internal",
-			"Rev": "8feee7e7483fecf1f6c3e600ee386772e88e2c3a"
 		}
 	]
 }
