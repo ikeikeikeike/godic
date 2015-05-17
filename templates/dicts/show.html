@@ -102,158 +102,69 @@
           </ul>
 
           <!--begin comments section-->
-          {{if false}}
             <section id="view-comments" class="clearfix">
-              <h4>6 Comments | <a href="#comment-form" class="has-anchor">Make a comment</a></h4>
+              <h4>{{len .Dict.Comments}} レス | <a href="#comment-form" class="has-anchor">掲示板にレスする</a></h4>
               <!--begin threaded comments -->
               <ol class="comment-thread">
-                <li>
-                  <div class="comment">
-                    <header class="comment-header"> <a href="#" class="avatar" title="Kathy"><img alt="" src="/assets/demo-images/people/kathy.jpg" /></a>
-                      <ul class="comment-meta">
-                        <li><a href="#" rel="external nofollow">Kathy</a></li>
-                        <li>October 10, 2014</li>
-                        <li><a href="#">Permalink</a></li>
-                        <li><a href="#">Reply</a></li>
-                      </ul>
-                    </header>
-                    <footer class="comment-text">
-                      <div>
-                        <p>Avatars by <a href="http://fotogrph.com/">fotogrph.</a> Sample threaded comments. Nam sed orci massa, quis placerat libero. Vivamus at ligula odio. Morbi vel dictum ligula. Mauris id neque leo. Nullam orci quam, luctus sed posuere eu, dignissim sollicitudin sem. Sed velit arcu, rutrum et varius sit amet, congue id nunc. Aenean enim nisl, suscipit a condimentum et, malesuada et massa. Vestibulum convallis sem nec mauris dapibus non dapibus velit lobortis.</p>
-                      </div>
-                    </footer>
-                  </div>
-                  <!--/.comment-->
-                  <!-- BEGIN nested comment thread -->
-                  <ol>
-                    <li>
-                      <div class="comment moderator">
-                        <header class="comment-header"> <a href="#" class="avatar" title="Dave"><img alt="" src="/assets/demo-images/people/dave.jpg" /></a>
-                          <ul class="comment-meta">
-                            <li><a href="#" rel="external nofollow">Dave</a></li>
-                            <li>October 10, 2014</li>
-                            <li><a href="#">Permalink</a></li>
-                            <li><a href="#">Reply</a></li>
-                          </ul>
-                        </header>
-                        <footer class="comment-text">
-                          <div>
-                            <p>Donec <a href="#">sagittis lobortis</a> libero vel semper. Nulla facilisi. Sed venenatis laoreet ligula, vulputate ornare magna posuere lobortis. Proin volutpat massa nec odio laoreet pharetra. Suspendisse quis dolor et nisl volutpat pretium. Mauris blandit metus sit amet risus aliquet et dapibus est vestibulum. Pellentesque dignissim condimentum porttitor. Vivamus est ipsum, ultrices ac ultrices sed, semper non nulla.</p>
-                          </div>
-                        </footer>
-                      </div>
-                      <!--/.comment-->
-                    </li>
-                    <li>
-                      <div class="comment">
-                        <header class="comment-header"> <a href="#" class="avatar" title="Nickie"><img alt="" src="/assets/demo-images/people/nickie.jpg" /></a>
-                          <ul class="comment-meta">
-                            <li><a href="#" rel="external nofollow">Nickie</a></li>
-                            <li>October 10, 2014</li>
-                            <li><a href="#">Permalink</a></li>
-                            <li><a href="#">Reply</a></li>
-                          </ul>
-                        </header>
-                        <footer class="comment-text">
-                          <div>
-                            <p>Donec sagittis lobortis libero vel semper. Nulla facilisi. Sed venenatis laoreet ligula, vulputate ornare magna posuere lobortis. Proin volutpat massa nec odio laoreet pharetra. Suspendisse quis dolor et nisl volutpat pretium. Mauris blandit metus sit amet risus aliquet et dapibus est vestibulum. Pellentesque dignissim condimentum porttitor. Vivamus est ipsum, ultrices ac ultrices sed, semper non nulla.</p>
-                          </div>
-                        </footer>
-                      </div>
-                      <!--/.comment-->
-                    </li>
-                    <li>
-                      <div class="comment">
-                        <header class="comment-header"> <a href="#" class="avatar" title="Jake"><img alt="" src="/assets/demo-images/people/jake.jpg" /></a>
-                          <ul class="comment-meta">
-                            <li><a href="#" rel="external nofollow">Jake</a></li>
-                            <li>October 10, 2014</li>
-                            <li><a href="#">Permalink</a></li>
-                            <li><a href="#">Reply</a></li>
-                          </ul>
-                        </header>
-                        <footer class="comment-text">
-                          <div>
-                            <p>Donec sagittis lobortis libero vel semper. Nulla facilisi. Sed venenatis laoreet ligula, vulputate ornare magna posuere lobortis. Proin volutpat massa nec odio laoreet pharetra. Suspendisse quis dolor et nisl volutpat pretium. Mauris blandit metus sit amet risus aliquet et dapibus est vestibulum. Pellentesque dignissim condimentum porttitor. Vivamus est ipsum, ultrices ac ultrices sed, semper non nulla.</p>
-                          </div>
-                        </footer>
-                      </div>
-                    </li>
-                  </ol>
-                  <!-- close nested ol-->
-                </li>
-                <li>
-                  <div class="comment">
-                    <header class="comment-header"> <a href="#" class="avatar" title="Scott"><img alt="" src="/assets/demo-images/people/scott.jpg" /></a>
-                      <ul class="comment-meta">
-                        <li><a href="#" rel="external nofollow">Scott</a></li>
-                        <li>October 10, 2014</li>
-                        <li><a href="#">Permalink</a></li>
-                        <li><a href="#">Reply</a></li>
-                      </ul>
-                    </header>
-                    <footer class="comment-text">
-                      <div>
-                        <p>Donec sagittis lobortis libero vel semper. Nulla facilisi. Sed venenatis laoreet ligula, vulputate ornare magna posuere lobortis. Proin volutpat massa nec odio laoreet pharetra. Suspendisse quis dolor et nisl volutpat pretium. Mauris blandit metus sit amet risus aliquet et dapibus est vestibulum. Pellentesque dignissim condimentum porttitor. Vivamus est ipsum, ultrices ac ultrices sed, semper non nulla.</p>
-                      </div>
-                    </footer>
-                  </div>
-                  <ol>
-                    <li>
-                      <div class="comment">
-                        <header class="comment-header"> <a href="#" class="avatar" title="Jackie"><img alt="" src="/assets/demo-images/people/jackie.jpg" /></a>
-                          <ul class="comment-meta">
-                            <li><a href="#" rel="external nofollow">Jackie</a></li>
-                            <li>October 10, 2014</li>
-                            <li><a href="#">Permalink</a></li>
-                            <li><a href="#">Reply</a></li>
-                          </ul>
-                        </header>
-                        <footer class="comment-text">
-                          <div>
-                            <p>Donec sagittis lobortis libero vel semper. Nulla facilisi. Sed venenatis laoreet ligula, vulputate ornare magna posuere lobortis. Proin volutpat massa nec odio laoreet pharetra. Suspendisse quis dolor et nisl volutpat pretium. Mauris blandit metus sit amet risus aliquet et dapibus est vestibulum. Pellentesque dignissim condimentum porttitor. Vivamus est ipsum, ultrices ac ultrices sed, semper non nulla.</p>
-                          </div>
-                        </footer>
-                      </div>
-                    </li>
-                  </ol>
-                  <!-- close nested ul-->
-                </li>
+                {{range $i, $c := .Dict.Comments|reverse}}
+                  <li>
+                    <div class="comment">
+                      <header class="comment-header"> 
+                        <a href="#" class="avatar" title="Kathy">
+                          {{if $c.User}}
+                            {{if $c.User.Image}}
+                              <img alt="{{$c.User.Image.Name}}" src="{{$c.User.Image.Src}}" />
+                            {{else}}
+                              <img alt="デフォルト画像" src="/static/img/siteicon/apple-touch-icon-180x180.png" />
+                            {{end}}
+                          {{else}}
+                            <img alt="デフォルト画像" src="/static/img/siteicon/apple-touch-icon-180x180.png" />
+                          {{end}}
+                        </a>
+                        <ul class="comment-meta">
+                          <li><a href="#" rel="external nofollow">{{$c.Title}}</a></li>
+                          <li>{{$c.CreatedAt|timeSince}}</li>
+                          <!-- <li><a href="#">Permalink</a></li> -->
+                          <!-- <li><a href="#">Reply</a></li> -->
+                        </ul>
+                      </header>
+                      <footer class="comment-text">
+                        <div>
+                          <p>{{$c.CommentHTML|safeHTML}}</p>
+                        </div>
+                      </footer>
+                    </div>
+                    <!--/.comment-->
+                  </li>
+                {{end}}
               </ol>
               <!--end threaded comments -->
 
               <!-- Begin Comments Form -->
               <div id="comment-form" class="anchor">
-                <h3>Leave a Comment</h3>
-                <p class="small"><em>Required fields are marked *. Your email will not be published or shared.</em></p>
-                <form class="comment_form" action="your-form-action.php" method="post" role="form">
+                <h3><em>{{.Dict.Name}}</em> について書き込む</h3>
+                <!-- <p class="small"><em>Required fields are marked *. Your email will not be published or shared.</em></p> -->
+                {{template "errors/alert" .}}
+
+                <form class="comment_form" action='{{urlFor "comments_create" .Dict.Name}}#view-comments' method="POST" role="form">
+                  <input name='_csrf' type='hidden' value="{{.CSRF}}" />
+
                   <div class="row">
                     <div class="col-md-6">
                       <div class="form-group">
-                        <input type="text" class="form-control form-control-lg" placeholder="Your Name" />
+                        <input name='title' type="text" class="form-control form-control-lg" placeholder="タイトル/名前" 
+                               value='{{if .User}}{{splitFoldl .User.Email "@"}}{{else}}名無しさん{{end}}' />
                       </div>
                       <!--/form-group-->
                     </div>
-                    <!--/col-md-6-->
-                    <div class="col-md-6">
-                      <div class="form-group">
-                        <input type="email" class="form-control form-control-lg" placeholder="Email Address" />
-                      </div>
-                      <!--/form-group-->
-                    </div>
-                    <!--/col-md-6-->
-                  </div>
-                  <!--/row-->
-                  <div class="form-group">
-                    <input type="url" class="form-control form-control-lg" placeholder="Website" />
                   </div>
                   <!--/form-group-->
                   <div class="form-group">
-                    <textarea class="form-control form-control-lg" placeholder="Message" rows="5" cols="30"></textarea>
+                    <textarea name='comment' class="form-control form-control-lg" placeholder="レス内容を書き込んでください" rows="5" cols="30" required></textarea>
                   </div>
                   <!--/form-group-->
                   <div class="form-group">
-                    <input type="submit" value="Add Comment" class="btn btn-inverse btn-lg" name="submit" />
+                    <input type="submit" value="書き込む" class="btn btn-inverse btn-lg" name="submit" />
                   </div>
                   <!--/form-group-->
                 </form>
@@ -261,7 +172,6 @@
               <!-- End Comment Form -->
             </section>
           <!--close comment section-->
-          {{end}}
 
         </div>
         <!-- _________ END /.col-*-* :: containing primary content ______ -->
