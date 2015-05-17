@@ -10,9 +10,10 @@ import (
 	"github.com/ikeikeikeike/godic/models/category"
 	"github.com/ikeikeikeike/godic/models/dict"
 	"github.com/martini-contrib/render"
+	"github.com/martini-contrib/sessions"
 )
 
-func Roots(r render.Render, html html.HTMLContext) {
+func Roots(r render.Render, s sessions.Session, html html.HTMLContext) {
 	log.Debugln("Roots action !!!!!")
 
 	latests := category.CategoriesALL()

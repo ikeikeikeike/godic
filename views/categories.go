@@ -23,7 +23,7 @@ func Categories(r render.Render, params martini.Params, html html.HTMLContext, r
 
 	pers := 25
 	db := models.DB.Table("dicts").
-		Preload("Image").Preload("Category").
+		Preload("Image").Preload("Category").Preload("Comments").
 		Select("dicts.*").
 		Joins("INNER JOIN categories ON categories.id = dicts.category_id").
 		Where("categories.prefix = ?", params["name"])

@@ -6,7 +6,6 @@ import (
 	log "github.com/Sirupsen/logrus"
 	"github.com/ikeikeikeike/godic/middlewares/html"
 	"github.com/ikeikeikeike/godic/models"
-	"github.com/k0kubun/pp"
 	"github.com/martini-contrib/binding"
 	"github.com/martini-contrib/render"
 	"github.com/martini-contrib/sessionauth"
@@ -71,8 +70,6 @@ func SaveSignupAccounts(r render.Render, html html.HTMLContext, session sessions
 		r.HTML(200, "accounts/signup", html)
 		return
 	}
-
-	pp.Println(form)
 
 	var errors binding.Errors
 
