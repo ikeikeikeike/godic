@@ -2,10 +2,12 @@ package views
 
 import (
 	"html/template"
+	"net/http"
 
 	"github.com/go-martini/martini"
 	"github.com/martini-contrib/binding"
 	"github.com/martini-contrib/cors"
+	"github.com/martini-contrib/csrf"
 	"github.com/martini-contrib/render"
 	"github.com/martini-contrib/sessionauth"
 	"github.com/martini-contrib/sessions"
@@ -30,13 +32,28 @@ func init() {
 		Funcs:      funcs,
 	}))
 
+	store := sessions.NewCookieStore([]byte("session_secret_lkdfake121"))
+	// store.Options(sessions.Options{MaxAge: 86400})
+
+	App.Use(sessions.Sessions("martinisesssionid", store))
+	App.Use(sessionauth.SessionUser(models.GenerateAnonymousUser))
+
+	App.Use(func(s sessions.Session) { s.Set("csrfKey", "force") })
+	App.Use(csrf.Generate(&csrf.Options{
+		Secret:     "csrf_secret_12okfok",
+		SessionKey: "csrfKey",
+		// SetCookie:  true,
+		// SetHeader:  true,
+		ErrorFunc: func(w http.ResponseWriter) {
+			http.Error(w, "CSRF token validation failed", http.StatusBadRequest)
+		},
+	}))
+
 	App.Use(html.GenHTMLContext())
 	App.Use(html.HTMLHeader)
 	App.Use(html.HTMLMeta)
+	App.Use(html.HTMLCSRF)
 	App.Use(html.HTMLSettings)
-
-	App.Use(sessions.Sessions("godic_sesssion", sessions.NewCookieStore([]byte("secret09131ffl2"))))
-	App.Use(sessionauth.SessionUser(models.GenerateAnonymousUser))
 
 	// App.Use(oauth2.Github(&goauth2.Config{
 	// ClientID:     "0.0",
@@ -72,9 +89,9 @@ func init() {
 
 	App.Group("", func(r martini.Router) {
 		r.Get("/signup", SignupAccounts).Name("accounts_signup")
-		r.Post("/signup", binding.Form(models.User{}), SaveSignupAccounts).Name("accounts_signup")
+		r.Post("/signup", csrf.Validate, binding.Form(models.User{}), SaveSignupAccounts).Name("accounts_signup")
 		r.Get("/login", LoginAccounts).Name("accounts_login")
-		r.Post("/login", binding.Form(models.User{}), SaveLoginAccounts).Name("accounts_login")
+		r.Post("/login", csrf.Validate, binding.Form(models.User{}), SaveLoginAccounts).Name("accounts_login")
 		r.Get("/logout", func(r render.Render, session sessions.Session, user sessionauth.User) {
 			sessionauth.Logout(session, user)
 			r.Redirect("/")
@@ -104,6 +121,10 @@ func init() {
 		r.Get("/:name/:sha1", ShowDicts).Name("show")
 		r.Get(`/compare/:name/(?P<fromsha1>[^\.]+)\.{2,3}(?P<tosha1>.+)`, CompareDicts).Name("compare")
 	}, html.RequestParams)
+
+	App.Group("/_c", func(r martini.Router) {
+		r.Post("/:name", csrf.Validate, binding.Form(models.Comment{}), CreateComments).Name("comments_create")
+	})
 
 	App.Group("/_d", func(r martini.Router) {
 		r.Get("/:name", func(r render.Render, p martini.Params) { r.Redirect("/d/" + p["name"]) })

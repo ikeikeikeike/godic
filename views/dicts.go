@@ -17,7 +17,9 @@ import (
 	"github.com/ikeikeikeike/godic/modules/git"
 	dichttp "github.com/ikeikeikeike/godic/modules/http"
 	git2go "github.com/libgit2/git2go"
+	"github.com/martini-contrib/binding"
 	"github.com/martini-contrib/render"
+	"github.com/martini-contrib/sessions"
 	"github.com/microcosm-cc/bluemonday"
 	"github.com/russross/blackfriday"
 )
@@ -89,7 +91,7 @@ func CompareDicts(r render.Render, params martini.Params, html html.HTMLContext)
 	r.HTML(200, "dicts/compare", html, render.HTMLOptions{"layout-editor"})
 }
 
-func ShowDicts(r render.Render, params martini.Params, html html.HTMLContext) {
+func ShowDicts(r render.Render, s sessions.Session, params martini.Params, html html.HTMLContext) {
 	log.Debugln("ShowDicts action !!!!!")
 
 	if params["name"] == "" {
@@ -140,6 +142,15 @@ func ShowDicts(r render.Render, params martini.Params, html html.HTMLContext) {
 
 		html["Content"] = string(markdown)
 		html["ContentHTML"] = string(contentHtml)
+	}
+
+	fmsgs := s.Flashes()
+	if len(fmsgs) > 0 {
+		var errors binding.Errors
+		for _, fmsg := range fmsgs {
+			errors = append(errors, binding.Error{Message: fmsg.(string)})
+		}
+		html["Errors"] = errors
 	}
 
 	r.HTML(200, "dicts/show", html)
