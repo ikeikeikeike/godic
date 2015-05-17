@@ -33,6 +33,8 @@ func init() {
 			"genMetaTitle":       GenMetaTitle,
 			"genMetaKeywords":    GenMetaKeywords,
 			"genMetaDescription": GenMetaDescription,
+			"splitFoldl":         SplitFoldl,
+			"splitFoldr":         SplitFoldr,
 		},
 	}
 }
