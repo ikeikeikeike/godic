@@ -1,6 +1,7 @@
 package models
 
 import (
+	"database/sql"
 	"time"
 
 	log "github.com/Sirupsen/logrus"
@@ -10,9 +11,13 @@ import (
 type User struct {
 	Model
 
-	Email    string    `sql:"type:varchar(128);not null;unique" form:"email"  binding:"required"`
-	Password string    `sql:"type:varchar(128);not null" form:"password"  binding:"required"`
+	Email    string `sql:"type:varchar(128);not null;unique" form:"email"  binding:"required"`
+	Password string `sql:"type:varchar(128);not null" form:"password"  binding:"required"`
+
 	LoggedAt time.Time `form:"-" `
+
+	Image   *Image
+	ImageID sql.NullInt64 `sql:"index"`
 
 	Repassword    string `sql:"-" form:"repassword"`
 	authenticated bool   `sql:"-" form:"-" `

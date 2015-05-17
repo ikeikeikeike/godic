@@ -7,7 +7,7 @@ import (
 )
 
 func RelationDB() *gorm.DB {
-	return m.DB.Table("dicts").Preload("Image").Preload("Category").
+	return m.DB.Table("dicts").Preload("Image").Preload("Category").Preload("Comments").
 		// Preload("Tags"). XXX: m2m preload does not work.
 		Select("dicts.*")
 }

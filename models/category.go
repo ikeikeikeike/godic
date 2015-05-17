@@ -19,11 +19,11 @@ type Category struct {
 }
 
 func (m *Category) LatestDicts(limit int) {
-	DB.Model(&m).Preload("Category").Preload("Image").
+	DB.Model(&m).Preload("Image").Preload("Category").Preload("Comments").
 		Order("dicts.id DESC").Limit(limit).Related(&m.Dicts, "Dicts")
 }
 
 func (m *Category) ModifiedDicts(limit int) {
-	DB.Model(&m).Preload("Category").Preload("Image").
+	DB.Model(&m).Preload("Image").Preload("Category").Preload("Comments").
 		Order("dicts.updated_at DESC").Limit(limit).Related(&m.Dicts, "Dicts")
 }
