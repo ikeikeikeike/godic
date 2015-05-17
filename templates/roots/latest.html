@@ -40,10 +40,10 @@
                     <span class="ti ti-direction-alt">
                     </span><a href='{{urlFor "categories" $d.Category.Prefix}}'>{{$d.Category.Name}}</a>
                   </li>
-                  <li><a href='{{urlFor "show" $d.Name}}'>
+                  <li><a href="{{urlFor "show" $d.Name}}#view-comments">
                     <span class="ti ti-comments">
                     </span>
-                    5 Comments</a>
+                    {{len $d.Comments}}</a>
                   </li>
                   <li>
                     <span class="ti ti-calendar">
