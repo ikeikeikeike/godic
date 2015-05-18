@@ -16,17 +16,15 @@ import (
 func Roots(r render.Render, s sessions.Session, html html.HTMLContext) {
 	log.Debugln("Roots action !!!!!")
 
-	latests := category.CategoriesALL()
-	for _, c := range latests {
-		c.LatestDicts(10)
-	}
+	var modified []*models.Dict
+	dict.RelationDB().Limit(10).Order("dicts.updated_at DESC").Find(&modified)
+	html["ModifiedDicts"] = latests
+
+	var latests []*models.Dict
+	dict.RelationDB().Limit(10).Order("dicts.created_at DESC").Find(&latests)
 	html["LatestDicts"] = latests
 
-	modified := category.CategoriesALL()
-	for _, c := range modified {
-		c.ModifiedDicts(10)
-	}
-	html["ModifiedDicts"] = modified
+	html["Categories"] = category.CategoriesALL()
 
 	r.HTML(200, "roots/index", html)
 }

@@ -18,7 +18,7 @@
         </span>
         <ul class="sort">
           <li><a class="active" href="#" data-filter="*">すべて</a></li>
-          {{range $i, $c := .ModifiedDicts|reverse}}
+          {{range $i, $c := .Categories|reverse}}
             <li><a href="#" data-filter=".{{$c.Prefix}}">{{$c.Name}}</a></li>
           {{end}}
         </ul>
@@ -36,65 +36,63 @@
         <!-- required for fluid masonry layout --> 
         
         <!-- IMAGE POST with image pop up -->
-        {{range $i, $c := .ModifiedDicts}}
-          {{range $i, $d := $c.Dicts}}
-            {{if $d.Image}}
-              <li class="post msnry-blog-entry {{$c.Prefix}}">
-                <div class="click-slide click-top">
-                  <img src="{{$d.Image.Src}}" alt="{{$d.Image.Name}}" />
-                  <div>
-                    <span>
-                      <a href='{{urlFor "show" $d.Name}}' class="ti ti-link"></a> 
-                      <a href='{{urlFor "edit" $d.Name}}' class="ti ti-pencil-alt"></a>
+        {{range $i, $d := .ModifiedDicts}}
+          {{if $d.Image}}
+            <li class="post msnry-blog-entry {{$d.Category.Prefix}}">
+              <div class="click-slide click-top">
+                <img src="{{$d.Image.Src}}" alt="{{$d.Image.Name}}" />
+                <div>
+                  <span>
+                    <a href='{{urlFor "show" $d.Name}}' class="ti ti-link"></a> 
+                    <a href='{{urlFor "edit" $d.Name}}' class="ti ti-pencil-alt"></a>
+                  </span>
+                </div>
+              </div>
+              <div class="msnry-blog-entry-text">
+                <h4 class="h5"><a href='{{urlFor "show" $d.Name}}'>{{$d.Name}}</a></h4>
+                <p><a href='{{urlFor "show" $d.Name}}'>{{truncate ($d.Content|markdownHTML|sanitizeHTML) 70}}</a></p>
+                <ul class="msnry-blog-entry-meta list-inline">
+                  <li>
+                    <span class="ti ti-direction-alt">
+                    </span><a href='{{urlFor "categories" $d.Category.Prefix}}'>{{$d.Category.Name}}</a>
+                  </li>
+                  <li><a href="{{urlFor "show" $d.Name}}#view-comments">
+                    <span class="ti ti-comments">
                     </span>
-                  </div>
-                </div>
-                <div class="msnry-blog-entry-text">
-                  <h4 class="h5"><a href='{{urlFor "show" $d.Name}}'>{{$d.Name}}</a></h4>
-                  <p><a href='{{urlFor "show" $d.Name}}'>{{truncate ($d.Content|markdownHTML|sanitizeHTML) 70}}</a></p>
-                  <ul class="msnry-blog-entry-meta list-inline">
-                    <li>
-                      <span class="ti ti-direction-alt">
-                      </span><a href='{{urlFor "categories" $d.Category.Prefix}}'>{{$d.Category.Name}}</a>
-                    </li>
-                    <li><a href="{{urlFor "show" $d.Name}}#view-comments">
-                      <span class="ti ti-comments">
-                      </span>
-                      {{len $d.Comments}}</a>
-                    </li>
-                    <li>
-                      <span class="ti ti-calendar">
-                      </span>
-                      {{timeSince $d.UpdatedAt}}
-                    </li>
-                  </ul>
-                </div>
-              </li>
-            {{else}}
-              <li class="post msnry-blog-entry {{$c.Prefix}}">
-                <div class="msnry-blog-entry-text">
-                  <h4 class="h5"><a href='{{urlFor "show" $d.Name}}'>{{$d.Name}}</a></h4>
-                  <p><a href='{{urlFor "show" $d.Name}}'>{{truncate ($d.Content|markdownHTML|sanitizeHTML) 70}}</a></p>
-                  <ul class="msnry-blog-entry-meta list-inline">
-                    <li>
-                      <span class="ti ti-direction-alt">
-                      </span><a href='{{urlFor "categories" $d.Category.Prefix}}'>{{$d.Category.Name}}</a>
-                    </li>
-                    <li>
-                      <a href='{{urlFor "show" $d.Name}}#view-comments'>
-                      <span class="ti ti-comments">
-                      </span>
-                      {{len $d.Comments}}</a>
-                    </li>
-                    <li>
-                      <span class="ti ti-calendar">
-                      </span>
-                      {{timeSince $d.UpdatedAt}}
-                    </li>
-                  </ul>
-                </div>
-              </li>
-            {{end}}
+                    {{len $d.Comments}}</a>
+                  </li>
+                  <li>
+                    <span class="ti ti-calendar">
+                    </span>
+                    {{timeSince $d.UpdatedAt}}
+                  </li>
+                </ul>
+              </div>
+            </li>
+          {{else}}
+            <li class="post msnry-blog-entry {{$d.Category.Prefix}}">
+              <div class="msnry-blog-entry-text">
+                <h4 class="h5"><a href='{{urlFor "show" $d.Name}}'>{{$d.Name}}</a></h4>
+                <p><a href='{{urlFor "show" $d.Name}}'>{{truncate ($d.Content|markdownHTML|sanitizeHTML) 70}}</a></p>
+                <ul class="msnry-blog-entry-meta list-inline">
+                  <li>
+                    <span class="ti ti-direction-alt">
+                    </span><a href='{{urlFor "categories" $d.Category.Prefix}}'>{{$d.Category.Name}}</a>
+                  </li>
+                  <li>
+                    <a href='{{urlFor "show" $d.Name}}#view-comments'>
+                    <span class="ti ti-comments">
+                    </span>
+                    {{len $d.Comments}}</a>
+                  </li>
+                  <li>
+                    <span class="ti ti-calendar">
+                    </span>
+                    {{timeSince $d.UpdatedAt}}
+                  </li>
+                </ul>
+              </div>
+            </li>
           {{end}}
         {{end}}
         <!--/ .post .msnry-blog-entry --> 
@@ -112,7 +110,7 @@
         </span>
         <ul class="sort">
           <li><a class="active" href="#" data-filter="*">すべて</a></li>
-          {{range $i, $c := .LatestDicts|reverse}}
+          {{range $i, $c := .Categories|reverse}}
             <li><a href="#" data-filter=".{{$c.Prefix}}">{{$c.Name}}</a></li>
           {{end}}
         </ul>
@@ -130,65 +128,63 @@
         <!-- required for fluid masonry layout --> 
         
         <!-- IMAGE POST with image pop up -->
-        {{range $i, $c := .LatestDicts}}
-          {{range $i, $d := $c.Dicts}}
-            {{if $d.Image}}
-              <li class="post msnry-blog-entry {{$c.Prefix}}">
-                <div class="click-slide click-top">
-                  <img src="{{$d.Image.Src}}" alt="{{$d.Image.Name}}" />
-                  <div>
-                    <span>
-                      <a href='{{urlFor "show" $d.Name}}' class="ti ti-link"></a> 
-                      <a href='{{urlFor "edit" $d.Name}}' class="ti ti-pencil-alt"></a>
+        {{range $i, $d := .LatestDicts}}
+          {{if $d.Image}}
+            <li class="post msnry-blog-entry {{$d.Category.Prefix}}">
+              <div class="click-slide click-top">
+                <img src="{{$d.Image.Src}}" alt="{{$d.Image.Name}}" />
+                <div>
+                  <span>
+                    <a href='{{urlFor "show" $d.Name}}' class="ti ti-link"></a> 
+                    <a href='{{urlFor "edit" $d.Name}}' class="ti ti-pencil-alt"></a>
+                  </span>
+                </div>
+              </div>
+              <div class="msnry-blog-entry-text">
+                <h4 class="h5"><a href='{{urlFor "show" $d.Name}}'>{{$d.Name}}</a></h4>
+                <p><a href='{{urlFor "show" $d.Name}}'>{{truncate ($d.Content|markdownHTML|sanitizeHTML) 70}}</a></p>
+                <ul class="msnry-blog-entry-meta list-inline">
+                  <li>
+                    <span class="ti ti-direction-alt">
+                    </span><a href='{{urlFor "categories" $d.Category.Prefix}}'>{{$d.Category.Name}}</a>
+                  </li>
+                  <li><a href="{{urlFor "show" $d.Name}}#view-comments">
+                    <span class="ti ti-comments">
                     </span>
-                  </div>
-                </div>
-                <div class="msnry-blog-entry-text">
-                  <h4 class="h5"><a href='{{urlFor "show" $d.Name}}'>{{$d.Name}}</a></h4>
-                  <p><a href='{{urlFor "show" $d.Name}}'>{{truncate ($d.Content|markdownHTML|sanitizeHTML) 70}}</a></p>
-                  <ul class="msnry-blog-entry-meta list-inline">
-                    <li>
-                      <span class="ti ti-direction-alt">
-                      </span><a href='{{urlFor "categories" $d.Category.Prefix}}'>{{$d.Category.Name}}</a>
-                    </li>
-                    <li><a href="{{urlFor "show" $d.Name}}#view-comments">
-                      <span class="ti ti-comments">
-                      </span>
-                      {{len $d.Comments}}</a>
-                    </li>
-                    <li>
-                      <span class="ti ti-calendar">
-                      </span>
-                      {{timeSince $d.CreatedAt}}
-                    </li>
-                  </ul>
-                </div>
-              </li>
-            {{else}}
-              <li class="post msnry-blog-entry {{$c.Prefix}}">
-                <div class="msnry-blog-entry-text">
-                  <h4 class="h5"><a href='{{urlFor "show" $d.Name}}'>{{$d.Name}}</a></h4>
-                  <p><a href='{{urlFor "show" $d.Name}}'>{{truncate ($d.Content|markdownHTML|sanitizeHTML) 70}}</a></p>
-                  <ul class="msnry-blog-entry-meta list-inline">
-                    <li>
-                      <span class="ti ti-direction-alt">
-                      </span><a href='{{urlFor "categories" $d.Category.Prefix}}'>{{$d.Category.Name}}</a>
-                    </li>
-                    <li>
-                      <a href='{{urlFor "show" $d.Name}}#view-comments'>
-                      <span class="ti ti-comments">
-                      </span>
-                      {{len $d.Comments}}</a>
-                    </li>
-                    <li>
-                      <span class="ti ti-calendar">
-                      </span>
-                      {{timeSince $d.CreatedAt}}
-                    </li>
-                  </ul>
-                </div>
-              </li>
-            {{end}}
+                    {{len $d.Comments}}</a>
+                  </li>
+                  <li>
+                    <span class="ti ti-calendar">
+                    </span>
+                    {{timeSince $d.CreatedAt}}
+                  </li>
+                </ul>
+              </div>
+            </li>
+          {{else}}
+            <li class="post msnry-blog-entry {{$d.Category.Prefix}}">
+              <div class="msnry-blog-entry-text">
+                <h4 class="h5"><a href='{{urlFor "show" $d.Name}}'>{{$d.Name}}</a></h4>
+                <p><a href='{{urlFor "show" $d.Name}}'>{{truncate ($d.Content|markdownHTML|sanitizeHTML) 70}}</a></p>
+                <ul class="msnry-blog-entry-meta list-inline">
+                  <li>
+                    <span class="ti ti-direction-alt">
+                    </span><a href='{{urlFor "categories" $d.Category.Prefix}}'>{{$d.Category.Name}}</a>
+                  </li>
+                  <li>
+                    <a href='{{urlFor "show" $d.Name}}#view-comments'>
+                    <span class="ti ti-comments">
+                    </span>
+                    {{len $d.Comments}}</a>
+                  </li>
+                  <li>
+                    <span class="ti ti-calendar">
+                    </span>
+                    {{timeSince $d.CreatedAt}}
+                  </li>
+                </ul>
+              </div>
+            </li>
           {{end}}
         {{end}}
         <!--/ .post .msnry-blog-entry --> 
