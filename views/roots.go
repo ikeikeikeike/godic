@@ -18,7 +18,7 @@ func Roots(r render.Render, s sessions.Session, html html.HTMLContext) {
 
 	var modified []*models.Dict
 	dict.RelationDB().Limit(10).Order("dicts.updated_at DESC").Find(&modified)
-	html["ModifiedDicts"] = latests
+	html["ModifiedDicts"] = modified
 
 	var latests []*models.Dict
 	dict.RelationDB().Limit(10).Order("dicts.created_at DESC").Find(&latests)
