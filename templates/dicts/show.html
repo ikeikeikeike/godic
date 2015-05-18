@@ -42,10 +42,10 @@
                     </span><a href='{{urlFor "categories" .Dict.Category.Prefix}}'>{{.Dict.Category.Name}}</a>
                   </li>
                   <li>
-                    <a href='{{urlFor "show" .Dict.Name}}'>
+                    <a href='{{urlFor "show" .Dict.Name}}#view-comments'>
                     <span class="ti ti-comments">
                     </span>
-                    5</a>
+                    {{len .Dict.Comments}}</a>
                   </li>
                   <li>
                     <span class="ti ti-calendar">
@@ -139,6 +139,17 @@
                 {{end}}
               </ol>
               <!--end threaded comments -->
+
+              <style>
+              /* Webkit対応 */
+              .form-control::-webkit-input-placeholder{ color: #999; }
+              /* Firefox対応 */
+              .form-control::-moz-placeholder{ color: #999; }
+              /* Firefox対応 */
+              .form-control:-moz-placeholder{ color: #999; }
+              /* IE対応 */
+              .form-control:-ms-input-placeholder{ color: #999; }
+              </style>
 
               <!-- Begin Comments Form -->
               <div id="comment-form" class="anchor">

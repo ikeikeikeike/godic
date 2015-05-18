@@ -59,10 +59,11 @@
                 </ul>
                 <p><a class='gray-letter' href='{{urlFor "show" $d.Name}}'>{{truncate ($d.Content|markdownHTML|sanitizeHTML) 150}}</a></p>
                 <ul class="social-icon-list">
-                  <li><a href="#"><i class="fa fa-2x fa-fw fa-google-plus"></i></a></li>
-                  <li><a href="#"><i class="fa fa-2x fa-fw fa-facebook"></i></a></li>
-                  <li><a href="#"><i class="fa fa-2x fa-fw fa-twitter"></i></a></li>
-                  <li><a href="#"><i class="fa fa-2x fa-fw fa-github"></i></a></li>
+                  <p class="bookmarkhub" style="min-height: 20px;" bookmarkhub-url='{{$.Meta.Host}}{{urlFor "show" $d.Name}}'></p>
+                  <!-- <li><a href="#"><i class="fa fa-2x fa-fw fa-google-plus"></i></a></li> -->
+                  <!-- <li><a href="#"><i class="fa fa-2x fa-fw fa-facebook"></i></a></li> -->
+                  <!-- <li><a href="#"><i class="fa fa-2x fa-fw fa-twitter"></i></a></li> -->
+                  <!-- <li><a href="#"><i class="fa fa-2x fa-fw fa-github"></i></a></li> -->
                 </ul>
               </div>
             </div>

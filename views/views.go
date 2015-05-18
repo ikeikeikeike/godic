@@ -85,7 +85,7 @@ func init() {
 		r.Get("/", Roots).Name("roots")
 		r.Get("/latest", LatestRoots).Name("roots_latest")
 		r.Get("/modified", ModifiedRoots).Name("roots_modified")
-	})
+	}, html.RequestParams)
 
 	App.Group("", func(r martini.Router) {
 		r.Get("/signup", SignupAccounts).Name("accounts_signup")
@@ -96,7 +96,7 @@ func init() {
 			sessionauth.Logout(session, user)
 			r.Redirect("/")
 		})
-	})
+	}, html.RequestParams)
 
 	App.Group("/abouts", func(r martini.Router) {
 		r.Get("/sitemap", func(r render.Render) { r.Redirect("/") }).Name("abouts_sitemap")
@@ -109,7 +109,7 @@ func init() {
 
 	App.Group("/category", func(r martini.Router) {
 		r.Get("/:name", Categories).Name("categories")
-	})
+	}, html.RequestParams)
 
 	App.Group("/d", func(r martini.Router) {
 		r.Get("/index", func(r render.Render) { r.Redirect("/") }).Name("index")
