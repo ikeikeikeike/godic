@@ -13,7 +13,7 @@ import (
 func CreateComments(r render.Render, p martini.Params, s sessions.Session, u sessionauth.User, routes martini.Routes, comment models.Comment, errs binding.Errors) {
 	log.Debugln("CreateComments action !!!!!")
 
-	r.Redirect(routes.URLFor("show", p["name"]))
+	r.Redirect(routes.URLFor("show", p["name"]) + "?ban=1")
 
 	if len(errs) > 0 {
 		log.Warning(errs)
