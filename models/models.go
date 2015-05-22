@@ -43,8 +43,8 @@ func init() {
 
 		DB.DB()
 		DB.DB().Ping()
-		DB.DB().SetMaxIdleConns(100)
-		DB.DB().SetMaxOpenConns(100)
+		DB.DB().SetMaxIdleConns(20)
+		DB.DB().SetMaxOpenConns(120)
 	default:
 		DB, err = gorm.Open(dialect, configs.Settings.Dsn)
 		if err != nil {
