@@ -132,7 +132,7 @@ func init() {
 	})
 
 	App.Group("/_d", func(r martini.Router) {
-		r.Get("/:name", func(r render.Render, p martini.Params) { r.Redirect("/d/" + p["name"]) })
+		r.Get("/:name", func(r render.Render, p martini.Params) { r.Redirect("/d/" + p["name"] + "?ban=1") })
 		r.Put("/:name", binding.Bind(forms.Commit{}), UpdateDicts).Name("api_put")
 		r.Post("/:name", binding.Bind(forms.Commit{}), CreateDicts).Name("api_post")
 		r.Delete("/:name", DeleteDicts).Name("api_delete")

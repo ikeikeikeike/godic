@@ -157,7 +157,7 @@
                 <!-- <p class="small"><em>Required fields are marked *. Your email will not be published or shared.</em></p> -->
                 {{template "errors/alert" .}}
 
-                <form class="comment_form" action='{{urlFor "comments_create" .Dict.Name}}#view-comments' method="POST" role="form">
+                <form class="comment_form" action='{{urlFor "comments_create" .Dict.Name}}?ban=1#view-comments' method="POST" role="form">
                   <input name='_csrf' type='hidden' value="{{.CSRF}}" />
 
                   <div class="row">
