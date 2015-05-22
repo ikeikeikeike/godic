@@ -81,6 +81,11 @@ func init() {
 		AllowCredentials: true,
 	})
 
+	App.Get("/ok.ico", func(r render.Render) {
+		r.Header().Set("Content-Type", "image/gif")
+		r.Data(200, []byte(""))
+	}).Name("healthcheck")
+
 	App.Group("", func(r martini.Router) {
 		r.Get("/", Roots).Name("roots")
 		r.Get("/latest", LatestRoots).Name("roots_latest")
@@ -132,11 +137,6 @@ func init() {
 		r.Post("/:name", binding.Bind(forms.Commit{}), CreateDicts).Name("api_post")
 		r.Delete("/:name", DeleteDicts).Name("api_delete")
 	})
-
-	App.Get("/ok.ico", func(r render.Render) {
-		r.Header().Set("Content-Type", "image/gif")
-		r.Data(200, []byte(""))
-	}).Name("healthcheck")
 
 	App.NotFound(func(r render.Render, html html.HTMLContext) {
 		r.HTML(404, "errors/404", html)
