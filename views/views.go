@@ -38,7 +38,7 @@ func init() {
 	App.Use(sessions.Sessions("martinisesssionid", store))
 	App.Use(sessionauth.SessionUser(models.GenerateAnonymousUser))
 
-	App.Use(func(s sessions.Session) { s.Set("csrfKey", "force") })
+	forceCSRF := func(s sessions.Session) { s.Set("csrfKey", "force") }
 	App.Use(csrf.Generate(&csrf.Options{
 		Secret:     "csrf_secret_12okfok",
 		SessionKey: "csrfKey",
@@ -93,9 +93,9 @@ func init() {
 	}, html.RequestParams)
 
 	App.Group("", func(r martini.Router) {
-		r.Get("/signup", SignupAccounts).Name("accounts_signup")
+		r.Get("/signup", forceCSRF, SignupAccounts).Name("accounts_signup")
 		r.Post("/signup", csrf.Validate, binding.Form(models.User{}), SaveSignupAccounts).Name("accounts_signup")
-		r.Get("/login", LoginAccounts).Name("accounts_login")
+		r.Get("/login", forceCSRF, LoginAccounts).Name("accounts_login")
 		r.Post("/login", csrf.Validate, binding.Form(models.User{}), SaveLoginAccounts).Name("accounts_login")
 		r.Get("/logout", func(r render.Render, session sessions.Session, user sessionauth.User) {
 			sessionauth.Logout(session, user)
@@ -120,7 +120,7 @@ func init() {
 		r.Get("/index", func(r render.Render) { r.Redirect("/") }).Name("index")
 		r.Get("/new/", NewDicts).Name("new")
 		r.Get("/new/:name", NewDicts).Name("new")
-		r.Get("/:name", ShowDicts).Name("show")
+		r.Get("/:name", forceCSRF, ShowDicts).Name("show")
 		r.Get("/edit/:name", EditDicts).Name("edit")
 		r.Get("/history/:name", DictsHistory).Name("history")
 		r.Get("/:name/:sha1", ShowDicts).Name("show")
